@@ -17,6 +17,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import App from "App";
+import {AuthProvider} from "./context/AuthContext"
+import {AppProvider} from "./context/AppContext"
 
 // Material Dashboard 2 React Context Provider
 import { MaterialUIControllerProvider } from "context";
@@ -24,7 +26,11 @@ import { MaterialUIControllerProvider } from "context";
 ReactDOM.render(
   <BrowserRouter>
     <MaterialUIControllerProvider>
-      <App />
+      <AuthProvider>
+      <AppProvider>
+          <App />
+        </AppProvider>
+      </AuthProvider>
     </MaterialUIControllerProvider>
   </BrowserRouter>,
   document.getElementById("root")
