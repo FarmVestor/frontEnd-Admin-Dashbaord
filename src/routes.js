@@ -45,6 +45,9 @@ import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignOut from "layouts/authentication/sign-out";
 import Users  from "layouts/Users"
+import Farms  from "layouts/Farms"
+import AddFarms  from "layouts/Farms/AddFarm"
+import EditFarms  from "layouts/Farms/EditFarm"
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -75,6 +78,8 @@ const routes = [
     ],
     route: "/dashboard",
     component: <Dashboard />,
+    requireAuth:true,
+    isSideNav:true
   },
   {
     type: "collapse",
@@ -83,6 +88,40 @@ const routes = [
     icon: <Icon fontSize="small">people</Icon>,
     route: "/users",
     component: <Users />,
+    requireAuth:true,
+    isSideNav:true
+  },
+  {
+    type: "collapse",
+    name: "Farms",
+    key: "farms",
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/farms",
+    component: <Farms />,
+    requireAuth:true,
+    isSideNav:true
+  },
+  {
+    type: "collapse",
+    name: "Add Farms",
+    key: "add-farms",
+    icon: <Icon fontSize="small">people</Icon>,
+    route: "/farms/add",
+    component: <AddFarms />,
+    requireAuth:true,
+    isSideNav:false
+
+  },
+  {
+    type: "collapse",
+    name: "Edit Farms",
+    key: "edit-farms",
+    icon: <Icon fontSize="small">people</Icon>,
+    route: "/farms/edit/:id",
+    component: <EditFarms />,
+    requireAuth:true,
+    isSideNav:false
+
   },
   {
     type: "collapse",
@@ -91,6 +130,8 @@ const routes = [
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/tables",
     component: <Tables />,
+    requireAuth:true,
+    isSideNav:true
   },
   {
     type: "collapse",
@@ -99,6 +140,8 @@ const routes = [
     icon: <Icon fontSize="small">receipt_long</Icon>,
     route: "/billing",
     component: <Billing />,
+    requireAuth:true,
+    isSideNav:true
   },
   {
     type: "collapse",
@@ -115,15 +158,18 @@ const routes = [
     icon: <Icon fontSize="small">notifications</Icon>,
     route: "/notifications",
     component: <Notifications />,
+    requireAuth:true,
+    isSideNav:true
   },
   {
     type: "collapse",
     name: "Profile",
     key: "profile",
     icon: <Icon fontSize="small">person</Icon>,
-   
     route: "/profile",
     component: <Profile />,
+    requireAuth:true,
+    isSideNav:true
   },
   {
     type: "collapse",
@@ -132,6 +178,8 @@ const routes = [
     icon: <Icon fontSize="small">login</Icon>,
     route: "/sign-in",
     component: <SignIn />,
+    requireAuth:true,
+    isSideNav:true
   },
   // {
   //   type: "collapse",
