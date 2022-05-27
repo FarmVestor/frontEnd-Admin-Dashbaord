@@ -110,29 +110,29 @@ function DefaultNavbar({ transparent, light, action }) {
           pl={{ xs: 0, lg: 1 }}
         >
           <MDTypography variant="button" fontWeight="bold" color={light ? "white" : "dark"}>
-            Material Dashboard 2
+            Admin Dashboard 
           </MDTypography>
         </MDBox>
         <MDBox color="inherit" display={{ xs: "none", lg: "flex" }} m={0} p={0}>
-          <DefaultNavbarLink icon="donut_large" name="dashboard" route="/dashboard" light={light} />
-          <DefaultNavbarLink icon="person" name="profile" route="/profile" light={light} />
+          <DefaultNavbarLink icon="person" name="Admins" route="/users/:id" light={light} />
+          <DefaultNavbarLink icon="person" name="Farmers" route="/users/:id" light={light} />
           <DefaultNavbarLink
-            icon="account_circle"
-            name="sign up"
-            route="/authentication/sign-up"
+            icon="person"
+            name="Investors"
+            route="/users/:id"
             light={light}
           />
           <DefaultNavbarLink
-            icon="key"
-            name="sign in"
-            route="/authentication/sign-in"
+            icon="person"
+            name="W"
+            route="/users/:id"
             light={light}
           />
         </MDBox>
         {action &&
           (action.type === "internal" ? (
             <MDBox display={{ xs: "none", lg: "inline-block" }}>
-              <MDButton
+              {/* <MDButton
                 component={Link}
                 to={action.route}
                 variant="gradient"
@@ -140,11 +140,11 @@ function DefaultNavbar({ transparent, light, action }) {
                 size="small"
               >
                 {action.label}
-              </MDButton>
+              </MDButton> */}
             </MDBox>
           ) : (
             <MDBox display={{ xs: "none", lg: "inline-block" }}>
-              <MDButton
+              {/* <MDButton
                 component="a"
                 href={action.route}
                 target="_blank"
@@ -155,7 +155,7 @@ function DefaultNavbar({ transparent, light, action }) {
                 sx={{ mt: -0.3 }}
               >
                 {action.label}
-              </MDButton>
+              </MDButton> */}
             </MDBox>
           ))}
         <MDBox
@@ -201,7 +201,7 @@ DefaultNavbar.propTypes = {
         "dark",
         "light",
       ]),
-      label: PropTypes.string.isRequired,
+      // label: PropTypes.string.isRequired,
     }),
   ]),
 };

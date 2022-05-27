@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 
 // Authentication layout components
 import BasicLayout from "./BasicLayout";
+import { useRequest } from "lib/functions";
 
 const columns = [
     { Header: "name", accessor: "name", width: "45%", align: "left" },
@@ -25,24 +26,33 @@ const columns = [
 ]
 
 function Users() {
+    const request=useRequest()
     const [rows, setRows] = useState([])
     const ctx = useContext(AuthContext)
 console.log(ctx)
     const deleteUser = (userId) => {
         if (window.confirm('Are you sure')) {
-            fetch(`${process.env.REACT_APP_API_URL}users/${userId}`, {
-                method: "DELETE",
-                headers: {
-                    'Authorization': 'Bearer ' + ctx.token
-                }
-            }).then(response => {
-                response.json()
-                    .then(deleted => {
-                        console.log(deleted)
-                    })
-            })
-                .catch(e => e)
+            request(`${process.env.REACT_APP_API_URL}users/${userId}`, {}, {}, {
+                auth: true,
+                
+                snackBar:true
+                
+            }, 'delete')
         }
+        // if (window.confirm('Are you sure')) {
+        //     fetch(`${process.env.REACT_APP_API_URL}users/${userId}`, {
+        //         method: "DELETE",
+        //         headers: {
+        //             'Authorization': 'Bearer ' + ctx.token
+        //         }
+        //     }).then(response => {
+        //         response.json()
+        //             .then(deleted => {
+        //                 console.log(deleted)
+        //             })
+        //     })
+        //         .catch(e => e)
+        // }
     }
 
     useEffect(() => {
