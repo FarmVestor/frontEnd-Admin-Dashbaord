@@ -15,7 +15,6 @@ import MDButton from "components/MDButton";
 import { Link, useParams } from "react-router-dom";
 
 // Authentication layout components
-import BasicLayout from "./BasicLayout";
 import { useRequest } from "lib/functions";
 
 
@@ -24,47 +23,58 @@ import FormControl from '@mui/material/FormControl';
 import NativeSelect from '@mui/material/NativeSelect';
 
 const columns = [
-    { Header: "name", accessor: "name", width: "45%", align: "left" },
-    { Header: "email", accessor: "email", align: "left" },
+    { Header: "Farm Name", accessor: "farmName", width: "45%", align: "left" },
+    { Header: "Farmer Name", accessor: "farmerName", align: "left" },
+    { Header: "Partener Name", accessor: "partenerName", align: "left" },
+
+    { Header: "Deal Price", accessor: "dealPrice", align: "left" },
+    { Header: "Deal Status", accessor: "dealStatus", align: "left" },
     { Header: "actions", accessor: "actions", align: "center" },
 ]
 
-function Users() {
+function Deals() {
     const [order,setOrder]=useState('ASC')
     const { id } = useParams()
     const request = useRequest()
     const [rows, setRows] = useState([])
-    const deleteUser = (userId) => {
+    const deleteDeal = (userId) => {
         if (window.confirm('Are you sure')) {
-            request(`${process.env.REACT_APP_API_URL}users/${userId}`, {}, {}, {
+            request(`${process.env.REACT_APP_API_URL}deals/${userId}`, {}, {}, {
                 auth: true,
 
                 snackBar: true
 
-            }, 'delete')
+            }, 'delete').then(data=>{
+                console.log(data.messages)
+            })
         }
 
     }
 
     useEffect(() => {
 
-        request(`${process.env.REACT_APP_API_URL}users?id=${id}&order=${order}`, {}, {}, {
+        request(`${process.env.REACT_APP_API_URL}deals`, {}, {}, {
             auth: true,
 
             snackBar: true
 
         }, 'get')
-            .then(users => {
+            .then(deals => {
+                // console.log("deal data", deals)
 
-                const allusers = users.data.map((user) => {
+                const alldeals = deals.data.map((deal) => {
+                    console.log("deal data", deal)
                     return {
-                        name: <>{user.userName}</>,
-                        email: <>{user.userEmail}</>,
+                        farmName: <>{deal.Farm?.farmName}</>,
+                        farmerName: <>{deal.Farm?.User?.userName}</>,
+                        dealPrice: <>{deal.dealPrice}</>,
+                        dealStatus: <>{deal.dealStatus}</>,
+                        partenerName: <>{deal.Partner?.userName}</>,
                         actions: <>
-                            <MDButton variant="text" color="error" onClick={() => { deleteUser(user.id) }}>
+                            <MDButton variant="text" color="error" onClick={() => { deleteDeal(deal.id) }}>
                                 <Icon>delete</Icon>&nbsp;delete
                             </MDButton>
-                            <Link to={`/users/edit/${user.id}`}>
+                            <Link to={`/deals/edit/${deal.id}`}>
                                 <MDButton variant="text" color="info">
                                     <Icon>edit</Icon>&nbsp;edit
                                 </MDButton>
@@ -72,14 +82,14 @@ function Users() {
                         </>,
                     }
                 })
-                setRows(allusers)
+                setRows(alldeals)
 
             })
     }, [id,order])
     return (
         <DashboardLayout>
             <DashboardNavbar />
-            <BasicLayout >
+            
 
                 <MDBox pt={6} pb={3}>
                     <Grid container spacing={6}>
@@ -106,7 +116,7 @@ function Users() {
                                         </MDTypography>
 
 
-                                        <Link to='/users/add'>
+                                        <Link to='/deals/add'>
                                             <MDButton variant="text">
                                                 <Icon>add_circle</Icon>&nbsp;Add
                                             </MDButton>
@@ -150,9 +160,9 @@ function Users() {
                     </Grid>
                 </MDBox>
                 <Footer />
-            </BasicLayout>
+            
         </DashboardLayout>
     );
 }
 
-export default Users;
+export default Deals;
