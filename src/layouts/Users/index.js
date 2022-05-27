@@ -48,6 +48,7 @@ console.log(ctx)
     useEffect(() => {
         fetch(`${process.env.REACT_APP_API_URL}users`, {
             headers: {
+                'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + ctx.token
             }
         })
