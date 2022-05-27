@@ -47,6 +47,10 @@ import SignOut from "layouts/authentication/sign-out";
 import Users  from "layouts/Users"
 import EditUser from "layouts/Users/EditUser"
 import AddUser from "layouts/Users/AddUser"
+import Farms  from "layouts/Farms"
+import AddFarms  from "layouts/Farms/AddFarm"
+import EditFarms  from "layouts/Farms/EditFarm"
+
 // @mui icons
 import Icon from "@mui/material/Icon";
 import UserTypes from "layouts/Users/userType"
@@ -84,6 +88,8 @@ const routes = [
     route: "/dashboard",
     inSideNav: true,
     component: <Dashboard />,
+    requireAuth:true,
+    isSideNav:true
   },
   {
     type: "collapse",
@@ -93,6 +99,40 @@ const routes = [
     route: "/users",
     inSideNav: true,
     component: <Users />,
+    requireAuth:true,
+    isSideNav:true
+  },
+  {
+    type: "collapse",
+    name: "Farms",
+    key: "farms",
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/farms",
+    component: <Farms />,
+    requireAuth:true,
+    isSideNav:true
+  },
+  {
+    type: "collapse",
+    name: "Add Farms",
+    key: "add-farms",
+    icon: <Icon fontSize="small">people</Icon>,
+    route: "/farms/add",
+    component: <AddFarms />,
+    requireAuth:true,
+    isSideNav:false
+
+  },
+  {
+    type: "collapse",
+    name: "Edit Farms",
+    key: "edit-farms",
+    icon: <Icon fontSize="small">people</Icon>,
+    route: "/farms/edit/:id",
+    component: <EditFarms />,
+    requireAuth:true,
+    isSideNav:false
+
   },
   
   {
@@ -103,6 +143,8 @@ const routes = [
     route: "/tables",
     inSideNav: true,
     component: <Tables />,
+    requireAuth:true,
+    isSideNav:true
   },
   {
     type: "collapse",
@@ -112,6 +154,8 @@ const routes = [
     route: "/billing",
     inSideNav: true,
     component: <Billing />,
+    requireAuth:true,
+    isSideNav:true
   },
   {
     type: "collapse",
@@ -130,16 +174,19 @@ const routes = [
     route: "/notifications",
     inSideNav: true,
     component: <Notifications />,
+    requireAuth:true,
+    isSideNav:true
   },
   {
     type: "collapse",
     name: "Profile",
     key: "profile",
     icon: <Icon fontSize="small">person</Icon>,
-   
     route: "/profile",
     inSideNav: true,
     component: <Profile />,
+    requireAuth:true,
+    isSideNav:true
   },
   {
     type: "collapse",
@@ -149,6 +196,8 @@ const routes = [
     route: "/sign-in",
     inSideNav: true,
     component: <SignIn />,
+    requireAuth:true,
+    isSideNav:true
   },
   // {
   //   type: "collapse",
