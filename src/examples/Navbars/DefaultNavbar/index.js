@@ -114,18 +114,24 @@ function DefaultNavbar({ transparent, light, action }) {
           </MDTypography>
         </MDBox>
         <MDBox color="inherit" display={{ xs: "none", lg: "flex" }} m={0} p={0}>
-          <DefaultNavbarLink icon="person" name="Admins" route="/users/:id" light={light} />
-          <DefaultNavbarLink icon="person" name="Farmers" route="/users/:id" light={light} />
+          <DefaultNavbarLink icon="person" name="Admins" route="/users/1" light={light} />
+          <DefaultNavbarLink icon="person" name="Farmers" route="/users/2" light={light} />
           <DefaultNavbarLink
             icon="person"
             name="Investors"
-            route="/users/:id"
+            route="/users/3"
             light={light}
           />
           <DefaultNavbarLink
             icon="person"
             name="W"
-            route="/users/:id"
+            route="/users/4"
+            light={light}
+          />
+          <DefaultNavbarLink
+            icon="settings"
+            name=""
+            route="/users/userType/all"
             light={light}
           />
         </MDBox>

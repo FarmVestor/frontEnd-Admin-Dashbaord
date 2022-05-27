@@ -45,9 +45,17 @@ import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignOut from "layouts/authentication/sign-out";
 import Users  from "layouts/Users"
-
+import EditUser from "layouts/Users/EditUser"
+import AddUser from "layouts/Users/AddUser"
 // @mui icons
 import Icon from "@mui/material/Icon";
+import UserTypes from "layouts/Users/userType"
+import AddUserType from "layouts/Users/userType/AddUserType"
+import EditUserType from "layouts/Users/userType/EditUserType"
+import Deals from "layouts/Deals"
+import EditDeal from "layouts/Deals/EditDeal"
+import AddDeal from "layouts/Deals/AddDeal"
+// import UserTypes from "layouts/Users/userType"
 
 const routes = [
   {
@@ -74,6 +82,7 @@ const routes = [
       },
     ],
     route: "/dashboard",
+    inSideNav: true,
     component: <Dashboard />,
   },
   {
@@ -82,14 +91,17 @@ const routes = [
     key: "Users",
     icon: <Icon fontSize="small">people</Icon>,
     route: "/users",
+    inSideNav: true,
     component: <Users />,
   },
+  
   {
     type: "collapse",
     name: "Tables",
     key: "tables",
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/tables",
+    inSideNav: true,
     component: <Tables />,
   },
   {
@@ -98,6 +110,7 @@ const routes = [
     key: "billing",
     icon: <Icon fontSize="small">receipt_long</Icon>,
     route: "/billing",
+    inSideNav: true,
     component: <Billing />,
   },
   {
@@ -106,6 +119,7 @@ const routes = [
     key: "rtl",
     icon: <Icon fontSize="small">format_textdirection_r_to_l</Icon>,
     route: "/rtl",
+    inSideNav: true,
     component: <RTL />,
   },
   {
@@ -114,6 +128,7 @@ const routes = [
     key: "notifications",
     icon: <Icon fontSize="small">notifications</Icon>,
     route: "/notifications",
+    inSideNav: true,
     component: <Notifications />,
   },
   {
@@ -123,6 +138,7 @@ const routes = [
     icon: <Icon fontSize="small">person</Icon>,
    
     route: "/profile",
+    inSideNav: true,
     component: <Profile />,
   },
   {
@@ -131,6 +147,7 @@ const routes = [
     key: "sign-in",
     icon: <Icon fontSize="small">login</Icon>,
     route: "/sign-in",
+    inSideNav: true,
     component: <SignIn />,
   },
   // {
@@ -147,7 +164,103 @@ const routes = [
     key: "sign-out",
     icon: <Icon fontSize="small">assignment</Icon>,
     route: "/sign-out",
+    inSideNav: true,
     component: <SignOut />,
+  },
+
+
+
+
+
+
+
+
+
+
+
+
+
+  {
+    type: "collapse",
+    name: "Users",
+    key: "Users",
+    icon: <Icon fontSize="small">people</Icon>,
+    route: "/users/:id",
+    inSideNav: false,
+    component: <Users />,
+  },
+
+  {
+    type: "collapse",
+    name: "edit User",
+    key: "edit User",
+    icon: <Icon fontSize="small">people</Icon>,
+    route: "/users/edit/:id",
+    inSideNav: false,
+    component: <EditUser />,
+  },
+  {
+    type: "collapse",
+    name: "add User",
+    key: "add User",
+    icon: <Icon fontSize="small">people</Icon>,
+    route: "/users/add",
+    inSideNav: false,
+    component: <AddUser />,
+  },
+  {
+    type: "collapse",
+    name: "UserTypes",
+    key: "UserTypes",
+    icon: <Icon fontSize="small">people</Icon>,
+    route: "/users/userType/all",
+    inSideNav: false,
+    component: <UserTypes />,
+  },
+  {
+    type: "collapse",
+    name: "add UserTypes",
+    key: "add UserTypes",
+    icon: <Icon fontSize="small">people</Icon>,
+    route: "/users/userType/add",
+    inSideNav: false,
+    component: <AddUserType />,
+  },
+  {
+    type: "collapse",
+    name: "edit UserTypes",
+    key: "edit UserTypes",
+    icon: <Icon fontSize="small">people</Icon>,
+    route: "/users/userType/edit/:id",
+    inSideNav: false,
+    component: <EditUserType />,
+  },
+  {
+    type: "collapse",
+    name: "Deals",
+    key: "Deals",
+    icon: <Icon fontSize="small">people</Icon>,
+    route: "/Deals/",
+    inSideNav: true,
+    component: <Deals />,
+  },
+  {
+    type: "collapse",
+    name: "edit Deals",
+    key: "edit Deals",
+    icon: <Icon fontSize="small">people</Icon>,
+    route: "/deals/edit/:id",
+    inSideNav: false,
+    component: <EditDeal />,
+  },
+  {
+    type: "collapse",
+    name: "add Deals",
+    key: "add Deals",
+    icon: <Icon fontSize="small">people</Icon>,
+    route: "/deals/add",
+    inSideNav: false,
+    component: <AddDeal />,
   },
 ];
 
