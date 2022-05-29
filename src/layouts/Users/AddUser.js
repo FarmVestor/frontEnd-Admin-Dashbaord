@@ -30,7 +30,7 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import Footer from "examples/Footer";
 
-import { useRef, useState,useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 
 import { useRequest } from "lib/functions";
 
@@ -42,13 +42,13 @@ function AddUser() {
     const request = useRequest()
 
     const userNameRef = useRef(null)
-    const userPhoneRef=useRef(null)
+    const userPhoneRef = useRef(null)
     const userEmailRef = useRef(null)
     const userPassRef = useRef(null)
     const userConfPassRef = useRef(null)
     const [Mssg, setMssg] = useState(' ')
-const [userTypesData,setuserTypesData]=useState([])
-const [userTypeId,setUserType]=useState(1)
+    const [userTypesData, setuserTypesData] = useState([])
+    const [userTypeId, setUserType] = useState(1)
     useEffect(() => {
         request(`${process.env.REACT_APP_API_URL}users/userType/all`, {}, {}, {
             auth: true,
@@ -56,16 +56,50 @@ const [userTypeId,setUserType]=useState(1)
             snackBar: true
 
         }, 'get').then(userTypes => {
-                
+
             setuserTypesData(userTypes.data)
 
-            })
+        })
     }, [])
 
     const handleUserTypeChange = (event) => {
+        console.log("d")
         setUserType(event.target.value)
     }
 
+    //get countries
+    const [countriesData, setCountriesData] = useState([])
+    useEffect(() => {
+        request(`${process.env.REACT_APP_API_URL}addresses/country`, {}, {}, {
+            auth: true,
+        }, 'get').then(countries => {
+
+            setCountriesData(countries?.data)
+
+        })
+    }, [])
+    //to get governrates
+    const [governratesData, setGovernratesData] = useState([])
+    const handleCountryIdChange = (e) => {
+        const country = countriesData.filter((country) => country.id == e.target.value)
+        console.log("country", country)
+        setGovernratesData(country[0]?.Governrates)
+    }
+
+    //to get cities
+    const [citiesData, setCitiesData] = useState([])
+    const [cityId, setCityId] = useState(0)
+    const handleGovernratedChange = (e) => {
+        const governrate = governratesData.filter((governrate) => governrate.id == e.target.value)
+        console.log("governrate", governrate)
+        setCitiesData(governrate[0]?.Cities)
+
+    }
+
+
+
+
+    console.log("governratesData", governratesData)
     const saveUser = () => {
         const userName = userNameRef.current.querySelector('input[type=text]').value
         const userPhone = userPhoneRef.current.querySelector('input[type=number]').value
@@ -80,14 +114,16 @@ const [userTypeId,setUserType]=useState(1)
             userEmail,
             userPassword,
             userTypeId,
-            password_confirmation
-        }, {
-            auth: true,
-            type: 'json',
-            snackBar: true
-        }, 'post').then(data=>{
-            console.log(data)
-        })
+            password_confirmation,
+            cityId,
+
+        },
+            {
+                auth: true,
+                type: 'json',
+                snackbar: true,
+                redirect: "/users"
+            }, 'post')
 
 
 
@@ -117,53 +153,122 @@ const [userTypeId,setUserType]=useState(1)
                             <MDBox pt={4} pb={3} px={3}>
                                 <MDBox component="form" role="form">
 
-                                <FormControl fullWidth>
+                                    <FormControl fullWidth>
                                         <InputLabel variant="standard" htmlFor="uncontrolled-native">
                                             UserType
                                         </InputLabel>
                                         <NativeSelect
-                                            
-                                            defaultValue={1}
+
+
                                             inputProps={{
                                                 name: 'UserType',
                                                 id: 'uncontrolled-native',
                                             }}
                                             onChange={handleUserTypeChange}
                                         >
-                                            {userTypesData?.map((userType,i)=> <option value={userType.id} key={i}>{userType.userType}</option> )}
-                                            
+
+                                            {userTypesData?.map((userType, i) => <option value={userType.id} key={i}>{userType.userType}</option>)}
+
                                         </NativeSelect>
                                     </FormControl>
-
-                                    <MDBox mb={2}>
-                                        <MDInput type="text" label="userName" variant="standard" fullWidth ref={userNameRef} />
-                                    </MDBox>
-
-                                    <MDBox mb={2}>
-                                        <MDInput type="number" label="userPhone" variant="standard" fullWidth ref={userPhoneRef} />
-                                    </MDBox>
-
-                                    <MDBox mb={2}>
-                                        <MDInput type="email" label="userEmail" variant="standard" fullWidth ref={userEmailRef} />
-                                    </MDBox>
-                                    <MDBox mb={2}>
-                                        <MDInput type="password" label="userPassword" variant="standard" fullWidth ref={userPassRef} />
-                                    </MDBox>
-
-                                    <MDBox mb={2}>
-                                        <MDInput type="password" label="confirm userPassword" variant="standard" fullWidth ref={userConfPassRef} />
-                                    </MDBox>
-
-                                    <p>{Mssg}</p>
-
-
-
-                                    <MDBox mt={4} mb={1}>
-                                        <MDButton variant="gradient" color="info" fullWidth onClick={saveUser}>
-                                            Save User
-                                        </MDButton>
-                                    </MDBox>
                                 </MDBox>
+                                <MDBox mb={2}>
+                                    <MDInput type="text" label="userName" variant="standard" fullWidth ref={userNameRef} />
+                                </MDBox>
+
+                                <MDBox mb={2}>
+                                    <MDInput type="number" label="userPhone" variant="standard" fullWidth ref={userPhoneRef} />
+                                </MDBox>
+
+                                <MDBox mb={2}>
+                                    <MDInput type="email" label="userEmail" variant="standard" fullWidth ref={userEmailRef} />
+                                </MDBox>
+                                <MDBox mb={2}>
+                                    <MDInput type="password" label="userPassword" variant="standard" fullWidth ref={userPassRef} />
+                                </MDBox>
+
+                                <MDBox mb={2}>
+                                    <MDInput type="password" label="confirm userPassword" variant="standard" fullWidth ref={userConfPassRef} />
+                                </MDBox>
+
+                                <MDBox component="form" role="form">
+
+                                    <FormControl fullWidth>
+                                        <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                                            Country
+                                        </InputLabel>
+                                        <NativeSelect
+
+                                            defaultValue={1}
+                                            inputProps={{
+                                                name: 'country',
+                                                id: 'uncontrolled-native',
+                                            }}
+                                            onChange={handleCountryIdChange}
+                                        >
+                                            <option > </option>
+                                            {countriesData?.map((country, i) => <option value={country.id} key={i}>{country.countryName}</option>)}
+
+                                        </NativeSelect>
+                                    </FormControl>
+                                </MDBox>
+
+
+                                <MDBox component="form" role="form">
+
+                                    <FormControl fullWidth>
+                                        <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                                            Governrate
+                                        </InputLabel>
+                                        <NativeSelect
+
+
+                                            inputProps={{
+                                                name: 'governrate',
+                                                id: 'uncontrolled-native',
+                                            }}
+                                            onChange={handleGovernratedChange}
+
+                                        >
+
+                                            <option > </option>
+                                            {governratesData?.map((governrate, i) => <option value={governrate.id} key={governrate.id}>{governrate.governrateName}</option>)}
+
+                                        </NativeSelect>
+                                    </FormControl>
+                                </MDBox>
+
+
+                                <MDBox component="form" role="form">
+
+                                    <FormControl fullWidth>
+                                        <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                                            Cities
+                                        </InputLabel>
+                                        <NativeSelect
+
+                                            inputProps={{
+                                                name: 'governrate',
+                                                id: 'uncontrolled-native',
+                                            }}
+                                            onChange={(e) => setCityId(e.target.value)}
+
+
+                                        >
+
+                                            <option > </option>
+                                            {citiesData?.map((city, i) => <option value={city.id} key={city.id}>{city.cityName}</option>)}
+
+                                        </NativeSelect>
+                                    </FormControl>
+                                </MDBox>
+
+                                <MDBox mt={4} mb={1}>
+                                    <MDButton variant="gradient" color="info" fullWidth onClick={saveUser}>
+                                        Save User
+                                    </MDButton>
+                                </MDBox>
+
                             </MDBox>
                         </Card>
                     </Grid>

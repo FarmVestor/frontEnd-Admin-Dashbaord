@@ -6,6 +6,7 @@ export const useRequest = () => {
     const ctx = useContext(AuthContext)
     const appCtx = useContext(AppContext)
     const navigate = useNavigate()
+    
     const sendRequest = (url, headers, body, config = {}, method = 'GET') => {
         let options = {
             headers: {}
@@ -43,7 +44,7 @@ export const useRequest = () => {
                         appCtx.snackbar.setOpen(true)
                     }
                     if(data.success && config.redirect){
-                        navigate('/users/1')
+                        navigate(config.redirect)
                     }
                     return data
                 })

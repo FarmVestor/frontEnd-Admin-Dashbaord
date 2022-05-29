@@ -30,44 +30,46 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import Footer from "examples/Footer";
 
-import { useRef, useState,useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 
 import { useRequest } from "lib/functions";
 
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import NativeSelect from '@mui/material/NativeSelect';
+import { FormControl } from "@mui/material";
+import { FormLabel } from "@mui/material";
+import { RadioGroup } from "@mui/material";
+import { FormControlLabel } from "@mui/material";
+import { Radio } from "@mui/material";
 
 function AddDeal() {
     const request = useRequest()
-
+    const [dealStatus, setDealStatus] = useState()
     const dealFarmIdRef = useRef(null)
-    const dealPriceIdRef=useRef(null)
-    const dealStatusRef = useRef(null)
-    const dealPartnerIdRef = useRef(null)
+    const dealPriceIdRef = useRef(null)
+    const dealAgentRef = useRef(null)
+    const dealInvestorRef = useRef(null)
 
-const [dealData,setDealData]=useState([])
-
-   
 
     const saveDeal = () => {
         const farmId = dealFarmIdRef.current.querySelector('input[type=text]').value
         const dealPrice = dealPriceIdRef.current.querySelector('input[type=text]').value
 
-        const dealStatus = dealStatusRef.current.querySelector('input[type=text]').value
-        const partenerId = dealPartnerIdRef.current.querySelector('input[type=text]').value
+        const agentId = dealAgentRef.current.querySelector('input[type=text]').value
+        const investorId = dealInvestorRef.current.querySelector('input[type=text]').value
+
 
         request(`${process.env.REACT_APP_API_URL}deals`, {}, {
             farmId,
+            agentId: agentId ? agentId : null,
+            investorId: investorId ? investorId : null,
             dealPrice,
             dealStatus,
-            partenerId,
-           
+
+
         }, {
             auth: true,
             type: 'json',
             snackBar: true
-        }, 'post').then(data=>{
+        }, 'post').then(data => {
             console.log(data)
         })
 
@@ -99,7 +101,7 @@ const [dealData,setDealData]=useState([])
                             <MDBox pt={4} pb={3} px={3}>
                                 <MDBox component="form" role="form">
 
-                                
+
 
                                     <MDBox mb={2}>
                                         <MDInput type="text" label="farmId" variant="standard" fullWidth ref={dealFarmIdRef} />
@@ -109,11 +111,26 @@ const [dealData,setDealData]=useState([])
                                         <MDInput type="text" label="dealPrice" variant="standard" fullWidth ref={dealPriceIdRef} />
                                     </MDBox>
 
+
                                     <MDBox mb={2}>
-                                        <MDInput type="text" label="dealStatus" variant="standard" fullWidth ref={dealStatusRef} />
+                                        <FormControl>
+                                            <FormLabel id="demo-row-radio-buttons-group-label">dealStatus</FormLabel>
+                                            <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" onChange={(event) => {
+                                                setDealStatus(event.target.value)
+                                            }}>
+                                                <FormControlLabel value={true} control={<Radio />} label="ِAgreed" />
+                                                <FormControlLabel value={false} control={<Radio />} label="Not Agreed yet" />
+                                            </RadioGroup>
+                                        </FormControl>
+                                    </MDBox>
+                                    <MDTypography variant="h6" color="info">
+                                        Add Either an Agent or an Investor
+                                    </MDTypography>
+                                    <MDBox mb={2}>
+                                        <MDInput type="text" label="agentId" variant="standard" fullWidth ref={dealAgentRef} />
                                     </MDBox>
                                     <MDBox mb={2}>
-                                        <MDInput type="text" label="dealPartener" variant="standard" fullWidth ref={dealPartnerIdRef} />
+                                        <MDInput type="text" label="investorId" variant="standard" fullWidth ref={dealInvestorRef} />
                                     </MDBox>
 
 

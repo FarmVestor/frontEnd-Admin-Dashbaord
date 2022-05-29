@@ -64,6 +64,9 @@ import Deals from "layouts/Deals"
 import EditDeal from "layouts/Deals/EditDeal"
 import AddDeal from "layouts/Deals/AddDeal"
 // import UserTypes from "layouts/Users/userType"
+import Adresses from "layouts/Addresses"
+import AddCity from "layouts/Addresses/AddCity"
+import EditCity from "layouts/Addresses/EditCity"
 
 const routes = [
   {
@@ -93,7 +96,7 @@ const routes = [
     inSideNav: true,
     component: <Dashboard />,
     requireAuth:true,
-    isSideNav:true
+    inSideNav:true
   },
   {
     type: "collapse",
@@ -104,7 +107,7 @@ const routes = [
     inSideNav: true,
     component: <Users />,
     requireAuth:true,
-    isSideNav:true
+    inSideNav:true
   },
   {
     type: "collapse",
@@ -114,7 +117,7 @@ const routes = [
     route: "/farms",
     component: <Farms />,
     requireAuth:true,
-    isSideNav:true
+    inSideNav:true
   },
   {
     type: "collapse",
@@ -124,7 +127,7 @@ const routes = [
     route: "/farms/add",
     component: <AddFarms />,
     requireAuth:true,
-    isSideNav:false
+    inSideNav:false
 
   },
   {
@@ -135,7 +138,7 @@ const routes = [
     route: "/farms/edit/:id",
     component: <EditFarms />,
     requireAuth:true,
-    isSideNav:false
+    inSideNav:false
 
   },
   
@@ -148,7 +151,7 @@ const routes = [
     inSideNav: true,
     component: <Tables />,
     requireAuth:true,
-    isSideNav:true
+    inSideNav:true
   },
   {
     type: "collapse",
@@ -159,7 +162,7 @@ const routes = [
     inSideNav: true,
     component: <Billing />,
     requireAuth:true,
-    isSideNav:true
+    inSideNav:true
   },
   {
     type: "collapse",
@@ -179,7 +182,7 @@ const routes = [
     inSideNav: true,
     component: <Notifications />,
     requireAuth:true,
-    isSideNav:true
+    inSideNav:true
   },
   {
     type: "collapse",
@@ -190,7 +193,7 @@ const routes = [
     inSideNav: true,
     component: <Profile />,
     requireAuth:true,
-    isSideNav:true
+    inSideNav:true
   },
   {
     type: "collapse",
@@ -201,7 +204,7 @@ const routes = [
     inSideNav: true,
     component: <SignIn />,
     requireAuth:true,
-    isSideNav:true
+    inSideNav:true
   },
   // {
   //   type: "collapse",
@@ -237,8 +240,9 @@ const routes = [
     icon: <Icon fontSize="small">assignment</Icon>,
     route: "/requests/add",
     component: <AddRequest />,
+    
     // requiresAuth: true,
-    // inSideNav: false,
+    inSideNav: false,
   },
   {
     type: "collapse",
@@ -248,7 +252,7 @@ const routes = [
     route: "/requests/edit/:id",
     component: <EditRequest />,
     // requiresAuth: true,
-    // inSideNav: false,
+    inSideNav: false,
 
   },
 
@@ -343,6 +347,33 @@ const routes = [
     route: "/deals/add",
     inSideNav: false,
     component: <AddDeal />,
+  },
+  {
+    type: "collapse",
+    name: "Adresses",
+    key: "Adresses",
+    icon: <Icon fontSize="small">people</Icon>,
+    route: "/adresses/",
+    inSideNav: true,
+    component: <Adresses />,
+  },
+  {
+    type: "collapse",
+    name: "add Adresses",
+    key: "add Adresses",
+    icon: <Icon fontSize="small">people</Icon>,
+    route: "/addresses/city/add",
+    inSideNav: false,
+    component: <AddCity />,
+  },
+  {
+    type: "collapse",
+    name: "edit Adresses",
+    key: "edit Adresses",
+    icon: <Icon fontSize="small">people</Icon>,
+    route: "/addresses/city/edit/:id",
+    inSideNav: false,
+    component: <EditCity />,
   },
 ];
 

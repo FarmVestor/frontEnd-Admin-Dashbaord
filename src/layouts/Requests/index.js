@@ -19,11 +19,12 @@ import { Link } from 'react-router-dom'
 import { useContext } from "react";
 import { AuthContext } from "context/AuthContext";
 const columns = [
-  { Header: "request Id", accessor: "id", width: "45%", align: "left" },
-  { Header: "farm Area", accessor: "farmArea", width: "45%", align: "left" },
-  { Header: "budget", accessor: "budget", align: "left" },
-  { Header: "cropName", accessor: "cropName", align: "center" },
-  { Header: "farm Kind Id", accessor: "farmKind", align: "center" },
+  { Header: "Request Id", accessor: "id", width: "45%", align: "left" },
+  { Header: "Farm Area", accessor: "farmArea", width: "45%", align: "left" },
+  { Header: "Budget", accessor: "budget", align: "left" },
+  { Header: "Crop Name", accessor: "cropName", align: "left" },
+  { Header: "Farm Kind", accessor: "farmKind", align: "left" },
+  { Header: "User Name", accessor: "userName", align: "left" },
   { Header: "actions", accessor: "actions", align: "center" },
 ]
 function Requests() {
@@ -34,6 +35,7 @@ function Requests() {
   const [serverResponse, setServerResponse] = useState(" ")
     const [snackBarType, setSnackBarType] = useState("success")
     const [openSnackBar, setOpenSnackBar] = useState(false)
+
   const deleteReuest = (requestId) => {
     if (window.confirm('Are you sure')) {
       fetch(`${process.env.REACT_APP_API_URL}requests/${requestId}`,
@@ -47,13 +49,13 @@ function Requests() {
           response.json()
             .then(deleted => {
               console.log(deleted)
-              // setServerResponse(deleted.message.join(' '))
-              // if (deleted.success) {
-              //     setSnackBarType('success')
-              // } else {
-              //     setSnackBarType('error')
-              // }
-              // setOpenSnackBar(true)
+              setServerResponse(deleted.message.join(' '))
+              if (deleted.success) {
+                  setSnackBarType('success')
+              } else {
+                  setSnackBarType('error')
+              }
+              setOpenSnackBar(true)
             })
         })
         .catch(e => e)
@@ -68,13 +70,18 @@ function Requests() {
       .then(response => {
         response.json().then(requests => {
           console.log(requests)
+          // console.log("__________".requests.FarmKind?.farmKind)
+
           const allRequests = requests.data.map((request, i) => {
+          console.log("request",request)
+
             return {
               id: <>{request.id}</>,
               farmArea: <>{request.farmArea}</>,
               budget: <>{request.budget}</>,
-              farmKind: <>{request.FarmKind?.farmKind}</>,
-              cropName: <>{request.Crop?.cropName}</>,
+              farmKind: <>{request.farmKindId}</>,
+              cropName: <>{request.cropId }</>,
+              userName: <>{request.User?.userName }</>,
               actions: <>
                 <MDButton variant="text" color="error" onClick={() => { deleteReuest(request.id) }}>
                   <Icon>delete</Icon>&nbsp;delete
