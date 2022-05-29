@@ -32,10 +32,12 @@ function AddRequest() {
     const [crop, setcrop] = useState([])
     const [cropId, setcropId] = useState()
 
+    const [users, setUsers] = useState([0])
+    const [userId, setUserId] = useState()
+
 
     const farmAreaeRef = useRef(null)
     const budgetRef = useRef(null)
-    // const farmKindsRef = useRef(null)
 
     const ctx = useContext(AuthContext)
 
@@ -44,7 +46,6 @@ function AddRequest() {
     const [openSnackBar, setOpenSnackBar] = useState(false)
     const closeSnackBar = () => setOpenSnackBar(false);
 
-    // const [categoriesData, setCategoriesData] = useState([])
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_API_URL}farms/farmKinds/all`)
@@ -64,6 +65,21 @@ function AddRequest() {
                 })
             })
     }, [])
+
+    useEffect(() => {
+        fetch(`${process.env.REACT_APP_API_URL}users`,{
+             headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + ctx.token
+            },  
+        })
+            .then(response => {
+                response.json().then(users => {
+                    console.log("users",users.data)
+                    setUsers(users.data)
+                })
+            })
+    }, [])
     const saveRequest = () => {
         const farmArea = farmAreaeRef.current.querySelector('input[type=number]').value
         const budget = budgetRef.current.querySelector('input[type=text]').value
@@ -78,7 +94,8 @@ function AddRequest() {
                 farmArea:farmArea,
                 budget:budget,
                 farmKindId:farmKind,
-                cropId:cropId
+                cropId:cropId,
+                userId:userId
               }),
         }).then(response => response.json())
             .then(result => {
@@ -100,6 +117,9 @@ function AddRequest() {
     }
     const handlecropsRefChange = (event) => {
         setcropId(event.target.value)
+    }
+    const handleusersRefChange = (event) => {
+        setUserId(event.target.value)
     }
 
     return (
@@ -137,7 +157,7 @@ function AddRequest() {
                                         Farm Kind
                                         </InputLabel>
                                         <NativeSelect
-                                            defaultValue={1}
+                                            // defaultValue={1}
                                             inputProps={{
                                                 name: 'farmKinds',
                                                 id: 'uncontrolled-native',
@@ -153,7 +173,7 @@ function AddRequest() {
                                         Crops
                                         </InputLabel>
                                         <NativeSelect
-                                            defaultValue={1}
+                                            // defaultValue={1}
                                             inputProps={{
                                                 name: 'crop',
                                                 id: 'uncontrolled-native',
@@ -161,6 +181,22 @@ function AddRequest() {
                                             onChange={handlecropsRefChange}
                                         >
                                             {crop?.map((crop,i)=> <option value={crop.id} key={i}>{crop.cropName}</option> )}
+                                        </NativeSelect>
+                                    </FormControl>
+
+                                    <FormControl fullWidth>
+                                        <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                                        Users
+                                        </InputLabel>
+                                        <NativeSelect
+                                            // defaultValue={1}
+                                            inputProps={{
+                                                name: 'user',
+                                                id: 'uncontrolled-native',
+                                            }}
+                                            onChange={handleusersRefChange}
+                                        >
+                                            {users?.map((user,i)=> <option value={user.id} key={i}>{user.userName}</option> )}
                                         </NativeSelect>
                                     </FormControl>
 

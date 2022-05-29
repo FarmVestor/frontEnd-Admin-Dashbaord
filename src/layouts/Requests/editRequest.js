@@ -24,10 +24,13 @@ function EditRquest() {
     const [requestData, setRequestData] = useState({
         FarmKind: {
             id:null
-        },
+                  },
         farmArea: "",
         budget: "",
         Crop:{
+            id:null
+        },
+        User:{
             id:null
         },
     })
@@ -58,7 +61,22 @@ function EditRquest() {
 
     const [farmKindData, setFarmKindData] = useState([]) //all farm kind
     const [cropsData, setCropsData] = useState([]) // all crops
+    const [usersData, setUsersData] = useState([]) // all users
 
+    useEffect(() => {
+        fetch(`${process.env.REACT_APP_API_URL}users`,{
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + ctx.token
+            },
+        })
+        
+            .then(response => {
+                response.json().then(users => {
+                    setUsersData(users.data)
+                })
+            })
+    }, [])
     useEffect(() => {
         fetch(`${process.env.REACT_APP_API_URL}farms/farmKinds/all`,{
             headers: {
@@ -87,7 +105,6 @@ function EditRquest() {
              })
     }, [])
     const savePlace = () => {
-
         fetch(`${process.env.REACT_APP_API_URL}requests/${id}`, {
             method: 'PUT',
             headers: {
@@ -98,12 +115,13 @@ function EditRquest() {
                 farmArea:requestData?.farmArea,
                 budget:requestData?.budget,
                 farmKindId:requestData?.FarmKind?.id,
-                cropId:requestData?.Crop?.id
+                cropId:requestData?.Crop?.id,
+                userId:requestData?.userId
               }),
         }).then(response => response.json())
             .then(result => {
                 console.log(result)
-                setServerResponse(result.message.join(' '))
+                setServerResponse(result.messages.join(' '))
                 if (result.success) {
                     setSnackBarType('success')
                 } else {
@@ -153,8 +171,7 @@ function EditRquest() {
                                     <MDBox mb={2}>
                                         <MDInput onChange={(e) => {updateRequestData({budget: e.target.value})}} type="text" label="Budget" variant="standard" fullWidth value={requestData.budget} />
                                     </MDBox>
-{                                    console.log("requestData",requestData?.FarmKind?.id)
-}
+                                        
                                     <MDBox mb={2}>
                                         <Box sx={{ minWidth: 120 }}>
                                             <FormControl fullWidth>
@@ -168,8 +185,9 @@ function EditRquest() {
                                                     onChange={(e) => {updateRequestData({FarmKind: {id:e.target.value}})}}
                                                 >
                                                     {farmKindData.map((farmkind, i) => {
-                                                        return <MenuItem value={farmkind.id} key={i}>{farmkind.farmKind}</MenuItem>
+                                                        return <MenuItem value={farmkind?.id} key={i}>{farmkind?.farmKind}</MenuItem>
                                                     })}
+                                                    {console.log("----requestData",requestData?.FarmKind?.id)}
                                                 </Select>
                                             </FormControl>
                                         </Box>
@@ -189,6 +207,27 @@ function EditRquest() {
                                                 >
                                                     {cropsData.map((crop, i) => {
                                                         return <MenuItem value={crop.id} key={i}>{crop.cropName}</MenuItem>
+                                              
+                                                    })}
+                                                </Select>
+                                            </FormControl>
+                                        </Box>
+                                    </MDBox>
+
+                                    <MDBox mb={2}>
+                                        <Box sx={{ minWidth: 120 }}>
+                                            <FormControl fullWidth>
+                                                <InputLabel id="demo-simple-select-label">users</InputLabel>
+                                                <Select
+                                                    labelId="demo-simple-select-label"
+                                                    id="demo-simple-select"
+                                                    value={requestData?.User?.id}
+                                                    label="Farm Kind"
+                                                    style={{padding: '20px 0'}}
+                                                    onChange={(e) => {updateRequestData({User: {id:e.target.value}})}}
+                                                >
+                                                         {usersData.map((user, i) => {
+                                                        return <MenuItem value={user.id} key={i}>{user.userName}</MenuItem>
                                                     })}
                                                 </Select>
                                             </FormControl>

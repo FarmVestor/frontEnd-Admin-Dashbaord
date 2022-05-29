@@ -86,9 +86,9 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   // Render all the routes from the routes.js (All the visible items on the Sidenav)
  
 
-  const renderRoutes = routes.map(({ type, name, icon, title, noCollapse, key, href, route,isSideNav }) => {
+  const renderRoutes = routes.map(({ type, name, icon, title, noCollapse, key, href, route,inSideNav }) => {
     let returnValue;
-    if(!isSideNav){
+    if(!inSideNav){
       return
     }
     if (type === "collapse") {

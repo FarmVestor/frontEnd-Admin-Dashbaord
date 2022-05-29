@@ -6,6 +6,7 @@ export const useRequest = () => {
     const ctx = useContext(AuthContext)
     const appCtx = useContext(AppContext)
     const navigate = useNavigate()
+    
     const sendRequest = (url, headers, body, config = {}, method = 'GET') => {
         let options = {
             headers: {}

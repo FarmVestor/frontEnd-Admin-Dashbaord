@@ -93,7 +93,7 @@ const routes = [
     inSideNav: true,
     component: <Dashboard />,
     requireAuth:true,
-    isSideNav:true
+    inSideNav:true
   },
   {
     type: "collapse",
@@ -104,7 +104,7 @@ const routes = [
     inSideNav: true,
     component: <Users />,
     requireAuth:true,
-    isSideNav:true
+    inSideNav:true
   },
   {
     type: "collapse",
@@ -114,7 +114,7 @@ const routes = [
     route: "/farms",
     component: <Farms />,
     requireAuth:true,
-    isSideNav:true
+    inSideNav:true
   },
   {
     type: "collapse",
@@ -124,7 +124,7 @@ const routes = [
     route: "/farms/add",
     component: <AddFarms />,
     requireAuth:true,
-    isSideNav:false
+    inSideNav:false
 
   },
   {
@@ -135,7 +135,7 @@ const routes = [
     route: "/farms/edit/:id",
     component: <EditFarms />,
     requireAuth:true,
-    isSideNav:false
+    inSideNav:false
 
   },
   
@@ -148,7 +148,7 @@ const routes = [
     inSideNav: true,
     component: <Tables />,
     requireAuth:true,
-    isSideNav:true
+    inSideNav:true
   },
   {
     type: "collapse",
@@ -159,7 +159,7 @@ const routes = [
     inSideNav: true,
     component: <Billing />,
     requireAuth:true,
-    isSideNav:true
+    inSideNav:true
   },
   {
     type: "collapse",
@@ -179,7 +179,7 @@ const routes = [
     inSideNav: true,
     component: <Notifications />,
     requireAuth:true,
-    isSideNav:true
+    inSideNav:true
   },
   {
     type: "collapse",
@@ -190,7 +190,7 @@ const routes = [
     inSideNav: true,
     component: <Profile />,
     requireAuth:true,
-    isSideNav:true
+    inSideNav:true
   },
   {
     type: "collapse",
@@ -201,7 +201,7 @@ const routes = [
     inSideNav: true,
     component: <SignIn />,
     requireAuth:true,
-    isSideNav:true
+    inSideNav:true
   },
   // {
   //   type: "collapse",
@@ -227,6 +227,8 @@ const routes = [
     icon: <Icon fontSize="small">assignment</Icon>,
     route: "/requests",
     component: <Requests />,
+    inSideNav: true,
+
   },
   {
     type: "collapse",
@@ -235,8 +237,9 @@ const routes = [
     icon: <Icon fontSize="small">assignment</Icon>,
     route: "/requests/add",
     component: <AddRequest />,
+    
     // requiresAuth: true,
-    // inSideNav: false,
+    inSideNav: false,
   },
   {
     type: "collapse",
@@ -246,7 +249,7 @@ const routes = [
     route: "/requests/edit/:id",
     component: <EditRequest />,
     // requiresAuth: true,
-    // inSideNav: false,
+    inSideNav: false,
 
   },
 
