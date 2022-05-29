@@ -17,11 +17,13 @@ import { Radio } from "@mui/material";
 import { Box } from "@mui/material";
 import Select from '@mui/material/Select';
 import { MenuItem } from "@mui/material";
+import { useRequest } from "lib/functions";
 
 // import { useRef } from "react";
 // import { FourGMobiledataRounded } from "@mui/icons-material";
 function AddFarms() {
   const ctx = useContext(AuthContext);
+  const request = useRequest()
 
   const [openSnakBar,setOpenSnakBar]=useState(false)
   const [serverResponce,setServerResponce]=useState('')
@@ -88,7 +90,7 @@ fetch(`${process.env.REACT_APP_API_URL}farms`, {
   }).then(responce=>{
       responce.json().then(farmAdded=>{
           console.log(farmAdded)
-          setServerResponce(farmAdded.message.join(' '))
+          setServerResponce(farmAdded.messages.join(' '))
           if(farmAdded.success){
               setSnakBarColor('success')
           }
@@ -100,44 +102,49 @@ fetch(`${process.env.REACT_APP_API_URL}farms`, {
   }).catch(e=>e)
 
   };
+  
+  
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}farms/farmKinds/all`,{
-        headers: {
-            Authorization: "bearer " + ctx.token,
-          },
-    }).then((response) => {
-      response.json().then((farmkinds) => {
+    request(`${process.env.REACT_APP_API_URL}farms/farmKinds/all`, {}, {}, {
+        auth: true,
+
+        snackBar: true
+
+    }, 'get')
+   .then((farmkinds) => {
         setFarmKindData(farmkinds.data);
-       // console.log(farmkinds+"---------------------")
+        console.log(farmkinds)
       });
-    });
+    
   }, []);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}addresses/city`,{
-        headers: {
-            Authorization: "bearer " + ctx.token,
-          },
-    }).then((response) => {
-      response.json().then((city) => {
+    request(`${process.env.REACT_APP_API_URL}addresses/city`, {}, {}, {
+        auth: true,
+
+        snackBar: true
+
+    }, 'get')
+   .then((city) => {
         setCityData(city.data);
        // console.log(city+"---------------------")
       });
-    });
+    
   }, []);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}farms/crops/all`,{
-        headers: {
-            Authorization: "bearer " + ctx.token,
-          },
-    }).then((response) => {
-      response.json().then((crop) => {
+    request(`${process.env.REACT_APP_API_URL}farms/crops/all`, {}, {}, {
+        auth: true,
+
+        snackBar: true
+
+    }, 'get')
+   .then((crop) => {
         setCropData(crop.data);
         setLastCropData(crop.data);
-        console.log(crop+"---------------------")
+       // console.log(crop )
       });
-    });
+    
   }, []);
 
   const handleAvaliableChange = (event) => {

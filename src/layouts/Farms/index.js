@@ -14,7 +14,7 @@ import DataTable from "examples/Tables/DataTable";
 import { useEffect, useState, useContext } from "react";
 import Icon from "@mui/material/Icon";
 import MDButton from "components/MDButton";
-
+import { useRequest } from "lib/functions";
 import { AuthContext } from "context/AuthContext";
 import { Link } from "react-router-dom";
 
@@ -41,45 +41,49 @@ const columns = [
 function Farms() {
     const [rows, setRows] = useState([])
     const ctx = useContext(AuthContext)
-    
+    const request = useRequest()
+
 
     const deleteFarm = (farmId) => {
         if (window.confirm('Are you sure')) {
-            fetch(`${process.env.REACT_APP_API_URL}farms/${farmId}`, {
-                method: "DELETE",
-                headers: {
-                    'Authorization': 'Bearer ' + ctx.token
-                }
-            }).then(response => {
-                response.json()
-                    .then(deleted => {
-                        console.log(deleted)
-                    })
+            request(`${process.env.REACT_APP_API_URL}farms/${farmId}`, {}, {}, {
+                auth: true,
+
+                snackBar: true,
+            }, 'delete')
+            .then(deleted=>{
+                console.log(deleted)
             })
-                .catch(e => e)
+
+          
+
         }
     }
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_API_URL}farms`)
-            .then(response => {
-                response.json().then(farms => {
+        request(`${process.env.REACT_APP_API_URL}farms`, {}, {}, {
+            auth: true,
+
+            snackBar: true
+
+        }, 'get')
+            .then(farms => {
                     const allfarms = farms.data.map((farm) => {
-                       console.log(farm)
+                       console.log(farm.User.userName)
                         
                         return {
-                            userId: <>{farm.userId}</>,
+                            userId: <>{farm.User.userName}</>,
                             farmName: <>{farm.farmName}</>,
                             farmPicture: <><img src={farm.farmPicture} width="80" /></>,
                             cityId: <>{farm.cityId}</>,
                             farmArea: <>{farm.farmArea}</>,
-                            cropId: <>{farm.first.cropName}</>,
+                            cropId: <>{farm.Crop.cropName}</>,
                             farmLicense: <>{farm.farmLicense}</>,
                             farmAvailable: <>{farm.farmAvailable ? <CheckIcon /> : <NotInterestedIcon />}</>,
                             farmKindId: <>{farm.FarmKind?.farmKind ? farm.FarmKind?.farmKind:"-" }</>,
                             farmVisibiltiy: <>{farm.farmVisibiltiy ? <VisibilityIcon/> : <VisibilityOffIcon/>}</>,
                             farmWaterSalinity: <>{farm.farmWaterSalinity}</>,
-                            farmLastCropsId: <>{farm.second.cropName}</>,
+                            farmLastCropsId: <>{farm.Crop.cropName}</>,
                             farmFertilizer: <>{farm.farmFertilizer}</>,
                             farmTreesAge: <>{farm.farmTreesAge}</>,
                             farmDescription: <>{farm.farmDescription}</>,
@@ -98,7 +102,7 @@ function Farms() {
                     })
                     setRows(allfarms)
                 })
-            })
+            
     }, [])
     return (
         <DashboardLayout>

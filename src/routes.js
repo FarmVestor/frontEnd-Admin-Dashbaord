@@ -227,6 +227,8 @@ const routes = [
     icon: <Icon fontSize="small">assignment</Icon>,
     route: "/requests",
     component: <Requests />,
+    requireAuth:true,
+    isSideNav:true
   },
   {
     type: "collapse",
