@@ -19,7 +19,11 @@ import { useRequest } from "lib/functions";
 
 
 import InputLabel from '@mui/material/InputLabel';
+
+import Box from '@mui/material/Box';
+import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
+
 import NativeSelect from '@mui/material/NativeSelect';
 
 const columns = [
@@ -27,7 +31,7 @@ const columns = [
 
     { Header: "actions", accessor: "actions", align: "center" },
 ]
-const GonColumns = [
+const GovColumns = [
     { Header: "Governrate", accessor: "Governrate", width: "35%", align: "left" },
     { Header: "Country", accessor: "Country", width: "35%", align: "left" },
     { Header: "actions", accessor: "actions", align: "center" },
@@ -49,7 +53,7 @@ function UserTypes() {
     const deleteRow = (userId, row) => {
         console.log(userId)
         if (window.confirm('Are you sure')) {
-            request(`${process.env.REACT_APP_API_URL}addresses/${userId}`, {}, {}, {
+            request(`${process.env.REACT_APP_API_URL}addresses/city/${userId}`, {}, {}, {
                 auth: true,
 
                 snackBar: true
@@ -131,7 +135,7 @@ function UserTypes() {
     // show cities tables
     useEffect(() => {
 
-        request(`${process.env.REACT_APP_API_URL}addresses/city`, {}, {}, {
+        request(`${process.env.REACT_APP_API_URL}addresses/city?order=${order}`, {}, {}, {
             auth: true,
 
             snackBar: true
@@ -161,7 +165,7 @@ function UserTypes() {
                 setCityRows(allcities)
 
             })
-    }, [])
+    }, [order])
     return (
         <DashboardLayout>
             <DashboardNavbar />
@@ -298,7 +302,28 @@ function UserTypes() {
 
                             </MDBox >
                             <MDBox pt={3} >
+                                <MDBox mb={2} p={2}>
+                                    <Box sx={{ minWidth: 120, height: 30 }}>
+                                        <FormControl fullWidth >
+                                            <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                                                Order
+                                            </InputLabel>
+                                            <NativeSelect
+                                                defaulValue={"ASC"}
+                                                onChange={(e) => { setOrder(e.target.value) }}
+                                                inputProps={{
+                                                    name: 'UserType',
+                                                    id: 'uncontrolled-native',
+                                                }}
 
+                                            >
+                                                <option value="ASC" defaultValue >ASC</option>
+                                                <option value="DESC" >DESC</option>
+
+                                            </NativeSelect>
+                                        </FormControl>
+                                    </Box>
+                                </MDBox>
                                 <DataTable
                                     table={{ columns: CityColumns, rows: CityRows }}
 

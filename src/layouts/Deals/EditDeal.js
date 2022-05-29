@@ -42,7 +42,6 @@ import { Radio } from "@mui/material";
 
 function EditDeal() {
     const request = useRequest()
-    const [dealStatus, setDealStatus] = useState()
 
     const { id } = useParams()
     console.log(typeof id,id)
@@ -54,7 +53,7 @@ function EditDeal() {
         dealStatus: 0,
     })
     useEffect(() => {
-        request(`${process.env.REACT_APP_API_URL}deals/${parseInt(id)}`, {}, {}, {
+        request(`${process.env.REACT_APP_API_URL}deals/${id}`, {}, {}, {
             auth: true,
             snackBar: true
         }, 'get').then(data => {
@@ -65,10 +64,10 @@ function EditDeal() {
 
 
     const editDeal = () => {
-        request(`${process.env.REACT_APP_API_URL}deals/{${id}}`, {}, {
+        request(`${process.env.REACT_APP_API_URL}deals/${id}`, {}, {
             farmId: dealData?.farmId,
-            agentId: dealStatus?.agentId ? dealStatus?.agentId : null,
-            investorId: dealStatus?.investorId ? dealStatus?.investorId : null,
+            agentId: dealData?.agentId ? dealData?.agentId : null,
+            investorId: dealData?.investorId ? dealData?.investorId : null,
             dealPrice: dealData?.dealPrice,
             dealStatus: dealData?.dealStatus,
 

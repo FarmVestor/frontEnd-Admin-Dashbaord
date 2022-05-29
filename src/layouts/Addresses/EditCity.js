@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 // Authentication layout components
 import CoverLayout from "layouts/authentication/components/CoverLayout";
@@ -64,11 +64,9 @@ function Map({ center, zoom, setLat, setLng }) {
     }, [map])
     return (<div ref={mapRef} style={{ height: '400px' }} />)
 }
-function AddCity() {
+function EditCity() {
     const request = useRequest()
-    const cityNameRef = useRef(null)
-    const PlaceLatRef =useRef(null)
-    const PlaceLongRef=useRef(null)
+
     const [longitude, setLongitude] = useState(28.5)
     const [latitude, setLatitude] = useState(40.5)
 
@@ -85,35 +83,33 @@ function AddCity() {
             console.log("governrate data", data.data)
         })
     }, [])
+    const [cityData, setCityData] = useState("")
+    const { id } = useParams()
+    useEffect(() => {
+        request(`${process.env.REACT_APP_API_URL}addresses/city/${id}`, {}, {}, {
+            auth: true,
 
-    // const [countryData, setCountryData] = useState("")
-
-    // useEffect(() => {
-    //     request(`${process.env.REACT_APP_API_URL}addresses/city`, {}, {}, {
-    //         auth: true,
-
-    //         snackBar: true
-    //     }, 'get').then(data => {
-    //         console.log("cities data",data.data)
-    //     })
-    // }, [])
+            snackBar: true
+        }, 'get').then(data => {
+            console.log("city data", data.data)
+            setCityData(data.data)
+        })
+    }, [])
     const saveCity = () => {
-        const longitude = PlaceLongRef.current.querySelector('input[type=text]').value
-        const latitude = PlaceLatRef.current.querySelector('input[type=text]').value
-        const cityName = cityNameRef.current.querySelector('input[type=text]').value
-        request(`${process.env.REACT_APP_API_URL}addresses/city`, {}, {
-            cityName,
-            governrateId,
-            latitude,
-            longitude,
+       
+        request(`${process.env.REACT_APP_API_URL}addresses/city/${id}`, {}, {
+            cityName:cityData.cityName,
+            governrateId:cityData.governrateId,
+            latitude:cityData.latitude,
+            longitude:cityData.longitude,
 
 
         }, {
             auth: true,
             type: 'json',
             snackBar: true
-        }, 'post').then(data => {
-            console.log("city data", data)
+        }, 'put').then(data => {
+            console.log("updated city data", data)
         })
 
 
@@ -130,6 +126,13 @@ function AddCity() {
             setLongitude(data.data.Cities[0].longitude)
         })
         // setLatitude()
+    }
+
+    const updateCityData = (obj) => {
+        setCityData({
+            ...cityData,
+            ...obj
+        })
     }
     return (
         <DashboardLayout>
@@ -149,7 +152,7 @@ function AddCity() {
                                 coloredShadow="info"
                             >
                                 <MDTypography variant="h6" color="white">
-                                    Add City
+                                    Edit City
                                 </MDTypography>
                             </MDBox>
                             <MDBox pt={4} pb={3} px={3}>
@@ -158,13 +161,13 @@ function AddCity() {
 
 
                                     <MDBox mb={2}>
-                                        <MDInput  type="text" label="cityName" variant="standard" fullWidth ref={cityNameRef}/>
+                                        <MDInput type="text" label="cityName" variant="standard" fullWidth value={cityData.cityName} onChange={(e) => {updateCityData({cityName: e.target.value})}} />
                                     </MDBox>
                                     <MDBox mb={2}>
-                                        <MDInput value={latitude} type="text" label="Latitude" variant="standard" fullWidth ref={PlaceLatRef} />
+                                        <MDInput value={latitude} type="text" label="Latitude" variant="standard" fullWidth onChange={(e) => {updateCityData({latitude: e.target.value})}}  />
                                     </MDBox>
                                     <MDBox mb={2}>
-                                        <MDInput value={longitude} type="text" label="longitude" variant="standard" fullWidth ref={PlaceLongRef} />
+                                        <MDInput value={longitude} type="text" label="longitude" variant="standard" fullWidth onChange={(e) => {updateCityData({longitude: e.target.value})}}  />
                                     </MDBox>
 
                                     <MDBox mb={2}>
@@ -218,4 +221,4 @@ function AddCity() {
     )
 
 }
-export default AddCity
+export default EditCity

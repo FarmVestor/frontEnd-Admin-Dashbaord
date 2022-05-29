@@ -43,7 +43,7 @@ export const useRequest = () => {
                         appCtx.snackbar.setOpen(true)
                     }
                     if(data.success && config.redirect){
-                        navigate('/users/1')
+                        navigate(config.redirect)
                     }
                     return data
                 })

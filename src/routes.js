@@ -66,6 +66,8 @@ import AddDeal from "layouts/Deals/AddDeal"
 // import UserTypes from "layouts/Users/userType"
 import Adresses from "layouts/Addresses"
 import AddCity from "layouts/Addresses/AddCity"
+import EditCity from "layouts/Addresses/EditCity"
+
 const routes = [
   {
     type: "collapse",
@@ -228,6 +230,7 @@ const routes = [
     icon: <Icon fontSize="small">assignment</Icon>,
     route: "/requests",
     component: <Requests />,
+    inSideNav: true,
   },
   {
     type: "collapse",
@@ -237,7 +240,7 @@ const routes = [
     route: "/requests/add",
     component: <AddRequest />,
     // requiresAuth: true,
-    // inSideNav: false,
+    inSideNav: false,
   },
   {
     type: "collapse",
@@ -247,7 +250,7 @@ const routes = [
     route: "/requests/edit/:id",
     component: <EditRequest />,
     // requiresAuth: true,
-    // inSideNav: false,
+    inSideNav: false,
 
   },
 
@@ -360,6 +363,15 @@ const routes = [
     route: "/addresses/city/add",
     inSideNav: false,
     component: <AddCity />,
+  },
+  {
+    type: "collapse",
+    name: "edit Adresses",
+    key: "edit Adresses",
+    icon: <Icon fontSize="small">people</Icon>,
+    route: "/addresses/city/edit/:id",
+    inSideNav: false,
+    component: <EditCity />,
   },
 ];
 
