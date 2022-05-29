@@ -21,7 +21,8 @@ import { useRequest } from "lib/functions";
 
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
-import NativeSelect from '@mui/material/NativeSelect';
+import Box from '@mui/material/Box';
+import Select from '@mui/material/Select';
 
 const columns = [
     { Header: "name", accessor: "name", width: "45%", align: "left" },
@@ -30,7 +31,7 @@ const columns = [
 ]
 
 function Users() {
-    const [order,setOrder]=useState('ASC')
+    const [order, setOrder] = useState('ASC')
     const { id } = useParams()
     const request = useRequest()
     const [rows, setRows] = useState([])
@@ -56,7 +57,7 @@ function Users() {
         }, 'get')
             .then(users => {
 
-                const allusers = users.data.map((user) => {
+                const allusers = users?.data?.map((user) => {
                     return {
                         name: <>{user.userName}</>,
                         email: <>{user.userEmail}</>,
@@ -75,7 +76,7 @@ function Users() {
                 setRows(allusers)
 
             })
-    }, [id,order])
+    }, [id, order])
     return (
         <DashboardLayout>
             <DashboardNavbar />
@@ -115,34 +116,36 @@ function Users() {
 
                                 </MDBox>
                                 <MDBox pt={3}>
-                                    <FormControl fullWidth >
-                                        <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                                            Order
-                                        </InputLabel>
-                                        <NativeSelect
+                                    <Box sx={{ minWidth: 120 }}>
+                                        <FormControl fullWidth >
+                                            <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                                                Order
+                                            </InputLabel>
+                                            <Select
 
-                                            defaultValue={"ASC"}
-                                            onChange={(e) => {setOrder(e.target.value)}}
-                                            inputProps={{
-                                                name: 'UserType',
-                                                id: 'uncontrolled-native',
-                                            }}
+                                                defaultValue={"ASC"}
+                                                onChange={(e) => { setOrder(e.target.value) }}
+                                                inputProps={{
+                                                    name: 'UserType',
+                                                    id: 'uncontrolled-native',
+                                                }}
 
-                                        >
-                                            <option value="ASC" defaultValue >ASC</option>
-                                            <option value="DESC" >DESC</option>
+                                            >
+                                                <option value="ASC" defaultValue >ASC</option>
+                                                <option value="DESC" >DESC</option>
 
-                                        </NativeSelect>
-                                    </FormControl>
-                                    <DataTable
+                                            </Select>
+                                        </FormControl>
+                                    </Box>
+                                    {/* <DataTable
                                         table={{ columns, rows }}
-
+                                        
                                         isSorted={false}
                                         canSearch={true}
                                         entriesPerPage={true}
                                         showTotalEntries={false}
                                         noEndBorder
-                                    />
+                                    /> */}
 
                                 </MDBox>
                             </Card>

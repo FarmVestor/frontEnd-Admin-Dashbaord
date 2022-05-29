@@ -21,11 +21,15 @@ import { useRequest } from "lib/functions";
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import NativeSelect from '@mui/material/NativeSelect';
+import CheckIcon from '@mui/icons-material/Check';
+import NotInterestedIcon from '@mui/icons-material/NotInterested';
 
 const columns = [
-    { Header: "Farm Name", accessor: "farmName", width: "45%", align: "left" },
+    { Header: "Farm Name", accessor: "farmName",  align: "left" },
     { Header: "Farmer Name", accessor: "farmerName", align: "left" },
-    { Header: "Partener Name", accessor: "partenerName", align: "left" },
+    { Header: "Partner Name", accessor: "partnerName", align: "left" },
+    { Header: "Partner Type", accessor: "partnerType", align: "left" },
+
 
     { Header: "Deal Price", accessor: "dealPrice", align: "left" },
     { Header: "Deal Status", accessor: "dealStatus", align: "left" },
@@ -53,7 +57,7 @@ function Deals() {
 
     useEffect(() => {
 
-        request(`${process.env.REACT_APP_API_URL}deals`, {}, {}, {
+        request(`${process.env.REACT_APP_API_URL}deals?order=${order}`, {}, {}, {
             auth: true,
 
             snackBar: true
@@ -67,9 +71,10 @@ function Deals() {
                     return {
                         farmName: <>{deal.Farm?.farmName}</>,
                         farmerName: <>{deal.Farm?.User?.userName}</>,
+                        partnerName: <>{deal.agentId ?  deal.agent?.userName : deal.investor?.userName}</>,
+                        partnerType: <>{deal.agentId ? "Agent" : "Investor"}</>,
                         dealPrice: <>{deal.dealPrice}</>,
-                        dealStatus: <>{deal.dealStatus}</>,
-                        partenerName: <>{deal.Partner?.userName}</>,
+                        dealStatus: <>{deal.dealStatus ? <CheckIcon /> : <NotInterestedIcon />}</>,
                         actions: <>
                             <MDButton variant="text" color="error" onClick={() => { deleteDeal(deal.id) }}>
                                 <Icon>delete</Icon>&nbsp;delete
@@ -85,7 +90,7 @@ function Deals() {
                 setRows(alldeals)
 
             })
-    }, [id,order])
+    }, [order])
     return (
         <DashboardLayout>
             <DashboardNavbar />
@@ -112,7 +117,7 @@ function Deals() {
                                         alignItems="center"
                                     >
                                         <MDTypography variant="h6" color="white">
-                                            users Table
+                                            Deals Table
                                         </MDTypography>
 
 
