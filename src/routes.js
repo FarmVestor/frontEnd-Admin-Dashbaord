@@ -45,6 +45,10 @@ import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignOut from "layouts/authentication/sign-out";
 import Users  from "layouts/Users"
+import Requests  from "layouts/Requests"
+import AddRequest from "layouts/Requests/addRequest"
+import EditRequest from "layouts/Requests/editRequest"
+
 import EditUser from "layouts/Users/EditUser"
 import AddUser from "layouts/Users/AddUser"
 import Farms  from "layouts/Farms"
@@ -217,8 +221,35 @@ const routes = [
     inSideNav: true,
     component: <SignOut />,
   },
+  {
+    type: "collapse",
+    name: "Requests",
+    key: "Requests",
+    icon: <Icon fontSize="small">assignment</Icon>,
+    route: "/requests",
+    component: <Requests />,
+  },
+  {
+    type: "collapse",
+    name: "AddRequest",
+    key: "addRequest",
+    icon: <Icon fontSize="small">assignment</Icon>,
+    route: "/requests/add",
+    component: <AddRequest />,
+    // requiresAuth: true,
+    // inSideNav: false,
+  },
+  {
+    type: "collapse",
+    name: "EditRequest",
+    key: "EditRequest",
+    icon: <Icon fontSize="small">assignment</Icon>,
+    route: "/requests/edit/:id",
+    component: <EditRequest />,
+    // requiresAuth: true,
+    // inSideNav: false,
 
-
+  },
 
 
 
