@@ -21,16 +21,20 @@ import { useRequest } from "lib/functions";
 
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
+import Box from '@mui/material/Box';
+import Select from '@mui/material/Select';
 import NativeSelect from '@mui/material/NativeSelect';
 
 const columns = [
-    { Header: "name", accessor: "name", width: "45%", align: "left" },
+    { Header: "name", accessor: "name",  align: "left" },
+    { Header: "city", accessor: "city",  align: "left" },
+
     { Header: "email", accessor: "email", align: "left" },
-    { Header: "actions", accessor: "actions", align: "center" },
+    { Header: "actions", accessor: "actions",width: "30%", align: "center" },
 ]
 
 function Users() {
-    const [order,setOrder]=useState('ASC')
+    const [order, setOrder] = useState('ASC')
     const { id } = useParams()
     const request = useRequest()
     const [rows, setRows] = useState([])
@@ -39,7 +43,8 @@ function Users() {
             request(`${process.env.REACT_APP_API_URL}users/${userId}`, {}, {}, {
                 auth: true,
 
-                snackBar: true
+                snackbar: true,
+                
 
             }, 'delete')
         }
@@ -50,15 +55,13 @@ function Users() {
 
         request(`${process.env.REACT_APP_API_URL}users?id=${id}&order=${order}`, {}, {}, {
             auth: true,
-
-            snackBar: true
-
         }, 'get')
             .then(users => {
-
-                const allusers = users.data.map((user) => {
+                const allusers = users?.data?.map((user) => {
+                    console.log(user)
                     return {
                         name: <>{user.userName}</>,
+                        city: <>{user.cityId}</>,
                         email: <>{user.userEmail}</>,
                         actions: <>
                             <MDButton variant="text" color="error" onClick={() => { deleteUser(user.id) }}>
@@ -75,7 +78,7 @@ function Users() {
                 setRows(allusers)
 
             })
-    }, [id,order])
+    }, [id, order])
     return (
         <DashboardLayout>
             <DashboardNavbar />
@@ -115,28 +118,31 @@ function Users() {
 
                                 </MDBox>
                                 <MDBox pt={3}>
-                                    <FormControl fullWidth >
-                                        <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                                            Order
-                                        </InputLabel>
-                                        <NativeSelect
+                                <MDBox mb={2} p={2}>
+                                        <FormControl fullWidth >
+                                            <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                                                Order
+                                            </InputLabel>
+                                            <NativeSelect
 
-                                            defaultValue={"ASC"}
-                                            onChange={(e) => {setOrder(e.target.value)}}
-                                            inputProps={{
-                                                name: 'UserType',
-                                                id: 'uncontrolled-native',
-                                            }}
+                                                defaultValue={"ASC"}
+                                                onChange={(e) => { setOrder(e.target.value) }}
+                                                inputProps={{
+                                                    name: 'UserType',
+                                                    id: 'uncontrolled-native',
+                                                }}
 
-                                        >
-                                            <option value="ASC" defaultValue >ASC</option>
-                                            <option value="DESC" >DESC</option>
+                                            >
+                                                <option value="ASC" defaultValue >ASC</option>
+                                                <option value="DESC" >DESC</option>
 
-                                        </NativeSelect>
-                                    </FormControl>
+                                            </NativeSelect>
+                                        </FormControl>
+                                        
+                                    </MDBox>
                                     <DataTable
                                         table={{ columns, rows }}
-
+                                        
                                         isSorted={false}
                                         canSearch={true}
                                         entriesPerPage={true}

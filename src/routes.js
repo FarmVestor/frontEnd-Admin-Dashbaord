@@ -64,6 +64,9 @@ import Deals from "layouts/Deals"
 import EditDeal from "layouts/Deals/EditDeal"
 import AddDeal from "layouts/Deals/AddDeal"
 // import UserTypes from "layouts/Users/userType"
+import Adresses from "layouts/Addresses"
+import AddCity from "layouts/Addresses/AddCity"
+import EditCity from "layouts/Addresses/EditCity"
 
 const routes = [
   {
@@ -228,7 +231,6 @@ const routes = [
     route: "/requests",
     component: <Requests />,
     inSideNav: true,
-
   },
   {
     type: "collapse",
@@ -344,6 +346,33 @@ const routes = [
     route: "/deals/add",
     inSideNav: false,
     component: <AddDeal />,
+  },
+  {
+    type: "collapse",
+    name: "Adresses",
+    key: "Adresses",
+    icon: <Icon fontSize="small">people</Icon>,
+    route: "/adresses/",
+    inSideNav: true,
+    component: <Adresses />,
+  },
+  {
+    type: "collapse",
+    name: "add Adresses",
+    key: "add Adresses",
+    icon: <Icon fontSize="small">people</Icon>,
+    route: "/addresses/city/add",
+    inSideNav: false,
+    component: <AddCity />,
+  },
+  {
+    type: "collapse",
+    name: "edit Adresses",
+    key: "edit Adresses",
+    icon: <Icon fontSize="small">people</Icon>,
+    route: "/addresses/city/edit/:id",
+    inSideNav: false,
+    component: <EditCity />,
   },
 ];
 
