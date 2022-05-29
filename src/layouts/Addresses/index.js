@@ -309,7 +309,7 @@ function UserTypes() {
                                                 Order
                                             </InputLabel>
                                             <NativeSelect
-                                                defaulValue={"ASC"}
+                                                defaultValue={"ASC"}
                                                 onChange={(e) => { setOrder(e.target.value) }}
                                                 inputProps={{
                                                     name: 'UserType',
