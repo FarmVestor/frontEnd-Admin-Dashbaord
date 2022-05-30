@@ -231,7 +231,7 @@ const routes = [
     route: "/requests",
     component: <Requests />,
     requireAuth:true,
-    isSideNav:true
+    inSideNav:true
   },
   {
     type: "collapse",

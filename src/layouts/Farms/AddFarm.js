@@ -7,7 +7,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
 import { AuthContext } from "context/AuthContext";
-import { useContext, useRef, useState,useEffect } from "react";
+import { useContext, useRef, useState, useEffect } from "react";
 import MDSnackbar from "components/MDSnackbar";
 import { FormControl } from "@mui/material";
 import { FormLabel } from "@mui/material";
@@ -25,9 +25,9 @@ function AddFarms() {
   const ctx = useContext(AuthContext);
   const request = useRequest()
 
-  const [openSnakBar,setOpenSnakBar]=useState(false)
-  const [serverResponce,setServerResponce]=useState('')
-  const [snakBarColor,setSnakBarColor]=useState('success')
+  const [openSnakBar, setOpenSnakBar] = useState(false)
+  const [serverResponce, setServerResponce] = useState('')
+  const [snakBarColor, setSnakBarColor] = useState('success')
   const [available, setAvailable] = useState(true);
   const [visiable, setVisiable] = useState(true);
   const [farmKindData, setFarmKindData] = useState([])
@@ -40,7 +40,7 @@ function AddFarms() {
   const [lastCrop, setLastCrop] = useState("")
 
 
-  const closeSnakBar=()=>setOpenSnakBar(false)
+  const closeSnakBar = () => setOpenSnakBar(false)
   const userIdRef = useRef();
   const farmNameRef = useRef();
   const farmAreaRef = useRef();
@@ -52,15 +52,15 @@ function AddFarms() {
   const farmPictureRef = useRef();
 
   const addFarm = () => {
-      
-    const userId =userIdRef.current.querySelector("input[type=text]").value;
-    const farmName =farmNameRef.current.querySelector("input[type=text]").value;
-    const farmArea =farmAreaRef.current.querySelector("input[type=text]").value;
-    const farmLicense =farmLicenseRef.current.querySelector("input[type=text]").value;
-    const farmWaterSalinity =farmWaterSalinityRef.current.querySelector("input[type=text]").value;
-    const farmFertilizer =farmFertilizerRef.current.querySelector("input[type=text]").value;
-    const farmTreesAge =farmTreesAgeRef.current.querySelector("input[type=text]").value;
-    const farmDescription =farmDescriptionRef.current.querySelector("input[type=text]").value;
+
+    const userId = userIdRef.current.querySelector("input[type=text]").value;
+    const farmName = farmNameRef.current.querySelector("input[type=text]").value;
+    const farmArea = farmAreaRef.current.querySelector("input[type=text]").value;
+    const farmLicense = farmLicenseRef.current.querySelector("input[type=text]").value;
+    const farmWaterSalinity = farmWaterSalinityRef.current.querySelector("input[type=text]").value;
+    const farmFertilizer = farmFertilizerRef.current.querySelector("input[type=text]").value;
+    const farmTreesAge = farmTreesAgeRef.current.querySelector("input[type=text]").value;
+    const farmDescription = farmDescriptionRef.current.querySelector("input[type=text]").value;
     const farmPicture = farmPictureRef.current.querySelector("input[type=file").files;
 
     const formdata = new FormData();
@@ -81,75 +81,69 @@ function AddFarms() {
     formdata.append("farmPicture", farmPicture[0]);
 
 
-fetch(`${process.env.REACT_APP_API_URL}farms`, {
-    method: "POST",
-    body: formdata,
-    headers: {
-      Authorization: "bearer " + ctx.token,
-    },
-  }).then(responce=>{
-      responce.json().then(farmAdded=>{
-          console.log(farmAdded)
-          setServerResponce(farmAdded.messages.join(' '))
-          if(farmAdded.success){
-              setSnakBarColor('success')
-          }
-          else{
-              setSnakBarColor('warning')
-          }
-          setOpenSnakBar(true)
+    fetch(`${process.env.REACT_APP_API_URL}farms`, {
+      method: "POST",
+      body: formdata,
+      headers: {
+        Authorization: "bearer " + ctx.token,
+      },
+    }).then(responce => {
+      responce.json().then(farmAdded => {
+        console.log(farmAdded)
+        setServerResponce(farmAdded.messages.join(' '))
+        if (farmAdded.success) {
+          setSnakBarColor('success')
+        }
+        else {
+          setSnakBarColor('warning')
+        }
+        setOpenSnakBar(true)
       })
-  }).catch(e=>e)
+    }).catch(e => e)
 
   };
-  
-  
+
+
   useEffect(() => {
     request(`${process.env.REACT_APP_API_URL}farms/farmKinds/all`, {}, {}, {
-        auth: true,
-
-        snackBar: true
-
+      auth: true,
     }, 'get')
-   .then((farmkinds) => {
-        setFarmKindData(farmkinds.data);
-        console.log(farmkinds)
+      .then((farmkinds) => {
+        console.log("farmkinds", farmkinds)
+
+        setFarmKindData(farmkinds?.data);
       });
-    
+
   }, []);
 
   useEffect(() => {
     request(`${process.env.REACT_APP_API_URL}addresses/city`, {}, {}, {
-        auth: true,
-
-        snackBar: true
-
+      auth: true,
     }, 'get')
-   .then((city) => {
+      .then((city) => {
+        console.log("cityData",city)
         setCityData(city.data);
-       // console.log(city+"---------------------")
+        
       });
-    
+
   }, []);
 
-  useEffect(() => {
-    request(`${process.env.REACT_APP_API_URL}farms/crops/all`, {}, {}, {
-        auth: true,
+  // useEffect(() => {
+  //   request(`${process.env.REACT_APP_API_URL}farms/crops/all`, {}, {}, {
+  //     auth: true,
+  //   }, 'get')
+  //     .then((crop) => {
+  //       console.log("cropsData",crop)
+  //       setCropData(crop?.data);
+  //       setLastCropData(crop?.data);
+        
+  //     });
 
-        snackBar: true
-
-    }, 'get')
-   .then((crop) => {
-        setCropData(crop.data);
-        setLastCropData(crop.data);
-       // console.log(crop )
-      });
-    
-  }, []);
+  // }, []);
 
   const handleAvaliableChange = (event) => {
     setAvailable(event.target.value);
-   // console.log( available)
+    // console.log( available)
   };
   const handleVisiableChange = (event) => {
     setVisiable(event.target.value);
@@ -167,7 +161,7 @@ fetch(`${process.env.REACT_APP_API_URL}farms`, {
   const handleLastCropChange = (event) => {
     setLastCrop(event.target.value);
   };
-  
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -177,8 +171,8 @@ fetch(`${process.env.REACT_APP_API_URL}farms`, {
             <Card>
               <MDBox pt={4} pb={3} px={3}>
                 <MDBox component="form" role="form">
-                
-                <MDBox mb={2}>
+
+                  <MDBox mb={2}>
                     <MDInput
                       type="text"
                       ref={userIdRef}
@@ -196,7 +190,7 @@ fetch(`${process.env.REACT_APP_API_URL}farms`, {
                       fullWidth
                     />
                   </MDBox>
-                  
+
                   <MDBox mb={2}>
                     <MDInput
                       type="text"
@@ -206,7 +200,7 @@ fetch(`${process.env.REACT_APP_API_URL}farms`, {
                       fullWidth
                     />
                   </MDBox>
-                  
+
                   <MDBox mb={2}>
                     <MDInput
                       type="text"
@@ -216,7 +210,7 @@ fetch(`${process.env.REACT_APP_API_URL}farms`, {
                       fullWidth
                     />
                   </MDBox>
-                  
+
                   <MDBox mb={2}>
                     <MDInput
                       type="text"
@@ -226,7 +220,7 @@ fetch(`${process.env.REACT_APP_API_URL}farms`, {
                       fullWidth
                     />
                   </MDBox>
-                  
+
                   <MDBox mb={2}>
                     <MDInput
                       type="text"
@@ -255,24 +249,24 @@ fetch(`${process.env.REACT_APP_API_URL}farms`, {
                     />
                   </MDBox>
                   <MDBox mb={2}>
-                  <FormControl>
-                  <FormLabel id="demo-row-radio-buttons-group-label">farm Available</FormLabel>
-                  <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" onChange={handleAvaliableChange} >
-                  <FormControlLabel value={true}   control={<Radio />} label="Available" />
-                  <FormControlLabel value={false}  control={<Radio />} label="Not Available" />
-                  </RadioGroup>
-                  </FormControl>          
+                    <FormControl>
+                      <FormLabel id="demo-row-radio-buttons-group-label">farm Available</FormLabel>
+                      <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" onChange={handleAvaliableChange} >
+                        <FormControlLabel value={true} control={<Radio />} label="Available" />
+                        <FormControlLabel value={false} control={<Radio />} label="Not Available" />
+                      </RadioGroup>
+                    </FormControl>
                   </MDBox>
                   <MDBox mb={2}>
-                  <FormControl>
-                 <FormLabel id="demo-row-radio-buttons-group-label">farm Visiable</FormLabel>
-                 <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" onChange={handleVisiableChange} >
-                 <FormControlLabel value={true}   control={<Radio />} label="Visiable" />
-                 <FormControlLabel value={false}  control={<Radio />} label="Not Visiable" />
-                 </RadioGroup>
-                 </FormControl>
+                    <FormControl>
+                      <FormLabel id="demo-row-radio-buttons-group-label">farm Visiable</FormLabel>
+                      <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" onChange={handleVisiableChange} >
+                        <FormControlLabel value={true} control={<Radio />} label="Visiable" />
+                        <FormControlLabel value={false} control={<Radio />} label="Not Visiable" />
+                      </RadioGroup>
+                    </FormControl>
                   </MDBox>
-                  <MDBox mb={2}>
+                  {/* <MDBox mb={2}>
                     <Box sx={{ minWidth: 120 }}>
                       <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">
@@ -286,7 +280,7 @@ fetch(`${process.env.REACT_APP_API_URL}farms`, {
                           defaultValue="1"
                           onChange={handleCityChange}
                         >
-                          {cityData.map((city, i) => {
+                          {cityData?.map((city, i) => {
                             return (
                               <MenuItem value={city.id} key={i}>
                                 {city.cityName}
@@ -296,7 +290,7 @@ fetch(`${process.env.REACT_APP_API_URL}farms`, {
                         </Select>
                       </FormControl>
                     </Box>
-                  </MDBox>
+                  </MDBox> */}
                   <MDBox mb={2}>
                     <Box sx={{ minWidth: 120 }}>
                       <FormControl fullWidth>
@@ -311,7 +305,7 @@ fetch(`${process.env.REACT_APP_API_URL}farms`, {
                           defaultValue="1"
                           onChange={handleCropChange}
                         >
-                          {lastCropData.map((crop, i) => {
+                          {lastCropData?.map((crop, i) => {
                             return (
                               <MenuItem value={crop.id} key={i}>
                                 {crop.cropName}
@@ -336,7 +330,7 @@ fetch(`${process.env.REACT_APP_API_URL}farms`, {
                           defaultValue="1"
                           onChange={handleLastCropChange}
                         >
-                          {cropData.map((crop, i) => {
+                          {cropData?.map((crop, i) => {
                             return (
                               <MenuItem value={crop.id} key={i}>
                                 {crop.cropName}
@@ -351,7 +345,7 @@ fetch(`${process.env.REACT_APP_API_URL}farms`, {
                     <Box sx={{ minWidth: 120 }}>
                       <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">
-                          Farm Kind  
+                          Farm Kind
                         </InputLabel>
                         <Select
                           labelId="demo-simple-select-label"
@@ -361,7 +355,7 @@ fetch(`${process.env.REACT_APP_API_URL}farms`, {
                           defaultValue="1"
                           onChange={handleFarmKindChange}
                         >
-                          {farmKindData.map((farmkind, i) => {
+                          {farmKindData?.map((farmkind, i) => {
                             return (
                               <MenuItem value={farmkind.id} key={i}>
                                 {farmkind.farmKind}
@@ -397,16 +391,16 @@ fetch(`${process.env.REACT_APP_API_URL}farms`, {
         </Grid>
       </MDBox>
       <MDSnackbar
-      color={snakBarColor}
-      icon={snakBarColor=="success"?'check':'warning'}
-      title="Place App"
-      content={serverResponce}
-      open={openSnakBar}
-      dateTime=""
-      onClose={closeSnakBar}
-      close={closeSnakBar}
-      bgWhite
-    />
+        color={snakBarColor}
+        icon={snakBarColor == "success" ? 'check' : 'warning'}
+        title="Place App"
+        content={serverResponce}
+        open={openSnakBar}
+        dateTime=""
+        onClose={closeSnakBar}
+        close={closeSnakBar}
+        bgWhite
+      />
     </DashboardLayout>
   );
 }
