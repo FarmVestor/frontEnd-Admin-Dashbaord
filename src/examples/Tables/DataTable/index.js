@@ -80,6 +80,7 @@ function DataTable({
     state: { pageIndex, pageSize, globalFilter },
   } = tableInstance;
 
+
   // Set the default value for the entries per page when component mounts
   useEffect(() => setPageSize(defaultValue || 10), [defaultValue]);
 
@@ -108,13 +109,14 @@ function DataTable({
   // Setting value for the pagination input
   const handleInputPaginationValue = ({ target: value }) => gotoPage(Number(value.value - 1));
 
+
   // Search input value state
   const [search, setSearch] = useState(globalFilter);
 
   // Search input state handle
-  const onSearchChange = useAsyncDebounce((value) => {
+  const onSearchChange = (value) => {
     setGlobalFilter(value || undefined);
-  }, 100);
+  };
 
   // A function that sets the sorted value for the table
   const setSortedValue = (column) => {
