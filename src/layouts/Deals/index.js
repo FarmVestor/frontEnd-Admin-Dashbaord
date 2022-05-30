@@ -60,7 +60,7 @@ function Deals() {
         request(`${process.env.REACT_APP_API_URL}deals?order=${order}`, {}, {}, {
             auth: true,
 
-            snackbar: true
+            // snackbar: true
 
         }, 'get')
             .then(deals => {

@@ -66,7 +66,7 @@ function Farms() {
         }, 'get')
             .then(farms => {
                     const allfarms = farms?.data?.map((farm) => {
-                       console.log(farm.User.userName)
+                       console.log(farm)
                         
                         return {
                             userId: <>{farm.User.userName}</>,

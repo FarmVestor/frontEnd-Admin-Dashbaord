@@ -55,7 +55,6 @@ function EditDeal() {
     useEffect(() => {
         request(`${process.env.REACT_APP_API_URL}deals/${id}`, {}, {}, {
             auth: true,
-            snackBar: true
         }, 'get').then(data => {
             console.log("current deal data", data)
             setDealData(data.data)
@@ -75,7 +74,7 @@ function EditDeal() {
         }, {
             auth: true,
             type: 'json',
-            snackBar: true
+            snackbar: true
         }, 'put').then(data => {
             console.log(data)
         })
