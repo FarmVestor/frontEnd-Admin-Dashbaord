@@ -1,6 +1,8 @@
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 // @mui material components
+// import BasicLayout from "./BasicLayout";
+
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 // Material Dashboard 2 React components
@@ -15,12 +17,17 @@ import MDTypography from "components/MDTypography";
 import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
 import { useEffect, useState } from "react";
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import NativeSelect from '@mui/material/NativeSelect';
+import { useRequest } from "lib/functions";
+
 import { Link } from 'react-router-dom'
 import { useContext } from "react";
 import { AuthContext } from "context/AuthContext";
 const columns = [
-  { Header: "Request Id", accessor: "id", width: "45%", align: "left" },
-  { Header: "Farm Area", accessor: "farmArea", width: "45%", align: "left" },
+  { Header: "Request Id", accessor: "id",  align: "left" },
+  { Header: "Farm Area", accessor: "farmArea", align: "left" },
   { Header: "Budget", accessor: "budget", align: "left" },
   { Header: "Crop Name", accessor: "cropName", align: "left" },
   { Header: "Farm Kind", accessor: "farmKind", align: "left" },
@@ -28,52 +35,77 @@ const columns = [
   { Header: "actions", accessor: "actions", align: "center" },
 ]
 function Requests() {
+  const [order, setOrder] = useState('ASC')
+
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
   const [rows, setRows] = useState([])
   const ctx = useContext(AuthContext)
+  const request = useRequest()
+
   const [serverResponse, setServerResponse] = useState(" ")
     const [snackBarType, setSnackBarType] = useState("success")
     const [openSnackBar, setOpenSnackBar] = useState(false)
 
   const deleteReuest = (requestId) => {
     if (window.confirm('Are you sure')) {
-      fetch(`${process.env.REACT_APP_API_URL}requests/${requestId}`,
-        {
-          method: "Delete",
-          headers: {
-            'Authorization': 'Bearer ' + ctx.token
-          },
-        })
-        .then(response => {
-          response.json()
-            .then(deleted => {
-              console.log(deleted)
-              setServerResponse(deleted.message.join(' '))
-              if (deleted.success) {
-                  setSnackBarType('success')
-              } else {
-                  setSnackBarType('error')
-              }
-              setOpenSnackBar(true)
-            })
-        })
-        .catch(e => e)
-    }
-  }
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}requests`,{
-        headers: {
-            'Authorization': 'Bearer ' + ctx.token
-          },
-    })
-      .then(response => {
-        response.json().then(requests => {
-          console.log(requests)
-          // console.log("__________".requests.FarmKind?.farmKind)
+      request(`${process.env.REACT_APP_API_URL}requests/${requestId}`, {}, {}, {
+          auth: true,
 
-          const allRequests = requests.data.map((request, i) => {
-          console.log("request",request)
+          snackbar: true
+
+      }, 'delete').then(data => {
+          console.log(data.messages)
+      })
+  }
+
+    // if (window.confirm('Are you sure')) {
+    //   fetch(`${process.env.REACT_APP_API_URL}requests/${requestId}`,
+    //     {
+    //       method: "Delete",
+    //       headers: {
+    //         'Authorization': 'Bearer ' + ctx.token
+    //       },
+    //     })
+    //     .then(response => {
+    //       response.json()
+    //         .then(deleted => {
+    //           console.log(deleted)
+    //           setServerResponse(deleted.message.join(' '))
+    //           if (deleted.success) {
+    //               setSnackBarType('success')
+    //           } else {
+    //               setSnackBarType('error')
+    //           }
+    //           setOpenSnackBar(true)
+    //         })
+    //     })
+    //     .catch(e => e)
+    // }
+  }
+  // useEffect(() => {
+  //   fetch(`${process.env.REACT_APP_API_URL}requests`,{
+  //       headers: {
+  //           'Authorization': 'Bearer ' + ctx.token
+  //         },
+  //   })
+  //     .then(response => {
+  //       response.json().then(requests => {
+  //         console.log(requests)
+  //         // console.log("__________".requests.FarmKind?.farmKind)
+
+  //         const allRequests = requests.data.map((request, i) => {
+  //         console.log("request",request)
+  useEffect(() => {
+
+    request(`${process.env.REACT_APP_API_URL}requests?order=${order}`, {}, {}, {
+        auth: true,
+    }, 'get')
+        .then(requests => {
+            // console.log("deal data", deals)
+
+            const allRequests = requests.data.map((request, i) => {
+            console.log("request",request)
 
             return {
               id: <>{request.id}</>,
@@ -96,11 +128,12 @@ function Requests() {
           })
           setRows(allRequests)
         })
-      })
-  }, [])
+      }, [order])
   return (
     <DashboardLayout>
       <DashboardNavbar />
+      {/* <BasicLayout > */}
+
       <MDBox pt={6} pb={3}>
         <Grid container spacing={6}>
           <Grid item xs={12}>
@@ -131,6 +164,29 @@ function Requests() {
                   </Link>
                 </Grid>
               </MDBox>
+                          <MDBox mb={2} p={2}>
+                              <FormControl fullWidth >
+                                  <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                                      Order
+                                  </InputLabel>
+                                  <NativeSelect
+
+                                      defaultValue={"ASC"}
+                                      onChange={(e) => { setOrder(e.target.value) }}
+                                      inputProps={{
+                                          name: 'UserType',
+                                          id: 'uncontrolled-native',
+                                      }}
+
+                                  >
+                                      <option value="ASC" defaultValue >ASC</option>
+                                      <option value="DESC" >DESC</option>
+
+                                  </NativeSelect>
+                              </FormControl>
+                          </MDBox>
+
+        
               <MDBox pt={3}>
                 <DataTable
                   table={{ columns, rows }}
@@ -145,6 +201,8 @@ function Requests() {
         </Grid>
       </MDBox>
       <Footer />
+      {/* </BasicLayout> */}
+
     </DashboardLayout>
   )
 }

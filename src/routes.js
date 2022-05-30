@@ -113,7 +113,7 @@ const routes = [
     type: "collapse",
     name: "Farms",
     key: "farms",
-    icon: <Icon fontSize="small">table_view</Icon>,
+    icon: <Icon fontSize="small">grass</Icon>,
     route: "/farms",
     component: <Farms />,
     requireAuth:true,
@@ -142,28 +142,28 @@ const routes = [
 
   },
   
-  {
-    type: "collapse",
-    name: "Tables",
-    key: "tables",
-    icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/tables",
-    inSideNav: true,
-    component: <Tables />,
-    requireAuth:true,
-    inSideNav:true
-  },
-  {
-    type: "collapse",
-    name: "Billing",
-    key: "billing",
-    icon: <Icon fontSize="small">receipt_long</Icon>,
-    route: "/billing",
-    inSideNav: true,
-    component: <Billing />,
-    requireAuth:true,
-    inSideNav:true
-  },
+  // {
+  //   type: "collapse",
+  //   name: "Tables",
+  //   key: "tables",
+  //   icon: <Icon fontSize="small">table_view</Icon>,
+  //   route: "/tables",
+  //   inSideNav: true,
+  //   component: <Tables />,
+  //   requireAuth:true,
+  //   inSideNav:true
+  // },
+  // {
+  //   type: "collapse",
+  //   name: "Billing",
+  //   key: "billing",
+  //   icon: <Icon fontSize="small">receipt_long</Icon>,
+  //   route: "/billing",
+  //   inSideNav: true,
+  //   component: <Billing />,
+  //   requireAuth:true,
+  //   inSideNav:true
+  // },
   {
     type: "collapse",
     name: "RTL",
@@ -173,17 +173,17 @@ const routes = [
     inSideNav: true,
     component: <RTL />,
   },
-  {
-    type: "collapse",
-    name: "Notifications",
-    key: "notifications",
-    icon: <Icon fontSize="small">notifications</Icon>,
-    route: "/notifications",
-    inSideNav: true,
-    component: <Notifications />,
-    requireAuth:true,
-    inSideNav:true
-  },
+  // {
+  //   type: "collapse",
+  //   name: "Notifications",
+  //   key: "notifications",
+  //   icon: <Icon fontSize="small">notifications</Icon>,
+  //   route: "/notifications",
+  //   inSideNav: true,
+  //   component: <Notifications />,
+  //   requireAuth:true,
+  //   inSideNav:true
+  // },
   {
     type: "collapse",
     name: "Profile",
@@ -218,7 +218,7 @@ const routes = [
     type: "collapse",
     name: "Sign out",
     key: "sign-out",
-    icon: <Icon fontSize="small">assignment</Icon>,
+    icon: <Icon fontSize="small">logout</Icon>,
     route: "/sign-out",
     inSideNav: true,
     component: <SignOut />,
@@ -227,7 +227,7 @@ const routes = [
     type: "collapse",
     name: "Requests",
     key: "Requests",
-    icon: <Icon fontSize="small">assignment</Icon>,
+    icon: <Icon fontSize="small">accessibilityNew</Icon>,
     route: "/requests",
     component: <Requests />,
     requireAuth:true,
@@ -240,7 +240,6 @@ const routes = [
     icon: <Icon fontSize="small">assignment</Icon>,
     route: "/requests/add",
     component: <AddRequest />,
-    
     // requiresAuth: true,
     inSideNav: false,
   },
@@ -255,15 +254,6 @@ const routes = [
     inSideNav: false,
 
   },
-
-
-
-
-
-
-
-
-
 
 
   {
@@ -325,7 +315,7 @@ const routes = [
     type: "collapse",
     name: "Deals",
     key: "Deals",
-    icon: <Icon fontSize="small">people</Icon>,
+    icon: <Icon fontSize="small">groups</Icon>,
     route: "/Deals/",
     inSideNav: true,
     component: <Deals />,
@@ -350,9 +340,9 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Adresses",
-    key: "Adresses",
-    icon: <Icon fontSize="small">people</Icon>,
+    name: "Address",
+    key: "Address",
+    icon: <Icon fontSize="small">home</Icon>,
     route: "/adresses/",
     inSideNav: true,
     component: <Adresses />,

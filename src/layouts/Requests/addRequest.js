@@ -7,6 +7,7 @@ import Card from "@mui/material/Card";
 import MDButton from "components/MDButton";
 import MDInput from "components/MDInput";
 import Box from '@mui/material/Box';
+import { useRequest } from "lib/functions";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -40,77 +41,117 @@ function AddRequest() {
     const budgetRef = useRef(null)
 
     const ctx = useContext(AuthContext)
+    const request = useRequest()
+
 
     const [serverResponse, setServerResponse] = useState(" ")
     const [snackBarType, setSnackBarType] = useState("success")
     const [openSnackBar, setOpenSnackBar] = useState(false)
     const closeSnackBar = () => setOpenSnackBar(false);
 
-
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_API_URL}farms/farmKinds/all`)
-            .then(response => {
-                response.json().then(FarmKinds => {
-                    console.log(FarmKinds.data)
-                    setfarmKindData(FarmKinds.data)
-                })
-            })
-    }, [])
-    useEffect(() => {
-        fetch(`${process.env.REACT_APP_API_URL}farms/crops/all`)
-            .then(response => {
-                response.json().then(Crops => {
-                    console.log(Crops.data)
-                    setcrop(Crops.data)
-                })
-            })
-    }, [])
-
-    useEffect(() => {
-        fetch(`${process.env.REACT_APP_API_URL}users`,{
-             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + ctx.token
-            },  
+        request(`${process.env.REACT_APP_API_URL}farms/farmKinds/all`, {}, {}, {
+            auth: true,
+        }, 'get').then(FarmKinds => {
+            setfarmKindData(FarmKinds.data)
         })
-            .then(response => {
-                response.json().then(users => {
-                    console.log("users",users.data)
-                    setUsers(users.data)
-                })
-            })
+
     }, [])
+    // useEffect(() => {
+    //     fetch(`${process.env.REACT_APP_API_URL}farms/farmKinds/all`)
+    //         .then(response => {
+    //             response.json().then(FarmKinds => {
+    //                 console.log(FarmKinds.data)
+    //                 setfarmKindData(FarmKinds.data)
+    //             })
+    //         })
+    // }, [])
+    useEffect(() => {
+        request(`${process.env.REACT_APP_API_URL}farms/crops/all`, {}, {}, {
+            auth: true,
+        }, 'get').then(Crops => {
+            setcrop(Crops.data)
+        })
+
+    }, [])
+    // useEffect(() => {
+    //     fetch(`${process.env.REACT_APP_API_URL}farms/crops/all`)
+    //         .then(response => {
+    //             response.json().then(Crops => {
+    //                 console.log(Crops.data)
+    //                 setcrop(Crops.data)
+    //             })
+    //         })
+    // }, [])
+
+    useEffect(() => {
+        request(`${process.env.REACT_APP_API_URL}users`, {}, {}, {
+            auth: true,
+        }, 'get').then(users => {
+            setUsers(users.data)
+        })
+
+    }, [])
+    // useEffect(() => {
+    //     fetch(`${process.env.REACT_APP_API_URL}users`,{
+    //          headers: {
+    //             'Content-Type': 'application/json',
+    //             'Authorization': 'Bearer ' + ctx.token
+    //         },  
+    //     })
+    //         .then(response => {
+    //             response.json().then(users => {
+    //                 console.log("users",users.data)
+    //                 setUsers(users.data)
+    //             })
+    //         })
+    // }, [])
     const saveRequest = () => {
         const farmArea = farmAreaeRef.current.querySelector('input[type=number]').value
         const budget = budgetRef.current.querySelector('input[type=text]').value
 
-        fetch(`${process.env.REACT_APP_API_URL}requests`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + ctx.token
-            },
-            body: JSON.stringify({
-                farmArea:farmArea,
-                budget:budget,
-                farmKindId:farmKind,
-                cropId:cropId,
-                userId:userId
-              }),
-        }).then(response => response.json())
-            .then(result => {
-                console.log(result)
-                setServerResponse(result.messages.join(' '))
-                if (result.success) {
-                    setSnackBarType('success')
-                } else {
-                    setSnackBarType('error')
-                }
-                setOpenSnackBar(true)
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+        request(`${process.env.REACT_APP_API_URL}requests`, {}, {
+            farmArea: farmArea,
+            budget: budget,
+            farmKindId: farmKind,
+            cropId: cropId,
+            userId: userId
+
+
+        }, {
+            auth: true,
+            type: 'json',
+            snackbar: true
+        }, 'post').then(result => {
+            console.log(result)
+        })
+        // fetch(`${process.env.REACT_APP_API_URL}requests`, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'Authorization': 'Bearer ' + ctx.token
+        //     },
+        //     body: JSON.stringify({
+        //         farmArea:farmArea,
+        //         budget:budget,
+        //         farmKindId:farmKind,
+        //         cropId:cropId,
+        //         userId:userId
+        //       }),
+        // }).then(response => response.json())
+        //     .then(result => {
+        //         console.log(result)
+        //         setServerResponse(result.messages.join(' '))
+        //         if (result.success) {
+        //             setSnackBarType('success')
+        //         } else {
+        //             setSnackBarType('error')
+        //         }
+        //         setOpenSnackBar(true)
+        //     })
+        //     .catch((error) => {
+        //         console.error('Error:', error);
+        //     });
     }
     const handlefarmKindsRefChange = (event) => {
         setfarmKind(event.target.value)
@@ -151,10 +192,10 @@ function AddRequest() {
                                     <MDBox mb={2}>
                                         <MDInput type="text" label="budget" variant="standard" fullWidth ref={budgetRef} />
                                     </MDBox>
-                                  
-                                         <FormControl fullWidth>
+
+                                    <FormControl fullWidth>
                                         <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                                        Farm Kind
+                                            Farm Kind
                                         </InputLabel>
                                         <NativeSelect
                                             // defaultValue={1}
@@ -164,13 +205,14 @@ function AddRequest() {
                                             }}
                                             onChange={handlefarmKindsRefChange}
                                         >
-                                            {farmKindData?.map((farmKind,i)=> <option value={farmKind.id} key={i}>{farmKind.farmKind}</option> )}
+                                            <option></option>
+                                            {farmKindData?.map((farmKind, i) => <option value={farmKind.id} key={i}>{farmKind.farmKind}</option>)}
                                         </NativeSelect>
                                     </FormControl>
 
                                     <FormControl fullWidth>
                                         <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                                        Crops
+                                            Crops
                                         </InputLabel>
                                         <NativeSelect
                                             // defaultValue={1}
@@ -180,13 +222,15 @@ function AddRequest() {
                                             }}
                                             onChange={handlecropsRefChange}
                                         >
-                                            {crop?.map((crop,i)=> <option value={crop.id} key={i}>{crop.cropName}</option> )}
+                                            <option></option>
+
+                                            {crop?.map((crop, i) => <option value={crop.id} key={i}>{crop.cropName}</option>)}
                                         </NativeSelect>
                                     </FormControl>
 
                                     <FormControl fullWidth>
                                         <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                                        Users
+                                            Users
                                         </InputLabel>
                                         <NativeSelect
                                             // defaultValue={1}
@@ -196,18 +240,20 @@ function AddRequest() {
                                             }}
                                             onChange={handleusersRefChange}
                                         >
-                                            {users?.map((user,i)=> <option value={user.id} key={i}>{user.userName}</option> )}
+                                            <option></option>
+
+                                            {users?.map((user, i) => <option value={user.id} key={i}>{user.userName}</option>)}
                                         </NativeSelect>
                                     </FormControl>
 
-                                    
+
                                     <MDBox mt={4} mb={1}>
                                         <MDButton variant="gradient" color="info" fullWidth onClick={saveRequest}>
                                             Save Request
                                         </MDButton>
                                     </MDBox>
 
-                                    
+
                                 </MDBox>
                             </MDBox>
                         </Card>

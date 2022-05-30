@@ -46,7 +46,7 @@ function Deals() {
             request(`${process.env.REACT_APP_API_URL}deals/${userId}`, {}, {}, {
                 auth: true,
 
-                snackBar: true
+                snackbar: true
 
             }, 'delete').then(data => {
                 console.log(data.messages)
@@ -60,7 +60,7 @@ function Deals() {
         request(`${process.env.REACT_APP_API_URL}deals?order=${order}`, {}, {}, {
             auth: true,
 
-            snackBar: true
+            snackbar: true
 
         }, 'get')
             .then(deals => {
