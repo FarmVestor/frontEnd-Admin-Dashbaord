@@ -230,7 +230,7 @@ const routes = [
     icon: <Icon fontSize="small">accessibilityNew</Icon>,
     route: "/requests",
     component: <Requests />,
-    // requireAuth:true,
+    requireAuth:true,
     inSideNav:true
   },
   {

@@ -49,7 +49,7 @@ function Farms() {
             request(`${process.env.REACT_APP_API_URL}farms/${farmId}`, {}, {}, {
                 auth: true,
 
-                snackBar: true,
+                snackbar: true,
             }, 'delete')
             .then(deleted=>{
                 console.log(deleted)
@@ -63,12 +63,9 @@ function Farms() {
     useEffect(() => {
         request(`${process.env.REACT_APP_API_URL}farms`, {}, {}, {
             auth: true,
-
-            snackBar: true
-
         }, 'get')
             .then(farms => {
-                    const allfarms = farms.data.map((farm) => {
+                    const allfarms = farms?.data?.map((farm) => {
                        console.log(farm.User.userName)
                         
                         return {

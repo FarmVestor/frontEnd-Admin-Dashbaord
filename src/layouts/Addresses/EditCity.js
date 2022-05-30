@@ -107,7 +107,7 @@ function EditCity() {
         }, {
             auth: true,
             type: 'json',
-            snackBar: true
+            snackbar: true
         }, 'put').then(data => {
             console.log("updated city data", data)
         })
