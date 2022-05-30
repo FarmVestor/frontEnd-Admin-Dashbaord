@@ -135,7 +135,7 @@ fetch(`${process.env.REACT_APP_API_URL}farms/${id}`, {
     request(`${process.env.REACT_APP_API_URL}farms/${id}`, {}, {}, {
         auth: true,
 
-        snackBar: true
+        snackbar: true
 
     }, 'get')
     

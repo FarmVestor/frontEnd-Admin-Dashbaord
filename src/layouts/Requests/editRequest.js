@@ -17,9 +17,15 @@ import FormControl from '@mui/material/FormControl';
 import MenuItem from '@mui/material/MenuItem';
 import { useParams } from "react-router-dom";
 import Box from '@mui/material/Box';
+import { useRequest } from "lib/functions";
+import NativeSelect from '@mui/material/NativeSelect';
+
+
 
 
 function EditRquest() {
+    const request = useRequest()
+
 
     const [requestData, setRequestData] = useState({
         FarmKind: {
@@ -37,19 +43,27 @@ function EditRquest() {
     const { id } = useParams()
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_API_URL}requests/${id}`,{
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + ctx.token
-            },
-        })
-            .then(response => {
-                response.json().then(currentRequest => {
-                    setRequestData(currentRequest.data)
-                })
+        request(`${process.env.REACT_APP_API_URL}requests/${id}`, {}, {}, {
+            auth: true,
+        }, 'get').then(currentRequest => {
+            setRequestData(currentRequest.data)
             })
-            .catch(e => e)
+                       
     }, [])
+    // useEffect(() => {
+    //     fetch(`${process.env.REACT_APP_API_URL}requests/${id}`,{
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             'Authorization': 'Bearer ' + ctx.token
+    //         },
+    //     })
+    //         .then(response => {
+    //             response.json().then(currentRequest => {
+    //                 setRequestData(currentRequest.data)
+    //             })
+    //         })
+    //         .catch(e => e)
+    // }, [])
 
     const ctx = useContext(AuthContext)
 
@@ -64,74 +78,113 @@ function EditRquest() {
     const [usersData, setUsersData] = useState([]) // all users
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_API_URL}users`,{
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + ctx.token
-            },
+        request(`${process.env.REACT_APP_API_URL}users`, {}, {}, {
+            auth: true,
+        }, 'get').then(users => {
+            setUsersData(users.data)
         })
+    
+    }, [])
+    // useEffect(() => {
+    //     fetch(`${process.env.REACT_APP_API_URL}users`,{
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             'Authorization': 'Bearer ' + ctx.token
+    //         },
+    //     })
         
-            .then(response => {
-                response.json().then(users => {
-                    setUsersData(users.data)
-                })
-            })
-    }, [])
+    //         .then(response => {
+    //             response.json().then(users => {
+    //                 setUsersData(users.data)
+    //             })
+    //         })
+    // }, [])
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_API_URL}farms/farmKinds/all`,{
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + ctx.token
-            },
+        request(`${process.env.REACT_APP_API_URL}farms/farmKinds/all`, {}, {}, {
+            auth: true,
+        }, 'get').then(farmKinds => {
+            setFarmKindData(farmKinds.data)
         })
+    
+    }, [])
+
+    // useEffect(() => {
+    //     fetch(`${process.env.REACT_APP_API_URL}farms/farmKinds/all`,{
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             'Authorization': 'Bearer ' + ctx.token
+    //         },
+    //     })
         
-            .then(response => {
-                response.json().then(farmKinds => {
-                    setFarmKindData(farmKinds.data)
-                })
-            })
-    }, [])
+    //         .then(response => {
+    //             response.json().then(farmKinds => {
+    //                 setFarmKindData(farmKinds.data)
+    //             })
+    //         })
+    // }, [])
+
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_API_URL}farms/crops/all`,{   
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + ctx.token
-            },
+        request(`${process.env.REACT_APP_API_URL}farms/crops/all`, {}, {}, {
+            auth: true,
+        }, 'get').then(crops => {
+            setCropsData(crops.data)
         })
-        .then(response => {
-            response.json().then(crops => {
-                setCropsData(crops.data)
-                 })
-             })
+    
     }, [])
+    // useEffect(() => {
+    //     fetch(`${process.env.REACT_APP_API_URL}farms/crops/all`,{   
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             'Authorization': 'Bearer ' + ctx.token
+    //         },
+    //     })
+    //     .then(response => {
+    //         response.json().then(crops => {
+    //             setCropsData(crops.data)
+    //              })
+    //          })
+    // }, [])
     const savePlace = () => {
-        fetch(`${process.env.REACT_APP_API_URL}requests/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + ctx.token
-            },
-            body: JSON.stringify({
-                farmArea:requestData?.farmArea,
-                budget:requestData?.budget,
-                farmKindId:requestData?.FarmKind?.id,
-                cropId:requestData?.Crop?.id,
-                userId:requestData?.userId
-              }),
-        }).then(response => response.json())
-            .then(result => {
-                console.log(result)
-                setServerResponse(result.messages.join(' '))
-                if (result.success) {
-                    setSnackBarType('success')
-                } else {
-                    setSnackBarType('error')
-                }
-                setOpenSnackBar(true)
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+        request(`${process.env.REACT_APP_API_URL}requests/${id}`, {}, {
+            farmArea:requestData?.farmArea,
+            budget:requestData?.budget,
+            farmKindId:requestData?.FarmKind?.id,
+            cropId:requestData?.Crop?.id,
+            userId:requestData?.User?.id
+        }, {
+            auth: true,
+            type: 'json',
+            snackbar: true
+        }, 'put').then(result => {
+                    console.log(result)
+        })
+    //     fetch(`${process.env.REACT_APP_API_URL}requests/${id}`, {
+    //         method: 'PUT',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             'Authorization': 'Bearer ' + ctx.token
+    //         },
+    //         body: JSON.stringify({
+    //             farmArea:requestData?.farmArea,
+    //             budget:requestData?.budget,
+    //             farmKindId:requestData?.FarmKind?.id,
+    //             cropId:requestData?.Crop?.id,
+    //             userId:requestData?.userId
+    //           }),
+    //     }).then(response => response.json())
+    //         .then(result => {
+    //             console.log(result)
+    //             setServerResponse(result.messages.join(' '))
+    //             if (result.success) {
+    //                 setSnackBarType('success')
+    //             } else {
+    //                 setSnackBarType('error')
+    //             }
+    //             setOpenSnackBar(true)
+    //         })
+    //         .catch((error) => {
+    //             console.error('Error:', error);
+    //         });
     }
 
     const updateRequestData = (obj) => {
@@ -172,67 +225,70 @@ function EditRquest() {
                                         <MDInput onChange={(e) => {updateRequestData({budget: e.target.value})}} type="text" label="Budget" variant="standard" fullWidth value={requestData.budget} />
                                     </MDBox>
                                         
-                                    <MDBox mb={2}>
-                                        <Box sx={{ minWidth: 120 }}>
+                                    {/* <MDBox mb={2}> */}
+                                        {/* <Box sx={{ minWidth: 120 }}> */}
                                             <FormControl fullWidth>
-                                                <InputLabel id="demo-simple-select-label">Farm Kind</InputLabel>
-                                                <Select
+                                                <InputLabel variant="standard" htmlFor="uncontrolled-native">Farm Kind</InputLabel>
+                                                <NativeSelect
                                                     labelId="demo-simple-select-label"
                                                     id="demo-simple-select"
                                                     value={requestData?.FarmKind?.id}
                                                     label="Farm Kind"
-                                                    style={{padding: '20px 0'}}
+                                                    // style={{padding: '20px 0'}}
                                                     onChange={(e) => {updateRequestData({FarmKind: {id:e.target.value}})}}
                                                 >
+                                                    <option></option>
                                                     {farmKindData.map((farmkind, i) => {
-                                                        return <MenuItem value={farmkind?.id} key={i}>{farmkind?.farmKind}</MenuItem>
+                                                        return <option value={farmkind?.id} key={i}>{farmkind?.farmKind}</option>
                                                     })}
                                                     {console.log("----requestData",requestData?.FarmKind?.id)}
-                                                </Select>
+                                                </NativeSelect>
                                             </FormControl>
-                                        </Box>
-                                    </MDBox>
+                                        {/* </Box> */}
+                                    {/* </MDBox> */}
 
-                                    <MDBox mb={2}>
-                                        <Box sx={{ minWidth: 120 }}>
+                                    {/* <MDBox mb={2}> */}
+                                        {/* <Box sx={{ minWidth: 120 }}> */}
                                             <FormControl fullWidth>
-                                                <InputLabel id="demo-simple-select-label">crops Kind</InputLabel>
-                                                <Select
+                                                <InputLabel variant="standard" htmlFor="uncontrolled-native">crops Kind</InputLabel>
+                                                <NativeSelect
                                                     labelId="demo-simple-select-label"
                                                     id="demo-simple-select"
                                                     value={requestData?.Crop?.id}
                                                     label="Farm Kind"
-                                                    style={{padding: '20px 0'}}
+                                                    // style={{padding: '20px 0'}}
                                                     onChange={(e) => {updateRequestData({Crop: {id:e.target.value}})}}
                                                 >
+                                                    <option></option>
                                                     {cropsData.map((crop, i) => {
-                                                        return <MenuItem value={crop.id} key={i}>{crop.cropName}</MenuItem>
+                                                        return <option value={crop.id} key={i}>{crop.cropName}</option>
                                               
                                                     })}
-                                                </Select>
+                                                </NativeSelect>
                                             </FormControl>
-                                        </Box>
-                                    </MDBox>
+                                        {/* </Box> */}
+                                    {/* </MDBox> */}
 
-                                    <MDBox mb={2}>
-                                        <Box sx={{ minWidth: 120 }}>
+                                    {/* <MDBox mb={2}> */}
+                                        {/* <Box sx={{ minWidth: 120 }}> */}
                                             <FormControl fullWidth>
-                                                <InputLabel id="demo-simple-select-label">users</InputLabel>
-                                                <Select
+                                                <InputLabel variant="standard" htmlFor="uncontrolled-native">users</InputLabel>
+                                                <NativeSelect
                                                     labelId="demo-simple-select-label"
                                                     id="demo-simple-select"
                                                     value={requestData?.User?.id}
                                                     label="Farm Kind"
-                                                    style={{padding: '20px 0'}}
+                                                    // style={{padding: '20px 0'}}
                                                     onChange={(e) => {updateRequestData({User: {id:e.target.value}})}}
                                                 >
+                                                    <option></option>
                                                          {usersData.map((user, i) => {
-                                                        return <MenuItem value={user.id} key={i}>{user.userName}</MenuItem>
+                                                        return <option value={user.id} key={i}>{user.userName}</option>
                                                     })}
-                                                </Select>
+                                                </NativeSelect>
                                             </FormControl>
-                                        </Box>
-                                    </MDBox>
+                                        {/* </Box> */}
+                                    {/* </MDBox> */}
   
                                     <MDBox mt={4} mb={1}>
                                         <MDButton variant="gradient" color="info" fullWidth onClick={savePlace}>
