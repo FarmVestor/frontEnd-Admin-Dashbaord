@@ -21,6 +21,7 @@ import { useRequest } from "lib/functions";
 
 // import { useRef } from "react";
 // import { FourGMobiledataRounded } from "@mui/icons-material";
+
 function AddFarms() {
   const ctx = useContext(AuthContext);
   const request = useRequest()
@@ -128,18 +129,18 @@ function AddFarms() {
 
   }, []);
 
-  // useEffect(() => {
-  //   request(`${process.env.REACT_APP_API_URL}farms/crops/all`, {}, {}, {
-  //     auth: true,
-  //   }, 'get')
-  //     .then((crop) => {
-  //       console.log("cropsData",crop)
-  //       setCropData(crop?.data);
-  //       setLastCropData(crop?.data);
+  useEffect(() => {
+    request(`${process.env.REACT_APP_API_URL}farms/crops/all`, {}, {}, {
+      auth: true,
+    }, 'get')
+      .then((crop) => {
+        console.log("cropsData",crop)
+        setCropData(crop?.data);
+        setLastCropData(crop?.data);
         
-  //     });
+      });
 
-  // }, []);
+  }, []);
 
   const handleAvaliableChange = (event) => {
     setAvailable(event.target.value);
@@ -266,7 +267,7 @@ function AddFarms() {
                       </RadioGroup>
                     </FormControl>
                   </MDBox>
-                  {/* <MDBox mb={2}>
+                  <MDBox mb={2}>
                     <Box sx={{ minWidth: 120 }}>
                       <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">
@@ -290,7 +291,7 @@ function AddFarms() {
                         </Select>
                       </FormControl>
                     </Box>
-                  </MDBox> */}
+                  </MDBox>
                   <MDBox mb={2}>
                     <Box sx={{ minWidth: 120 }}>
                       <FormControl fullWidth>

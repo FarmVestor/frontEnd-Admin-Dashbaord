@@ -17,7 +17,9 @@ import MDButton from "components/MDButton";
 import { useRequest } from "lib/functions";
 import { AuthContext } from "context/AuthContext";
 import { Link } from "react-router-dom";
-
+import FormControl from '@mui/material/FormControl';
+import { InputLabel } from "@mui/material";
+import { NativeSelect } from "@mui/material";
 const columns = [
     { Header: "user Id", accessor: "userId", width: "45%", align: "left" },
     { Header: "farm Name", accessor: "farmName", align: "left" },
@@ -42,6 +44,7 @@ function Farms() {
     const [rows, setRows] = useState([])
     const ctx = useContext(AuthContext)
     const request = useRequest()
+    const [order, setOrder] = useState('ASC')
 
 
     const deleteFarm = (farmId) => {
@@ -61,7 +64,7 @@ function Farms() {
     }
 
     useEffect(() => {
-        request(`${process.env.REACT_APP_API_URL}farms`, {}, {}, {
+        request(`${process.env.REACT_APP_API_URL}farms?order=${order}`, {}, {}, {
             auth: true,
         }, 'get')
             .then(farms => {
@@ -100,7 +103,7 @@ function Farms() {
                     setRows(allfarms)
                 })
             
-    }, [])
+    }, [order])
     return (
         <DashboardLayout>
             <DashboardNavbar />
@@ -136,6 +139,28 @@ function Farms() {
 
                             </MDBox>
                             <MDBox pt={3}>
+                            <MDBox mb={2} p={2}>
+                                        <FormControl fullWidth >
+                                            <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                                                Order
+                                            </InputLabel>
+                                            <NativeSelect
+
+                                                defaultValue={"ASC"}
+                                                onChange={(e) => { setOrder(e.target.value) }}
+                                                inputProps={{
+                                                    name: 'UserType',
+                                                    id: 'uncontrolled-native',
+                                                }}
+
+                                            >
+                                                <option value="ASC" defaultValue >ASC</option>
+                                                <option value="DESC" >DESC</option>
+
+                                            </NativeSelect>
+                                        </FormControl>
+                                        
+                                    </MDBox>
                                 <DataTable
                                     table={{ columns, rows }}
                                     isSorted={false}
