@@ -340,6 +340,15 @@ const routes = [
   },
   {
     type: "collapse",
+    name: "add Deals",
+    key: "add Deals",
+    icon: <Icon fontSize="small">people</Icon>,
+    route: "/deals/add/:id",
+    inSideNav: false,
+    component: <AddDeal />,
+  },
+  {
+    type: "collapse",
     name: "Address",
     key: "Address",
     icon: <Icon fontSize="small">home</Icon>,
