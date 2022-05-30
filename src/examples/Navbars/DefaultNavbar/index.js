@@ -124,7 +124,7 @@ function DefaultNavbar({ transparent, light, action }) {
           />
           <DefaultNavbarLink
             icon="person"
-            name="W"
+            name="Agents"
             route="/users/4"
             light={light}
           />

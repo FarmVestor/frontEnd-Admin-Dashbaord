@@ -111,8 +111,8 @@ function Requests() {
               id: <>{request.id}</>,
               farmArea: <>{request.farmArea}</>,
               budget: <>{request.budget}</>,
-              farmKind: <>{request.farmKindId}</>,
-              cropName: <>{request.cropId }</>,
+              farmKind: <>{request.FarmKind.farmKind}</>,
+              cropName: <>{request.Crop.cropName }</>,
               userName: <>{request.User?.userName }</>,
               actions: <>
                 <MDButton variant="text" color="error" onClick={() => { deleteReuest(request.id) }}>

@@ -203,7 +203,7 @@ export default function App() {
 			<MDSnackbar
                 color={appCtx.snackbar.type}
                 icon={appCtx.snackbar.type == 'success' ? 'check' : 'warning'}
-                title="Places App"
+                title="Green Hand App"
                 content={appCtx.snackbar.message}
                 open={appCtx.snackbar.open}
                 //  onClose={closeSnackBar}

@@ -21,7 +21,8 @@ import FormControl from '@mui/material/FormControl';
 import { InputLabel } from "@mui/material";
 import { NativeSelect } from "@mui/material";
 const columns = [
-    { Header: "user Id", accessor: "userId", width: "45%", align: "left" },
+    { Header: "Farmer name", accessor: "userId", width: "45%", align: "left" },
+    { Header: "Farm Id", accessor: "id", width: "45%", align: "left" },
     { Header: "farm Name", accessor: "farmName", align: "left" },
     { Header: "farm Picture", accessor: "farmPicture", align: "left" },
     { Header: "city Id", accessor: "cityId", align: "left" },
@@ -69,10 +70,11 @@ function Farms() {
         }, 'get')
             .then(farms => {
                     const allfarms = farms?.data?.map((farm) => {
-                       console.log(farm.User.userName)
+                       console.log(farm)
                         
                         return {
                             userId: <>{farm.User.userName}</>,
+                            id: <>{farm.id}</>,
                             farmName: <>{farm.farmName}</>,
                             farmPicture: <><img src={farm.farmPicture} width="80" /></>,
                             cityId: <>{farm.cityId}</>,
@@ -95,6 +97,11 @@ function Farms() {
                                 <Link to={`/farms/edit/${farm.id}`}>
                                     <MDButton variant="text" color="info">
                                         <Icon>edit</Icon>&nbsp;edit
+                                    </MDButton>
+                                </Link>
+                                <Link to={`/deals/add/${farm.id}`}>
+                                    <MDButton variant="text" color="info">
+                                        <Icon>person</Icon>&nbsp;Deal
                                     </MDButton>
                                 </Link>
                             </>,
