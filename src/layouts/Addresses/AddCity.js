@@ -14,7 +14,6 @@ import Card from "@mui/material/Card";
 // Material Dashboard 2 React components
 import MDButton from "components/MDButton";
 
-
 import MDInput from "components/MDInput";
 import Checkbox from "@mui/material/Checkbox";
 
@@ -43,6 +42,7 @@ import MenuItem from '@mui/material/MenuItem';
 
 
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
+import { NativeSelect } from "@mui/material";
 function Map({ center, zoom, setLat, setLng }) {
     const mapRef = useRef(null)
     const [map, setMap] = useState()
@@ -86,17 +86,7 @@ function AddCity() {
         })
     }, [])
 
-    // const [countryData, setCountryData] = useState("")
-
-    // useEffect(() => {
-    //     request(`${process.env.REACT_APP_API_URL}addresses/city`, {}, {}, {
-    //         auth: true,
-
-    //         snackBar: true
-    //     }, 'get').then(data => {
-    //         console.log("cities data",data.data)
-    //     })
-    // }, [])
+  
     const saveCity = () => {
         const longitude = PlaceLongRef.current.querySelector('input[type=text]').value
         const latitude = PlaceLatRef.current.querySelector('input[type=text]').value
@@ -171,7 +161,7 @@ function AddCity() {
                                         <Box sx={{ minWidth: 120 }}>
                                             <FormControl fullWidth>
                                                 <InputLabel id="demo-simple-select-label">Governrate</InputLabel>
-                                                <Select
+                                                <NativeSelect
                                                     labelId="demo-simple-select-label"
                                                     id="demo-simple-select"
                                                     // value={governratesData?.id}
@@ -181,9 +171,9 @@ function AddCity() {
                                                 >
 
                                                     {governratesData?.map((governrate, i) => {
-                                                        return <MenuItem value={governrate.id} key={governrate.id}>{governrate.governrateName}</MenuItem>
+                                                        return <option value={governrate.id} key={governrate.id}>{governrate.governrateName}</option>
                                                     })}
-                                                </Select>
+                                                </NativeSelect>
                                             </FormControl>
                                         </Box>
                                     </MDBox>
