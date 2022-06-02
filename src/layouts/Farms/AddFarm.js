@@ -9,7 +9,7 @@ import MDButton from "components/MDButton";
 import { AuthContext } from "context/AuthContext";
 import { useContext, useRef, useState, useEffect } from "react";
 import MDSnackbar from "components/MDSnackbar";
-import { FormControl } from "@mui/material";
+import { FormControl, NativeSelect } from "@mui/material";
 import { FormLabel } from "@mui/material";
 import { RadioGroup } from "@mui/material";
 import { FormControlLabel } from "@mui/material";
@@ -18,7 +18,6 @@ import { Box } from "@mui/material";
 import Select from '@mui/material/Select';
 import { MenuItem } from "@mui/material";
 import { useRequest } from "lib/functions";
-
 // import { useRef } from "react";
 // import { FourGMobiledataRounded } from "@mui/icons-material";
 
@@ -273,22 +272,22 @@ function AddFarms() {
                         <InputLabel id="demo-simple-select-label">
                           City
                         </InputLabel>
-                        <Select
+                        <NativeSelect
                           labelId="demo-simple-select-label"
                           id="demo-simple-select"
-                          value={farmKind}
+                          value={city}
                           label="City"
                           defaultValue="1"
                           onChange={handleCityChange}
                         >
                           {cityData?.map((city, i) => {
                             return (
-                              <MenuItem value={city.id} key={i}>
+                              <option value={city.id} key={i}>
                                 {city.cityName}
-                              </MenuItem>
+                              </option>
                             );
                           })}
-                        </Select>
+                        </NativeSelect>
                       </FormControl>
                     </Box>
                   </MDBox>
@@ -298,22 +297,22 @@ function AddFarms() {
                         <InputLabel id="demo-simple-select-label">
                           Crops
                         </InputLabel>
-                        <Select
+                        <NativeSelect
                           labelId="demo-simple-select-label"
                           id="demo-simple-select"
-                          value={farmKind}
+                          value={crop}
                           label="Crops"
                           defaultValue="1"
                           onChange={handleCropChange}
                         >
                           {lastCropData?.map((crop, i) => {
                             return (
-                              <MenuItem value={crop.id} key={i}>
+                              <option value={crop.id} key={i}>
                                 {crop.cropName}
-                              </MenuItem>
+                              </option>
                             );
                           })}
-                        </Select>
+                        </NativeSelect>
                       </FormControl>
                     </Box>
                   </MDBox>
@@ -323,22 +322,22 @@ function AddFarms() {
                         <InputLabel id="demo-simple-select-label">
                           Farm Last Crops
                         </InputLabel>
-                        <Select
+                        <NativeSelect
                           labelId="demo-simple-select-label"
                           id="demo-simple-select"
-                          value={farmKind}
+                          value={lastCrop}
                           label="Crops"
                           defaultValue="1"
                           onChange={handleLastCropChange}
                         >
                           {cropData?.map((crop, i) => {
                             return (
-                              <MenuItem value={crop.id} key={i}>
+                              <option value={crop.id} key={i}>
                                 {crop.cropName}
-                              </MenuItem>
+                              </option>
                             );
                           })}
-                        </Select>
+                        </NativeSelect>
                       </FormControl>
                     </Box>
                   </MDBox>
@@ -348,7 +347,7 @@ function AddFarms() {
                         <InputLabel id="demo-simple-select-label">
                           Farm Kind
                         </InputLabel>
-                        <Select
+                        <NativeSelect
                           labelId="demo-simple-select-label"
                           id="demo-simple-select"
                           value={farmKind}
@@ -358,12 +357,12 @@ function AddFarms() {
                         >
                           {farmKindData?.map((farmkind, i) => {
                             return (
-                              <MenuItem value={farmkind.id} key={i}>
+                              <option value={farmkind.id} key={i}>
                                 {farmkind.farmKind}
-                              </MenuItem>
+                              </option>
                             );
                           })}
-                        </Select>
+                        </NativeSelect>
                       </FormControl>
                     </Box>
                   </MDBox>

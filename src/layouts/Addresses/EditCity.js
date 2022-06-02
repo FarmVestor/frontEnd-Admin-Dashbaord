@@ -10,20 +10,14 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
-
 // Material Dashboard 2 React components
 import MDButton from "components/MDButton";
-
-
 import MDInput from "components/MDInput";
-import Checkbox from "@mui/material/Checkbox";
 
 
 // @mui material components
-import Icon from "@mui/material/Icon";
 
 // Material Dashboard 2 React context
-import { useMaterialUIController } from "context";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -43,6 +37,7 @@ import MenuItem from '@mui/material/MenuItem';
 
 
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
+import { NativeSelect } from "@mui/material";
 function Map({ center, zoom, setLat, setLng }) {
     const mapRef = useRef(null)
     const [map, setMap] = useState()
@@ -174,7 +169,7 @@ function EditCity() {
                                         <Box sx={{ minWidth: 120 }}>
                                             <FormControl fullWidth>
                                                 <InputLabel id="demo-simple-select-label">Governrate</InputLabel>
-                                                <Select
+                                                <NativeSelect
                                                     labelId="demo-simple-select-label"
                                                     id="demo-simple-select"
                                                     // value={governratesData?.id}
@@ -184,9 +179,9 @@ function EditCity() {
                                                 >
 
                                                     {governratesData?.map((governrate, i) => {
-                                                        return <MenuItem value={governrate.id} key={governrate.id}>{governrate.governrateName}</MenuItem>
+                                                        return <option value={governrate.id} key={governrate.id}>{governrate.governrateName}</option>
                                                     })}
-                                                </Select>
+                                                </NativeSelect>
                                             </FormControl>
                                         </Box>
                                     </MDBox>
