@@ -10,7 +10,7 @@ export const useRequest = () => {
     const sendRequest = (url, headers, body, config = {}, method = 'GET') => {
         let options = {
             headers: {},
-            // body: body
+            body: body
         }
         // options.body = body
 

@@ -25,7 +25,7 @@ import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 
 import NativeSelect from '@mui/material/NativeSelect';
-import { DataGrid, GridToolbar,GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridToolbar, GridColDef } from '@mui/x-data-grid';
 
 const columns = [
     { Header: "Country", accessor: "Country", width: "70%", align: "left" },
@@ -40,22 +40,26 @@ const GovColumns = [
 
 
 function Adresses() {
-    const CityColumns =[
+    const CityColumns = [
         { field: 'id', headerName: 'ID', width: 70 },
         { field: "City", headerName: "City", width: 160, align: "left" },
         { field: "Governrate", headerName: "Governrate", width: 160, align: "left" },
         { field: "Country", headerName: "Country", width: 160, align: "left" },
-    
-        { field: "actions", headerName: "actions",width: 460, align: "center", renderCell: (params)=>{ return <>
-            <MDButton variant="text" color="error" onClick={() => { deleteDeal(params.id) }}>
-                <Icon>delete</Icon>&nbsp;delete
-            </MDButton>
-            <Link to={`/addresses/city/edit/${params.id}`}>
-                <MDButton variant="text" color="info">
-                    <Icon>edit</Icon>&nbsp;edit
-                </MDButton>
-            </Link>
-        </>} },
+
+        {
+            field: "actions", headerName: "actions", width: 260, align: "center", renderCell: (params) => {
+                return <>
+                    <MDButton variant="text" color="error" onClick={() => { deleteRow(params.id) }}>
+                        <Icon>delete</Icon>&nbsp;delete
+                    </MDButton>
+                    <Link to={`/addresses/city/edit/${params.id}`}>
+                        <MDButton variant="text" color="info">
+                            <Icon>edit</Icon>&nbsp;edit
+                        </MDButton>
+                    </Link>
+                </>
+            }
+        },
     ]
     const [order, setOrder] = useState('ASC')
     const request = useRequest()
@@ -65,10 +69,10 @@ function Adresses() {
     const deleteRow = (userId, row) => {
         console.log(userId)
         if (window.confirm('Are you sure')) {
-            request(`${process.env.REACT_APP_API_URL}addresses/city/${userId}`, {}, {}, {
+            request(`${process.env.REACT_APP_API_URL}addresses/city/${userId}`, {}, null, {
                 auth: true,
 
-                snackBar: true
+                snackbar: true
 
             }, 'delete').then(data => {
                 console.log(data.messages)
@@ -79,27 +83,20 @@ function Adresses() {
 
     useEffect(() => {
 
-        request(`${process.env.REACT_APP_API_URL}addresses/city`, {}, {}, {
+        request(`${process.env.REACT_APP_API_URL}addresses/city`, {}, null, {
             auth: true,
 
-            snackBar: true
+            snackbar: true
 
         }, 'get')
             .then(cities => {
 
                 const allcities = cities?.data?.map((city) => {
-                    let action=[]
-                        
                     return {
                         id: city.id,
                         City: city.cityName,
                         Governrate: city.Governrate.governrateName,
-                        Country:city.Governrate.Country.countryName,
-
-                        
-                            
-                            
-                        
+                        Country: city.Governrate.Country.countryName,
                     }
                 })
                 setCityRows(allcities)
@@ -241,19 +238,19 @@ function Adresses() {
                                 </Grid>
 
                             </MDBox >
-                            
-                                
-                                <MDBox height="70vh" pt={3}>
-                                    <DataGrid
-                                        rows={CityRows}
-                                        columns={CityColumns}
-                                        components={{ Toolbar: GridToolbar }}
-                                        pageSize={5}
-                                        rowsPerPageOptions={[5]}
-                                        checkboxSelection
-                                    />
-                                </MDBox>
-                                 {/* <DataTable
+
+
+                            <MDBox height="70vh" pt={3}>
+                                <DataGrid
+                                    rows={CityRows}
+                                    columns={CityColumns}
+                                    components={{ Toolbar: GridToolbar }}
+                                    pageSize={5}
+                                    rowsPerPageOptions={[5]}
+                                    checkboxSelection
+                                />
+                            </MDBox>
+                            {/* <DataTable
                                     table={{ columns: CityColumns, rows: CityRows }}
 
                                     isSorted={false}
@@ -263,9 +260,9 @@ function Adresses() {
                                     noEndBorder
                                 /> 
                                  */}
-                                
 
-                           
+
+
                         </Card>
                     </Grid>
                 </Grid>
