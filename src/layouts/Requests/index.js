@@ -51,8 +51,8 @@ function Requests() {
     if (window.confirm('Are you sure')) {
       request(`${process.env.REACT_APP_API_URL}requests/${requestId}`, {}, {}, {
           auth: true,
-
           snackbar: true
+
 
       }, 'delete').then(data => {
           console.log(data.messages)
@@ -111,8 +111,8 @@ function Requests() {
               id: <>{request.id}</>,
               farmArea: <>{request.farmArea}</>,
               budget: <>{request.budget}</>,
-              farmKind: <>{request.FarmKind.farmKind}</>,
-              cropName: <>{request.Crop.cropName }</>,
+              farmKind: <>{request.FarmKind?.farmKind}</>,
+              cropName: <>{request.Crop?.cropName }</>,
               userName: <>{request.User?.userName }</>,
               actions: <>
                 <MDButton variant="text" color="error" onClick={() => { deleteReuest(request.id) }}>

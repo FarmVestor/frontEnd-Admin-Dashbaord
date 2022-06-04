@@ -32,8 +32,6 @@ function EditUserType() {
         request(`${process.env.REACT_APP_API_URL}users/userType/${id}`, {}, {}, {
             auth: true,
             
-            snackBar:true
-            
         }, 'get').then(currentUser => setUserTypesData(currentUser.data))
             
        
@@ -48,7 +46,9 @@ function EditUserType() {
         }, {
             auth: true,
             type: 'json',
-            snackBar:true
+            snacbar:true,
+            redirect:"/users"
+
             
         }, 'put').then(data => {
             console.log("edit data",data)

@@ -71,7 +71,6 @@ function Adresses() {
         if (window.confirm('Are you sure')) {
             request(`${process.env.REACT_APP_API_URL}addresses/city/${userId}`, {}, null, {
                 auth: true,
-
                 snackbar: true
 
             }, 'delete').then(data => {

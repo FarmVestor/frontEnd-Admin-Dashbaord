@@ -33,13 +33,13 @@ function UserTypes() {
     const [order,setOrder]=useState('ASC')
     const request = useRequest()
     const [rows, setRows] = useState([])
+
     const deleteUserType = (userId) => {
         console.log(userId)
         if (window.confirm('Are you sure')) {
             request(`${process.env.REACT_APP_API_URL}users/userType/${userId}`, {}, {}, {
                 auth: true,
-
-                snackBar: true
+                snackbar: true
 
             }, 'delete').then(data=>{
                 console.log(data.messages)
@@ -52,9 +52,6 @@ function UserTypes() {
 
         request(`${process.env.REACT_APP_API_URL}users/userType/all`, {}, {}, {
             auth: true,
-
-            snackBar: true
-
         }, 'get')
             .then(userTypes => {
 

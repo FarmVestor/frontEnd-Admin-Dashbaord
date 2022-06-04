@@ -63,7 +63,14 @@ function EditFarms() {
     formdata.append("farmDescription", farmData.farmDescription);
     formdata.append("farmPicture", farmPicture[0]);
 
-
+  //   request(`${process.env.REACT_APP_API_URL}farms/${id}`, {}, formdata, {
+  //     auth: true,
+  //     // type: 'json',
+  //     snackbar: true,
+  //     redirect:"/farms"
+  // }, 'put').then(farmedited => {
+  //             console.log(farmedited)
+  // })
     fetch(`${process.env.REACT_APP_API_URL}farms/${id}`, {
       method: "put",
       body: formdata,

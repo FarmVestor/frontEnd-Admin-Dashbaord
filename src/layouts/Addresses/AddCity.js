@@ -78,8 +78,6 @@ function AddCity() {
     useEffect(() => {
         request(`${process.env.REACT_APP_API_URL}addresses/governrate`, {}, {}, {
             auth: true,
-
-            snackBar: true
         }, 'get').then(data => {
             setGovernratesData(data.data)
             console.log("governrate data", data.data)
@@ -101,7 +99,8 @@ function AddCity() {
         }, {
             auth: true,
             type: 'json',
-            snackBar: true
+            redirect:"/adresses/",
+            snackbar: true
         }, 'post').then(data => {
             console.log("city data", data)
         })

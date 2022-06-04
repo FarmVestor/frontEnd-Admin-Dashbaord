@@ -121,7 +121,8 @@ function AddRequest() {
         }, {
             auth: true,
             type: 'json',
-            snackbar: true
+            snackbar: true,
+            redirect:"/requests"
         }, 'post').then(result => {
             console.log(result)
         })

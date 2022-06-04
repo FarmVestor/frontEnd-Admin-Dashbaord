@@ -71,8 +71,6 @@ function EditCity() {
     useEffect(() => {
         request(`${process.env.REACT_APP_API_URL}addresses/governrate`, {}, {}, {
             auth: true,
-
-            snackBar: true
         }, 'get').then(data => {
             setGovernratesData(data.data)
             console.log("governrate data", data.data)
@@ -83,8 +81,6 @@ function EditCity() {
     useEffect(() => {
         request(`${process.env.REACT_APP_API_URL}addresses/city/${id}`, {}, {}, {
             auth: true,
-
-            snackBar: true
         }, 'get').then(data => {
             console.log("city data", data.data)
             setCityData(data.data)
@@ -102,6 +98,7 @@ function EditCity() {
         }, {
             auth: true,
             type: 'json',
+            redirect:"/adresses/",
             snackbar: true
         }, 'put').then(data => {
             console.log("updated city data", data)
