@@ -25,6 +25,7 @@ import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 
 import NativeSelect from '@mui/material/NativeSelect';
+import { DataGrid, GridToolbar,GridColDef } from '@mui/x-data-grid';
 
 const columns = [
     { Header: "Country", accessor: "Country", width: "70%", align: "left" },
@@ -36,15 +37,26 @@ const GovColumns = [
     { Header: "Country", accessor: "Country", width: "35%", align: "left" },
     { Header: "actions", accessor: "actions", align: "center" },
 ]
-const CityColumns = [
-    { Header: "City", accessor: "City", width: "23.3%", align: "left" },
-    { Header: "Governrate", accessor: "Governrate", width: "23.3%", align: "left" },
-    { Header: "Country", accessor: "Country", width: "23.3%", align: "left" },
 
-    { Header: "actions", accessor: "actions", align: "center" },
-]
 
-function UserTypes() {
+function Adresses() {
+    const CityColumns =[
+        { field: 'id', headerName: 'ID', width: 70 },
+        { field: "City", headerName: "City", width: 160, align: "left" },
+        { field: "Governrate", headerName: "Governrate", width: 160, align: "left" },
+        { field: "Country", headerName: "Country", width: 160, align: "left" },
+    
+        { field: "actions", headerName: "actions",width: 460, align: "center", renderCell: (params)=>{ return <>
+            <MDButton variant="text" color="error" onClick={() => { deleteDeal(params.id) }}>
+                <Icon>delete</Icon>&nbsp;delete
+            </MDButton>
+            <Link to={`/addresses/city/edit/${params.id}`}>
+                <MDButton variant="text" color="info">
+                    <Icon>edit</Icon>&nbsp;edit
+                </MDButton>
+            </Link>
+        </>} },
+    ]
     const [order, setOrder] = useState('ASC')
     const request = useRequest()
     const [rows, setRows] = useState([])
@@ -65,77 +77,9 @@ function UserTypes() {
 
     }
 
-    // useEffect(() => {
-
-    //     request(`${process.env.REACT_APP_API_URL}addresses/country`, {}, {}, {
-    //         auth: true,
-
-    //         snackBar: true
-
-    //     }, 'get')
-    //         .then(countries => {
-
-    //             const allcountries = countries.data.map((country) => {
-    //                 console.log(country)
-    //                 return {
-    //                     Country: <>{country.countryName}</>,
-
-    //                     actions: <>
-    //                         <MDButton variant="text" color="error" onClick={() => { deleteRow(country.id, "country") }}>
-    //                             <Icon>delete</Icon>&nbsp;delete
-    //                         </MDButton>
-    //                         <Link to={`/addresses/country/edit/${country.id}`}>
-    //                             <MDButton variant="text" color="info">
-    //                                 <Icon>edit</Icon>&nbsp;edit
-    //                             </MDButton>
-    //                         </Link>
-    //                     </>,
-    //                 }
-    //             })
-    //             setRows(allcountries)
-
-    //         })
-    // }, [])
-
-
-    // // show Governrate tables
-    // useEffect(() => {
-
-    //     request(`${process.env.REACT_APP_API_URL}addresses/governrate`, {}, {}, {
-    //         auth: true,
-
-    //         snackBar: true
-
-    //     }, 'get')
-    //         .then(governrates => {
-
-    //             const allgovernrates = governrates.data.map((governrate) => {
-    //                 console.log(governrate)
-    //                 return {
-    //                     Governrate: <>{governrate.governrateName}</>,
-    //                     Country: <>{governrate.Country.countryName}</>,
-
-    //                     actions: <>
-    //                         <MDButton variant="text" color="error" onClick={() => { deleteRow(governrate.id, "governrate") }}>
-    //                             <Icon>delete</Icon>&nbsp;delete
-    //                         </MDButton>
-    //                         <Link to={`/addresses/governrate/edit/${governrate.id}`}>
-    //                             <MDButton variant="text" color="info">
-    //                                 <Icon>edit</Icon>&nbsp;edit
-    //                             </MDButton>
-    //                         </Link>
-    //                     </>,
-    //                 }
-    //             })
-    //             setGovRows(allgovernrates)
-
-    //         })
-    // }, [])
-
-    // show cities tables
     useEffect(() => {
 
-        request(`${process.env.REACT_APP_API_URL}addresses/city?order=${order}`, {}, {}, {
+        request(`${process.env.REACT_APP_API_URL}addresses/city`, {}, {}, {
             auth: true,
 
             snackBar: true
@@ -143,23 +87,19 @@ function UserTypes() {
         }, 'get')
             .then(cities => {
 
-                const allcities = cities.data.map((city) => {
-                    console.log(city)
+                const allcities = cities?.data?.map((city) => {
+                    let action=[]
+                        
                     return {
-                        City: <>{city.cityName}</>,
-                        Governrate: <>{city.Governrate.governrateName}</>,
-                        Country: <>{city.Governrate.Country.countryName}</>,
+                        id: city.id,
+                        City: city.cityName,
+                        Governrate: city.Governrate.governrateName,
+                        Country:city.Governrate.Country.countryName,
 
-                        actions: <>
-                            <MDButton variant="text" color="error" onClick={() => { deleteRow(city.id, "city") }}>
-                                <Icon>delete</Icon>&nbsp;delete
-                            </MDButton>
-                            <Link to={`/addresses/city/edit/${city.id}`}>
-                                <MDButton variant="text" color="info">
-                                    <Icon>edit</Icon>&nbsp;edit
-                                </MDButton>
-                            </Link>
-                        </>,
+                        
+                            
+                            
+                        
                     }
                 })
                 setCityRows(allcities)
@@ -301,30 +241,19 @@ function UserTypes() {
                                 </Grid>
 
                             </MDBox >
-                            <MDBox pt={3} >
-                                <MDBox mb={2} p={2}>
-                                    <Box sx={{ minWidth: 120, height: 30 }}>
-                                        <FormControl fullWidth >
-                                            <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                                                Order
-                                            </InputLabel>
-                                            <NativeSelect
-                                                defaultValue={"ASC"}
-                                                onChange={(e) => { setOrder(e.target.value) }}
-                                                inputProps={{
-                                                    name: 'UserType',
-                                                    id: 'uncontrolled-native',
-                                                }}
-
-                                            >
-                                                <option value="ASC" defaultValue >ASC</option>
-                                                <option value="DESC" >DESC</option>
-
-                                            </NativeSelect>
-                                        </FormControl>
-                                    </Box>
+                            
+                                
+                                <MDBox height="70vh" pt={3}>
+                                    <DataGrid
+                                        rows={CityRows}
+                                        columns={CityColumns}
+                                        components={{ Toolbar: GridToolbar }}
+                                        pageSize={5}
+                                        rowsPerPageOptions={[5]}
+                                        checkboxSelection
+                                    />
                                 </MDBox>
-                                <DataTable
+                                 {/* <DataTable
                                     table={{ columns: CityColumns, rows: CityRows }}
 
                                     isSorted={false}
@@ -332,9 +261,11 @@ function UserTypes() {
                                     entriesPerPage={true}
                                     showTotalEntries={false}
                                     noEndBorder
-                                />
+                                /> 
+                                 */}
+                                
 
-                            </MDBox>
+                           
                         </Card>
                     </Grid>
                 </Grid>
@@ -345,4 +276,4 @@ function UserTypes() {
     );
 }
 
-export default UserTypes;
+export default Adresses;
