@@ -68,7 +68,9 @@ function AddDeal() {
         }, {
             auth: true,
             type: 'json',
-            snackBar: true
+            snackbar: true,
+            redirect:"/Deals/"
+
         }, 'post').then(data => {
             console.log(data)
         })

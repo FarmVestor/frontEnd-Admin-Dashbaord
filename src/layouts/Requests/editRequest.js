@@ -154,7 +154,8 @@ function EditRquest() {
         }, {
             auth: true,
             type: 'json',
-            snackbar: true
+            snackbar: true,
+            redirect:"/requests"
         }, 'put').then(result => {
                     console.log(result)
         })

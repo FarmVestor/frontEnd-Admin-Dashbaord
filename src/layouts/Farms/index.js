@@ -51,26 +51,21 @@ function Farms() {
         if (window.confirm('Are you sure')) {
             request(`${process.env.REACT_APP_API_URL}farms/${farmId}`, {}, {}, {
                 auth: true,
-
                 snackbar: true,
+
             }, 'delete')
             .then(deleted=>{
                 console.log(deleted)
             })
-
-          
-
         }
     }
 
     useEffect(() => {
-        request(`${process.env.REACT_APP_API_URL}farms?order=${order}`, {}, {}, {
-            auth: true,
+        request(`${process.env.REACT_APP_API_URL}farms?order=${order}`, {}, null, {
+            // auth: true,
         }, 'get')
             .then(farms => {
                     const allfarms = farms?.data?.map((farm) => {
-                       console.log(farm)
-                        
                         return {
                             userId: <>{farm.User.userName}</>,
                             farmName: <>{farm.farmName}</>,

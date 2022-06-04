@@ -9,9 +9,10 @@ export const useRequest = () => {
     
     const sendRequest = (url, headers, body, config = {}, method = 'GET') => {
         let options = {
-            headers: {}
+            headers: {},
+            body: body
         }
-
+        // options.body = body
 
         options.method = method
         if (config?.auth) {

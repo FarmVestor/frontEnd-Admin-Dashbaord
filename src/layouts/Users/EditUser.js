@@ -106,7 +106,9 @@ function EditUser() {
         }, {
             auth: true,
             type: 'json',
-            snackbar: true
+            snackbar: true,
+            redirect:"/users"
+
 
         }, 'put').then(data => {
             if (data.success) {

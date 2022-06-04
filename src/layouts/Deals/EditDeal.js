@@ -74,7 +74,9 @@ function EditDeal() {
         }, {
             auth: true,
             type: 'json',
-            snackbar: true
+            snackbar: true,
+            redirect:"/Deals/"
+
         }, 'put').then(data => {
             console.log(data)
         })

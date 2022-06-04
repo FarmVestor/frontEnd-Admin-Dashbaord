@@ -55,7 +55,9 @@ function AddUserType() {
         }, {
             auth: true,
             type: 'json',
-            snackBar: true
+            snackbar: true,
+            redirect:"/users"
+
         }, 'post').then(data=>{
             console.log(data)
         })

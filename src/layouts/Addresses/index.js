@@ -55,8 +55,7 @@ function UserTypes() {
         if (window.confirm('Are you sure')) {
             request(`${process.env.REACT_APP_API_URL}addresses/city/${userId}`, {}, {}, {
                 auth: true,
-
-                snackBar: true
+                snackbar: true
 
             }, 'delete').then(data => {
                 console.log(data.messages)
@@ -137,8 +136,6 @@ function UserTypes() {
 
         request(`${process.env.REACT_APP_API_URL}addresses/city?order=${order}`, {}, {}, {
             auth: true,
-
-            snackBar: true
 
         }, 'get')
             .then(cities => {

@@ -81,7 +81,7 @@ function AddFarms() {
     formdata.append("farmDescription", farmDescription);
     formdata.append("farmPicture", farmPicture[0]);
 
-
+  
     fetch(`${process.env.REACT_APP_API_URL}farms`, {
       method: "POST",
       body: formdata,
