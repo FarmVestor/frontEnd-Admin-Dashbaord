@@ -7,25 +7,18 @@ import Card from "@mui/material/Card";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import Footer from "examples/Footer";
-import DataTable from "examples/Tables/DataTable";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import Icon from "@mui/material/Icon";
 import MDButton from "components/MDButton";
 
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // Authentication layout components
 import { useRequest } from "lib/functions";
 
 
-import InputLabel from '@mui/material/InputLabel';
 
-import Box from '@mui/material/Box';
-import Select from '@mui/material/Select';
-import FormControl from '@mui/material/FormControl';
-
-import NativeSelect from '@mui/material/NativeSelect';
-import { DataGrid, GridToolbar, GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 
 const columns = [
     { Header: "Country", accessor: "Country", width: "70%", align: "left" },
@@ -84,9 +77,6 @@ function Adresses() {
 
         request(`${process.env.REACT_APP_API_URL}addresses/city`, {}, null, {
             auth: true,
-
-            snackbar: true
-
         }, 'get')
             .then(cities => {
 

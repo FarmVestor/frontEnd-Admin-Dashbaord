@@ -105,7 +105,7 @@ function AddFarms() {
 
 
   useEffect(() => {
-    request(`${process.env.REACT_APP_API_URL}farms/farmKinds/all`, {}, {}, {
+    request(`${process.env.REACT_APP_API_URL}farms/farmKinds/all`, {},null, {
       auth: true,
     }, 'get')
       .then((farmkinds) => {
@@ -117,7 +117,7 @@ function AddFarms() {
   }, []);
 
   useEffect(() => {
-    request(`${process.env.REACT_APP_API_URL}addresses/city`, {}, {}, {
+    request(`${process.env.REACT_APP_API_URL}addresses/city`, {}, null, {
       auth: true,
     }, 'get')
       .then((city) => {
@@ -129,7 +129,7 @@ function AddFarms() {
   }, []);
 
   useEffect(() => {
-    request(`${process.env.REACT_APP_API_URL}farms/crops/all`, {}, {}, {
+    request(`${process.env.REACT_APP_API_URL}farms/crops/all`, {}, null, {
       auth: true,
     }, 'get')
       .then((crop) => {

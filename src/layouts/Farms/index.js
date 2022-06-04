@@ -80,7 +80,7 @@ function Farms() {
                             farmKindId: <>{farm.FarmKind?.farmKind ? farm.FarmKind?.farmKind:"-" }</>,
                             farmVisibiltiy: <>{farm.farmVisibiltiy ? <VisibilityIcon/> : <VisibilityOffIcon/>}</>,
                             farmWaterSalinity: <>{farm.farmWaterSalinity}</>,
-                            farmLastCropsId: <>{farm.Crop.cropName}</>,
+                            farmLastCropsId: <>{farm.LastCrop.cropName}</>,
                             farmFertilizer: <>{farm.farmFertilizer}</>,
                             farmTreesAge: <>{farm.farmTreesAge}</>,
                             farmDescription: <>{farm.farmDescription}</>,
