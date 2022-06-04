@@ -19,7 +19,7 @@ import Select from '@mui/material/Select';
 import { MenuItem } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useRequest } from "lib/functions";
-
+import { NativeSelect } from "@mui/material";
 function EditFarms() {
   const request = useRequest()
   const ctx = useContext(AuthContext);
@@ -80,7 +80,7 @@ function EditFarms() {
     }).then(responce => {
       responce.json().then(farmedited => {
         // console.log(farmedited)
-        setServerResponce(farmedited.message.join(' '))
+        setServerResponce(farmedited.messages.join(' '))
         if (farmedited.success) {
           setSnakBarColor('success')
         }
@@ -288,7 +288,7 @@ function EditFarms() {
                         <InputLabel id="demo-simple-select-label">
                           City
                         </InputLabel>
-                        <Select
+                        <NativeSelect
                           labelId="demo-simple-select-label"
                           id="demo-simple-select"
                           value={farmKind}
@@ -298,12 +298,12 @@ function EditFarms() {
                         >
                           {cityData?.map((city, i) => {
                             return (
-                              <MenuItem value={city.id} key={i}>
+                              <option value={city.id} key={i}>
                                 {city.cityName}
-                              </MenuItem>
+                              </option>
                             );
                           })}
-                        </Select>
+                        </NativeSelect>
                       </FormControl>
                     </Box>
                   </MDBox>
@@ -313,7 +313,7 @@ function EditFarms() {
                         <InputLabel id="demo-simple-select-label">
                           Crops
                         </InputLabel>
-                        <Select
+                        <NativeSelect
                           labelId="demo-simple-select-label"
                           id="demo-simple-select"
                           value={farmKind}
@@ -323,12 +323,12 @@ function EditFarms() {
                         >
                           {lastCropData?.map((crop, i) => {
                             return (
-                              <MenuItem value={crop.id} key={i}>
+                              <option value={crop.id} key={i}>
                                 {crop.cropName}
-                              </MenuItem>
+                              </option>
                             );
                           })}
-                        </Select>
+                        </NativeSelect>
                       </FormControl>
                     </Box>
                   </MDBox>
@@ -338,7 +338,7 @@ function EditFarms() {
                         <InputLabel id="demo-simple-select-label">
                           Farm Last Crops
                         </InputLabel>
-                        <Select
+                        <NativeSelect
                           labelId="demo-simple-select-label"
                           id="demo-simple-select"
                           value={farmKind}
@@ -348,12 +348,12 @@ function EditFarms() {
                         >
                           {cropData?.map((crop, i) => {
                             return (
-                              <MenuItem value={crop.id} key={i}>
+                              <option value={crop.id} key={i}>
                                 {crop.cropName}
-                              </MenuItem>
+                              </option>
                             );
                           })}
-                        </Select>
+                        </NativeSelect>
                       </FormControl>
                     </Box>
                   </MDBox>
@@ -363,7 +363,7 @@ function EditFarms() {
                         <InputLabel id="demo-simple-select-label">
                           Farm Kind
                         </InputLabel>
-                        <Select
+                        <NativeSelect
                           labelId="demo-simple-select-label"
                           id="demo-simple-select"
                           value={farmKind}
@@ -373,12 +373,12 @@ function EditFarms() {
                         >
                           {farmKindData?.map((farmkind, i) => {
                             return (
-                              <MenuItem value={farmkind.id} key={i}>
+                              <option value={farmkind.id} key={i}>
                                 {farmkind.farmKind}
-                              </MenuItem>
+                              </option>
                             );
                           })}
-                        </Select>
+                        </NativeSelect>
                       </FormControl>
                     </Box>
                   </MDBox>

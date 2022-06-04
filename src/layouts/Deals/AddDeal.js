@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 // Authentication layout components
 import CoverLayout from "layouts/authentication/components/CoverLayout";
@@ -39,6 +39,7 @@ import { FormLabel } from "@mui/material";
 import { RadioGroup } from "@mui/material";
 import { FormControlLabel } from "@mui/material";
 import { Radio } from "@mui/material";
+import { Params } from "react-router-dom";
 
 function AddDeal() {
     const request = useRequest()
@@ -47,12 +48,12 @@ function AddDeal() {
     const dealPriceIdRef = useRef(null)
     const dealAgentRef = useRef(null)
     const dealInvestorRef = useRef(null)
+    const {id} =useParams()
 
 
     const saveDeal = () => {
-        const farmId = dealFarmIdRef.current.querySelector('input[type=text]').value
+       const farmId= (!id) ? dealFarmIdRef.current.querySelector('input[type=text]').value  : id
         const dealPrice = dealPriceIdRef.current.querySelector('input[type=text]').value
-
         const agentId = dealAgentRef.current.querySelector('input[type=text]').value
         const investorId = dealInvestorRef.current.querySelector('input[type=text]').value
 
@@ -79,6 +80,7 @@ function AddDeal() {
 
     }
 
+   
     return (
         <DashboardLayout>
             <DashboardNavbar />
@@ -104,10 +106,12 @@ function AddDeal() {
                                 <MDBox component="form" role="form">
 
 
+                                   {(!id)? <MDBox mb={2}>
+                                        <MDInput type="text" label="farmId" variant="standard" fullWidth ref={dealFarmIdRef}
 
-                                    <MDBox mb={2}>
-                                        <MDInput type="text" label="farmId" variant="standard" fullWidth ref={dealFarmIdRef} />
-                                    </MDBox>
+                                        />
+                                    </MDBox> : <></>}
+                                    
 
                                     <MDBox mb={2}>
                                         <MDInput type="text" label="dealPrice" variant="standard" fullWidth ref={dealPriceIdRef} />

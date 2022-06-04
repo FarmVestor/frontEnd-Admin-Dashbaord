@@ -26,9 +26,9 @@ import Select from '@mui/material/Select';
 import NativeSelect from '@mui/material/NativeSelect';
 
 const columns = [
+    { Header: "ID", accessor: "id",  align: "left" },
     { Header: "name", accessor: "name",  align: "left" },
     { Header: "city", accessor: "city",  align: "left" },
-
     { Header: "email", accessor: "email", align: "left" },
     { Header: "actions", accessor: "actions",width: "30%", align: "center" },
 ]
@@ -60,6 +60,7 @@ function Users() {
                 const allusers = users?.data?.map((user) => {
                     console.log(user)
                     return {
+                        id: <>{user.id}</>,
                         name: <>{user.userName}</>,
                         city: <>{user.cityId}</>,
                         email: <>{user.userEmail}</>,

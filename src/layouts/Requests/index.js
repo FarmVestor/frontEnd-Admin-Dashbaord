@@ -104,7 +104,7 @@ function Requests() {
         .then(requests => {
             // console.log("deal data", deals)
 
-            const allRequests = requests.data.map((request, i) => {
+            const allRequests = requests?.data?.map((request, i) => {
             console.log("request",request)
 
             return {
