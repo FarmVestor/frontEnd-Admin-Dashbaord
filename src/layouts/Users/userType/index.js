@@ -12,16 +12,12 @@ import { useEffect, useState, useContext } from "react";
 import Icon from "@mui/material/Icon";
 import MDButton from "components/MDButton";
 
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // Authentication layout components
 import BasicLayout from "../BasicLayout";
 import { useRequest } from "lib/functions";
 
-
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import NativeSelect from '@mui/material/NativeSelect';
 
 const columns = [
     { Header: "name", accessor: "name", width: "45%", align: "left" },
@@ -37,7 +33,7 @@ function UserTypes() {
     const deleteUserType = (userId) => {
         console.log(userId)
         if (window.confirm('Are you sure')) {
-            request(`${process.env.REACT_APP_API_URL}users/userType/${userId}`, {}, {}, {
+            request(`${process.env.REACT_APP_API_URL}users/userType/${userId}`, {}, null, {
                 auth: true,
                 snackbar: true
 
@@ -50,7 +46,7 @@ function UserTypes() {
 
     useEffect(() => {
 
-        request(`${process.env.REACT_APP_API_URL}users/userType/all`, {}, {}, {
+        request(`${process.env.REACT_APP_API_URL}users/userType/all`, {}, null, {
             auth: true,
         }, 'get')
             .then(userTypes => {

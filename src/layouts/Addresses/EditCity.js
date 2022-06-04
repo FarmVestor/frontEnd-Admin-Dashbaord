@@ -1,9 +1,5 @@
-import { Link, useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 
-// Authentication layout components
-import CoverLayout from "layouts/authentication/components/CoverLayout";
-
-import bgImage from "assets/images/bg-sign-up-cover.jpeg";
 
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
@@ -14,12 +10,6 @@ import Card from "@mui/material/Card";
 import MDButton from "components/MDButton";
 import MDInput from "components/MDInput";
 
-
-// @mui material components
-
-// Material Dashboard 2 React context
-
-// Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import Footer from "examples/Footer";
@@ -31,12 +21,10 @@ import { useRequest } from "lib/functions";
 import InputLabel from '@mui/material/InputLabel';
 
 import Box from '@mui/material/Box';
-import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
-import MenuItem from '@mui/material/MenuItem';
 
 
-import { Wrapper, Status } from "@googlemaps/react-wrapper";
+import { Wrapper } from "@googlemaps/react-wrapper";
 import { NativeSelect } from "@mui/material";
 function Map({ center, zoom, setLat, setLng }) {
     const mapRef = useRef(null)
@@ -69,7 +57,7 @@ function EditCity() {
     const [governratesData, setGovernratesData] = useState([])
     const [governrateId, setGovernrateId] = useState()
     useEffect(() => {
-        request(`${process.env.REACT_APP_API_URL}addresses/governrate`, {}, {}, {
+        request(`${process.env.REACT_APP_API_URL}addresses/governrate`, {}, null, {
             auth: true,
         }, 'get').then(data => {
             setGovernratesData(data.data)
@@ -79,7 +67,7 @@ function EditCity() {
     const [cityData, setCityData] = useState("")
     const { id } = useParams()
     useEffect(() => {
-        request(`${process.env.REACT_APP_API_URL}addresses/city/${id}`, {}, {}, {
+        request(`${process.env.REACT_APP_API_URL}addresses/city/${id}`, {}, null, {
             auth: true,
         }, 'get').then(data => {
             console.log("city data", data.data)
@@ -110,7 +98,7 @@ function EditCity() {
     const handleGovernrateChange = (e) => {
 
         setGovernrateId(e.target.value)
-        request(`${process.env.REACT_APP_API_URL}addresses/governrate/${e.target.value}`, {}, {}, {
+        request(`${process.env.REACT_APP_API_URL}addresses/governrate/${e.target.value}`, {}, null, {
             auth: true,
         }, 'get').then(data => {
             console.log("governrate data by id ", data.data)

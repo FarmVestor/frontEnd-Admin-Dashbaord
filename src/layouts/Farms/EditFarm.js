@@ -15,8 +15,6 @@ import { RadioGroup } from "@mui/material";
 import { FormControlLabel } from "@mui/material";
 import { Radio } from "@mui/material";
 import { Box } from "@mui/material";
-import Select from '@mui/material/Select';
-import { MenuItem } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useRequest } from "lib/functions";
 import { NativeSelect } from "@mui/material";
@@ -62,15 +60,6 @@ function EditFarms() {
     formdata.append("farmTreesAge", farmData.farmTreesAge);
     formdata.append("farmDescription", farmData.farmDescription);
     formdata.append("farmPicture", farmPicture[0]);
-
-  //   request(`${process.env.REACT_APP_API_URL}farms/${id}`, {}, formdata, {
-  //     auth: true,
-  //     // type: 'json',
-  //     snackbar: true,
-  //     redirect:"/farms"
-  // }, 'put').then(farmedited => {
-  //             console.log(farmedited)
-  // })
     fetch(`${process.env.REACT_APP_API_URL}farms/${id}`, {
       method: "put",
       body: formdata,
@@ -95,7 +84,7 @@ function EditFarms() {
 
 
   useEffect(() => {
-    request(`${process.env.REACT_APP_API_URL}farms/farmKinds/all`, {}, {}, {
+    request(`${process.env.REACT_APP_API_URL}farms/farmKinds/all`, {}, null, {
       auth: true,
     }, 'get')
       .then((farmkinds) => {
@@ -107,7 +96,7 @@ function EditFarms() {
   }, []);
 
   useEffect(() => {
-    request(`${process.env.REACT_APP_API_URL}addresses/city`, {}, {}, {
+    request(`${process.env.REACT_APP_API_URL}addresses/city`, {}, null, {
       auth: true,
     }, 'get')
       .then((city) => {
@@ -120,11 +109,8 @@ function EditFarms() {
 
 
   useEffect(() => {
-    request(`${process.env.REACT_APP_API_URL}farms/crops/all`, {}, {}, {
+    request(`${process.env.REACT_APP_API_URL}farms/crops/all`, {}, null, {
       auth: true,
-
-      snackbar: true
-
     }, 'get')
       .then((crop) => {
         setCropData(crop?.data);
@@ -135,11 +121,8 @@ function EditFarms() {
   }, []);
 
   useEffect(() => {
-    request(`${process.env.REACT_APP_API_URL}farms/${id}`, {}, {}, {
+    request(`${process.env.REACT_APP_API_URL}farms/${id}`, {}, null, {
       auth: true,
-
-      snackbar: true
-
     }, 'get')
 
       .then(farms => {

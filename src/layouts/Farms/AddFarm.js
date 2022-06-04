@@ -15,12 +15,7 @@ import { RadioGroup } from "@mui/material";
 import { FormControlLabel } from "@mui/material";
 import { Radio } from "@mui/material";
 import { Box } from "@mui/material";
-import Select from '@mui/material/Select';
-import { MenuItem } from "@mui/material";
 import { useRequest } from "lib/functions";
-// import { useRef } from "react";
-// import { FourGMobiledataRounded } from "@mui/icons-material";
-
 function AddFarms() {
   const ctx = useContext(AuthContext);
   const request = useRequest()

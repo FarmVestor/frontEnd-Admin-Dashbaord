@@ -1,9 +1,4 @@
-import { Link } from "react-router-dom";
 
-// Authentication layout components
-import CoverLayout from "layouts/authentication/components/CoverLayout";
-
-import bgImage from "assets/images/bg-sign-up-cover.jpeg";
 
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
@@ -15,14 +10,10 @@ import Card from "@mui/material/Card";
 import MDButton from "components/MDButton";
 
 import MDInput from "components/MDInput";
-import Checkbox from "@mui/material/Checkbox";
 
 
 // @mui material components
-import Icon from "@mui/material/Icon";
 
-// Material Dashboard 2 React context
-import { useMaterialUIController } from "context";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -36,12 +27,10 @@ import { useRequest } from "lib/functions";
 import InputLabel from '@mui/material/InputLabel';
 
 import Box from '@mui/material/Box';
-import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
-import MenuItem from '@mui/material/MenuItem';
 
 
-import { Wrapper, Status } from "@googlemaps/react-wrapper";
+import { Wrapper} from "@googlemaps/react-wrapper";
 import { NativeSelect } from "@mui/material";
 function Map({ center, zoom, setLat, setLng }) {
     const mapRef = useRef(null)
@@ -111,7 +100,7 @@ function AddCity() {
     const handleGovernrateChange = (e) => {
 
         setGovernrateId(e.target.value)
-        request(`${process.env.REACT_APP_API_URL}addresses/governrate/${e.target.value}`, {}, {}, {
+        request(`${process.env.REACT_APP_API_URL}addresses/governrate/${e.target.value}`, {}, null, {
             auth: true,
         }, 'get').then(data => {
             console.log("governrate data by id ", data.data)

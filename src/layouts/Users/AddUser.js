@@ -1,31 +1,11 @@
-import { Link } from "react-router-dom";
-
-// Authentication layout components
-import CoverLayout from "layouts/authentication/components/CoverLayout";
-
-import bgImage from "assets/images/bg-sign-up-cover.jpeg";
 
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
-
-// Material Dashboard 2 React components
 import MDButton from "components/MDButton";
-
-
 import MDInput from "components/MDInput";
-import Checkbox from "@mui/material/Checkbox";
-
-
-// @mui material components
-import Icon from "@mui/material/Icon";
-
-// Material Dashboard 2 React context
-import { useMaterialUIController } from "context";
-
-// Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import Footer from "examples/Footer";
@@ -50,11 +30,8 @@ function AddUser() {
     const [userTypesData, setuserTypesData] = useState([])
     const [userTypeId, setUserType] = useState(1)
     useEffect(() => {
-        request(`${process.env.REACT_APP_API_URL}users/userType/all`, {}, {}, {
+        request(`${process.env.REACT_APP_API_URL}users/userType/all`, {}, null, {
             auth: true,
-
-            snackBar: true
-
         }, 'get').then(userTypes => {
 
             setuserTypesData(userTypes.data)
@@ -70,7 +47,7 @@ function AddUser() {
     //get countries
     const [countriesData, setCountriesData] = useState([])
     useEffect(() => {
-        request(`${process.env.REACT_APP_API_URL}addresses/country`, {}, {}, {
+        request(`${process.env.REACT_APP_API_URL}addresses/country`, {}, null, {
             auth: true,
         }, 'get').then(countries => {
 
