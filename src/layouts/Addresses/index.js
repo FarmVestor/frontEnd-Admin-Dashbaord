@@ -62,10 +62,11 @@ function Adresses() {
     const [rows, setRows] = useState([])
     const [GovRows, setGovRows] = useState([])
     const [CityRows, setCityRows] = useState([])
+
     const deleteRow = (userId, row) => {
         console.log(userId)
         if (window.confirm('Are you sure')) {
-            request(`${process.env.REACT_APP_API_URL}addresses/city/${userId}`, {}, {}, {
+            request(`${process.env.REACT_APP_API_URL}addresses/city/${userId}`, {}, null, {
                 auth: true,
                 snackbar: true
 
@@ -78,7 +79,7 @@ function Adresses() {
 
     useEffect(() => {
 
-        request(`${process.env.REACT_APP_API_URL}addresses/city`, {}, {}, {
+        request(`${process.env.REACT_APP_API_URL}addresses/city`, {}, null, {
             auth: true,
 
         }, 'get')
@@ -91,11 +92,7 @@ function Adresses() {
                         id: city.id,
                         City: city.cityName,
                         Governrate: city.Governrate.governrateName,
-                        Country:city.Governrate.Country.countryName,
-
-                        
-                            
-                            
+                        Country:city.Governrate.Country.countryName,      
                         
                     }
                 })
