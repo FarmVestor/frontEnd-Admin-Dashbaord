@@ -49,56 +49,18 @@ function Requests() {
 
   const deleteReuest = (requestId) => {
     if (window.confirm('Are you sure')) {
-      request(`${process.env.REACT_APP_API_URL}requests/${requestId}`, {}, {}, {
+      request(`${process.env.REACT_APP_API_URL}requests/${requestId}`, {}, null, {
           auth: true,
           snackbar: true
-
-
       }, 'delete').then(data => {
           console.log(data.messages)
       })
   }
 
-    // if (window.confirm('Are you sure')) {
-    //   fetch(`${process.env.REACT_APP_API_URL}requests/${requestId}`,
-    //     {
-    //       method: "Delete",
-    //       headers: {
-    //         'Authorization': 'Bearer ' + ctx.token
-    //       },
-    //     })
-    //     .then(response => {
-    //       response.json()
-    //         .then(deleted => {
-    //           console.log(deleted)
-    //           setServerResponse(deleted.message.join(' '))
-    //           if (deleted.success) {
-    //               setSnackBarType('success')
-    //           } else {
-    //               setSnackBarType('error')
-    //           }
-    //           setOpenSnackBar(true)
-    //         })
-    //     })
-    //     .catch(e => e)
-    // }
   }
-  // useEffect(() => {
-  //   fetch(`${process.env.REACT_APP_API_URL}requests`,{
-  //       headers: {
-  //           'Authorization': 'Bearer ' + ctx.token
-  //         },
-  //   })
-  //     .then(response => {
-  //       response.json().then(requests => {
-  //         console.log(requests)
-  //         // console.log("__________".requests.FarmKind?.farmKind)
-
-  //         const allRequests = requests.data.map((request, i) => {
-  //         console.log("request",request)
   useEffect(() => {
 
-    request(`${process.env.REACT_APP_API_URL}requests?order=${order}`, {}, {}, {
+    request(`${process.env.REACT_APP_API_URL}requests?order=${order}`, {}, null, {
         auth: true,
     }, 'get')
         .then(requests => {

@@ -36,7 +36,7 @@ function EditUser() {
     const [userTypesData, setuserTypesData] = useState([])
     const [userTypeId, setUserType] = useState(1)
     useEffect(() => {
-        request(`${process.env.REACT_APP_API_URL}users/userType/all`, {}, {}, {
+        request(`${process.env.REACT_APP_API_URL}users/userType/all`, {}, null, {
             auth: true,
         }, 'get').then(userTypes => {
             setuserTypesData(userTypes.data)
@@ -48,7 +48,7 @@ function EditUser() {
 
 
     useEffect(() => {
-        request(`${process.env.REACT_APP_API_URL}users/${id}`, {}, {}, {
+        request(`${process.env.REACT_APP_API_URL}users/${id}`, {}, null, {
             auth: true,
         }, 'get').then(currentUser => {
             setUserData(currentUser.data)
@@ -64,7 +64,7 @@ function EditUser() {
     //get countries
     const [countriesData, setCountriesData] = useState([])
     useEffect(() => {
-        request(`${process.env.REACT_APP_API_URL}addresses/country`, {}, {}, {
+        request(`${process.env.REACT_APP_API_URL}addresses/country`, {}, null, {
             auth: true,
         }, 'get').then(countries => {
 

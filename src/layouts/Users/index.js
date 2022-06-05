@@ -21,8 +21,6 @@ import { useRequest } from "lib/functions";
 
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
-import Box from '@mui/material/Box';
-import Select from '@mui/material/Select';
 import NativeSelect from '@mui/material/NativeSelect';
 
 const columns = [
@@ -40,7 +38,7 @@ function Users() {
     const [rows, setRows] = useState([])
     const deleteUser = (userId) => {
         if (window.confirm('Are you sure')) {
-            request(`${process.env.REACT_APP_API_URL}users/${userId}`, {}, {}, {
+            request(`${process.env.REACT_APP_API_URL}users/${userId}`, {}, null, {
                 auth: true,
 
                 snackbar: true,
@@ -53,7 +51,7 @@ function Users() {
 
     useEffect(() => {
 
-        request(`${process.env.REACT_APP_API_URL}users?id=${id}&order=${order}`, {}, {}, {
+        request(`${process.env.REACT_APP_API_URL}users?id=${id}&order=${order}`, {}, null, {
             auth: true,
         }, 'get')
             .then(users => {
@@ -88,7 +86,7 @@ function Users() {
                 <MDBox pt={6} pb={3}>
                     <Grid container spacing={6}>
                         <Grid item xs={12}>
-                            <Card>
+                            <Card style={{backgroundColor:"#ECFFDC"}}>
                                 <MDBox
                                     mx={2}
                                     mt={-3}
@@ -105,7 +103,7 @@ function Users() {
                                         justifyContent="space-between"
                                         alignItems="center"
                                     >
-                                        <MDTypography variant="h6" color="white">
+                                        <MDTypography  variant="h6" color="white">
                                             users Table
                                         </MDTypography>
 

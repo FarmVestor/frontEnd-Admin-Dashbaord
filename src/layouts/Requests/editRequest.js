@@ -43,27 +43,13 @@ function EditRquest() {
     const { id } = useParams()
 
     useEffect(() => {
-        request(`${process.env.REACT_APP_API_URL}requests/${id}`, {}, {}, {
+        request(`${process.env.REACT_APP_API_URL}requests/${id}`, {}, null, {
             auth: true,
         }, 'get').then(currentRequest => {
             setRequestData(currentRequest.data)
             })
                        
     }, [])
-    // useEffect(() => {
-    //     fetch(`${process.env.REACT_APP_API_URL}requests/${id}`,{
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'Authorization': 'Bearer ' + ctx.token
-    //         },
-    //     })
-    //         .then(response => {
-    //             response.json().then(currentRequest => {
-    //                 setRequestData(currentRequest.data)
-    //             })
-    //         })
-    //         .catch(e => e)
-    // }, [])
 
     const ctx = useContext(AuthContext)
 
@@ -78,29 +64,15 @@ function EditRquest() {
     const [usersData, setUsersData] = useState([]) // all users
 
     useEffect(() => {
-        request(`${process.env.REACT_APP_API_URL}users`, {}, {}, {
+        request(`${process.env.REACT_APP_API_URL}users`, {}, null, {
             auth: true,
         }, 'get').then(users => {
             setUsersData(users.data)
         })
     
     }, [])
-    // useEffect(() => {
-    //     fetch(`${process.env.REACT_APP_API_URL}users`,{
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'Authorization': 'Bearer ' + ctx.token
-    //         },
-    //     })
-        
-    //         .then(response => {
-    //             response.json().then(users => {
-    //                 setUsersData(users.data)
-    //             })
-    //         })
-    // }, [])
     useEffect(() => {
-        request(`${process.env.REACT_APP_API_URL}farms/farmKinds/all`, {}, {}, {
+        request(`${process.env.REACT_APP_API_URL}farms/farmKinds/all`, {}, null, {
             auth: true,
         }, 'get').then(farmKinds => {
             setFarmKindData(farmKinds.data)
@@ -108,42 +80,15 @@ function EditRquest() {
     
     }, [])
 
-    // useEffect(() => {
-    //     fetch(`${process.env.REACT_APP_API_URL}farms/farmKinds/all`,{
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'Authorization': 'Bearer ' + ctx.token
-    //         },
-    //     })
-        
-    //         .then(response => {
-    //             response.json().then(farmKinds => {
-    //                 setFarmKindData(farmKinds.data)
-    //             })
-    //         })
-    // }, [])
 
     useEffect(() => {
-        request(`${process.env.REACT_APP_API_URL}farms/crops/all`, {}, {}, {
+        request(`${process.env.REACT_APP_API_URL}farms/crops/all`, {}, null, {
             auth: true,
         }, 'get').then(crops => {
             setCropsData(crops.data)
         })
     
     }, [])
-    // useEffect(() => {
-    //     fetch(`${process.env.REACT_APP_API_URL}farms/crops/all`,{   
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'Authorization': 'Bearer ' + ctx.token
-    //         },
-    //     })
-    //     .then(response => {
-    //         response.json().then(crops => {
-    //             setCropsData(crops.data)
-    //              })
-    //          })
-    // }, [])
     const savePlace = () => {
         request(`${process.env.REACT_APP_API_URL}requests/${id}`, {}, {
             farmArea:requestData?.farmArea,
@@ -159,33 +104,6 @@ function EditRquest() {
         }, 'put').then(result => {
                     console.log(result)
         })
-    //     fetch(`${process.env.REACT_APP_API_URL}requests/${id}`, {
-    //         method: 'PUT',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'Authorization': 'Bearer ' + ctx.token
-    //         },
-    //         body: JSON.stringify({
-    //             farmArea:requestData?.farmArea,
-    //             budget:requestData?.budget,
-    //             farmKindId:requestData?.FarmKind?.id,
-    //             cropId:requestData?.Crop?.id,
-    //             userId:requestData?.userId
-    //           }),
-    //     }).then(response => response.json())
-    //         .then(result => {
-    //             console.log(result)
-    //             setServerResponse(result.messages.join(' '))
-    //             if (result.success) {
-    //                 setSnackBarType('success')
-    //             } else {
-    //                 setSnackBarType('error')
-    //             }
-    //             setOpenSnackBar(true)
-    //         })
-    //         .catch((error) => {
-    //             console.error('Error:', error);
-    //         });
     }
 
     const updateRequestData = (obj) => {
