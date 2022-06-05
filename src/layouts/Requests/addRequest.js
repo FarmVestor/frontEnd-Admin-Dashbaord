@@ -17,14 +17,10 @@ import { useEffect, useRef, useState } from "react";
 import { useContext } from "react";
 import { AuthContext } from "context/AuthContext";
 import MDSnackbar from "components/MDSnackbar";
-import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import NativeSelect from '@mui/material/NativeSelect';
 
-// import MenuItem from '@mui/material/MenuItem';
-
-// import { Wrapper, Status } from "@googlemaps/react-wrapper";/
 
 function AddRequest() {
     const [farmKindData, setfarmKindData] = useState([])
@@ -50,62 +46,30 @@ function AddRequest() {
     const closeSnackBar = () => setOpenSnackBar(false);
 
     useEffect(() => {
-        request(`${process.env.REACT_APP_API_URL}farms/farmKinds/all`, {}, {}, {
+        request(`${process.env.REACT_APP_API_URL}farms/farmKinds/all`, {}, null, {
             auth: true,
         }, 'get').then(FarmKinds => {
             setfarmKindData(FarmKinds.data)
         })
 
     }, [])
-    // useEffect(() => {
-    //     fetch(`${process.env.REACT_APP_API_URL}farms/farmKinds/all`)
-    //         .then(response => {
-    //             response.json().then(FarmKinds => {
-    //                 console.log(FarmKinds.data)
-    //                 setfarmKindData(FarmKinds.data)
-    //             })
-    //         })
-    // }, [])
     useEffect(() => {
-        request(`${process.env.REACT_APP_API_URL}farms/crops/all`, {}, {}, {
+        request(`${process.env.REACT_APP_API_URL}farms/crops/all`, {}, null, {
             auth: true,
         }, 'get').then(Crops => {
             setcrop(Crops.data)
         })
 
     }, [])
-    // useEffect(() => {
-    //     fetch(`${process.env.REACT_APP_API_URL}farms/crops/all`)
-    //         .then(response => {
-    //             response.json().then(Crops => {
-    //                 console.log(Crops.data)
-    //                 setcrop(Crops.data)
-    //             })
-    //         })
-    // }, [])
 
     useEffect(() => {
-        request(`${process.env.REACT_APP_API_URL}users`, {}, {}, {
+        request(`${process.env.REACT_APP_API_URL}users`, {}, null, {
             auth: true,
         }, 'get').then(users => {
             setUsers(users.data)
         })
 
     }, [])
-    // useEffect(() => {
-    //     fetch(`${process.env.REACT_APP_API_URL}users`,{
-    //          headers: {
-    //             'Content-Type': 'application/json',
-    //             'Authorization': 'Bearer ' + ctx.token
-    //         },  
-    //     })
-    //         .then(response => {
-    //             response.json().then(users => {
-    //                 console.log("users",users.data)
-    //                 setUsers(users.data)
-    //             })
-    //         })
-    // }, [])
     const saveRequest = () => {
         const farmArea = farmAreaeRef.current.querySelector('input[type=number]').value
         const budget = budgetRef.current.querySelector('input[type=text]').value
@@ -126,33 +90,6 @@ function AddRequest() {
         }, 'post').then(result => {
             console.log(result)
         })
-        // fetch(`${process.env.REACT_APP_API_URL}requests`, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'Authorization': 'Bearer ' + ctx.token
-        //     },
-        //     body: JSON.stringify({
-        //         farmArea:farmArea,
-        //         budget:budget,
-        //         farmKindId:farmKind,
-        //         cropId:cropId,
-        //         userId:userId
-        //       }),
-        // }).then(response => response.json())
-        //     .then(result => {
-        //         console.log(result)
-        //         setServerResponse(result.messages.join(' '))
-        //         if (result.success) {
-        //             setSnackBarType('success')
-        //         } else {
-        //             setSnackBarType('error')
-        //         }
-        //         setOpenSnackBar(true)
-        //     })
-        //     .catch((error) => {
-        //         console.error('Error:', error);
-        //     });
     }
     const handlefarmKindsRefChange = (event) => {
         setfarmKind(event.target.value)

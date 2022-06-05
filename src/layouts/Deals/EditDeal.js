@@ -1,9 +1,4 @@
-import { Link, useParams } from "react-router-dom";
-
-// Authentication layout components
-import CoverLayout from "layouts/authentication/components/CoverLayout";
-
-import bgImage from "assets/images/bg-sign-up-cover.jpeg";
+import { useParams } from "react-router-dom";
 
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
@@ -16,21 +11,12 @@ import MDButton from "components/MDButton";
 
 
 import MDInput from "components/MDInput";
-import Checkbox from "@mui/material/Checkbox";
-
-
-// @mui material components
-import Icon from "@mui/material/Icon";
-
-// Material Dashboard 2 React context
-import { useMaterialUIController } from "context";
-
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import Footer from "examples/Footer";
 
-import { useRef, useState, useEffect } from "react";
+import {  useState, useEffect } from "react";
 
 import { useRequest } from "lib/functions";
 
@@ -53,7 +39,7 @@ function EditDeal() {
         dealStatus: 0,
     })
     useEffect(() => {
-        request(`${process.env.REACT_APP_API_URL}deals/${id}`, {}, {}, {
+        request(`${process.env.REACT_APP_API_URL}deals/${id}`, {}, null, {
             auth: true,
         }, 'get').then(data => {
             console.log("current deal data", data)

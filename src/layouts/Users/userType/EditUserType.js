@@ -29,7 +29,7 @@ function EditUserType() {
     
 
     useEffect(() => {
-        request(`${process.env.REACT_APP_API_URL}users/userType/${id}`, {}, {}, {
+        request(`${process.env.REACT_APP_API_URL}users/userType/${id}`, {}, null, {
             auth: true,
             
         }, 'get').then(currentUser => setUserTypesData(currentUser.data))

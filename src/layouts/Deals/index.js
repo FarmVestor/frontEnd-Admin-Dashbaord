@@ -29,8 +29,6 @@ const columns = [
     { Header: "Farmer Name", accessor: "farmerName", align: "left" },
     { Header: "Partner Name", accessor: "partnerName", align: "left" },
     { Header: "Partner Type", accessor: "partnerType", align: "left" },
-
-
     { Header: "Deal Price", accessor: "dealPrice", align: "left" },
     { Header: "Deal Status", accessor: "dealStatus", align: "left" },
     { Header: "actions", accessor: "actions", align: "center" },
@@ -57,7 +55,7 @@ function Deals() {
 
     useEffect(() => {
 
-        request(`${process.env.REACT_APP_API_URL}deals?order=${order}`, {}, {}, {
+        request(`${process.env.REACT_APP_API_URL}deals?order=${order}`, {}, null, {
             auth: true,
 
             // snackbar: true

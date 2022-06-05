@@ -15,12 +15,30 @@ import { RadioGroup } from "@mui/material";
 import { FormControlLabel } from "@mui/material";
 import { Radio } from "@mui/material";
 import { Box } from "@mui/material";
-import Select from '@mui/material/Select';
-import { MenuItem } from "@mui/material";
 import { useRequest } from "lib/functions";
-// import { useRef } from "react";
-// import { FourGMobiledataRounded } from "@mui/icons-material";
 
+import { Wrapper } from "@googlemaps/react-wrapper";
+function Map({ center, zoom, setLat, setLng }) {
+  const mapRef = useRef(null)
+  const [map, setMap] = useState()
+  useEffect(() => {
+    setMap(new window.google.maps.Map(mapRef.current, {
+      center,
+      zoom,
+    }));
+  }, []);
+  useEffect(() => {
+    if (map) {
+      map.addListener("click", (mapsMouseEvent) => {
+        console.log(mapsMouseEvent)
+        const coordinates = mapsMouseEvent.latLng.toJSON()
+        setLat(coordinates.lat)
+        setLng(coordinates.lng)
+      });
+    }
+  }, [map])
+  return (<div ref={mapRef} style={{ height: '400px' }} />)
+}
 function AddFarms() {
   const ctx = useContext(AuthContext);
   const request = useRequest()
@@ -32,8 +50,6 @@ function AddFarms() {
   const [visiable, setVisiable] = useState(true);
   const [farmKindData, setFarmKindData] = useState([])
   const [farmKind, setfarmKind] = useState("")
-  const [cityData, setCityData] = useState([])
-  const [city, setCity] = useState("")
   const [cropData, setCropData] = useState([])
   const [crop, setCrop] = useState("")
   const [lastCropData, setLastCropData] = useState([])
@@ -50,9 +66,14 @@ function AddFarms() {
   const farmTreesAgeRef = useRef();
   const farmDescriptionRef = useRef();
   const farmPictureRef = useRef();
+  const [longitude, setLongitude] = useState(28.5)
+  const [latitude, setLatitude] = useState(40.5)
+  const farmLatitudeRef = useRef(null)
+  const farmLongitudeRef = useRef(null)
 
   const addFarm = () => {
-
+    const farmLatitude = farmLatitudeRef.current.querySelector("input[type=number]").value;
+    const farmLongitude = farmLongitudeRef.current.querySelector("input[type=number]").value;
     const userId = userIdRef.current.querySelector("input[type=text]").value;
     const farmName = farmNameRef.current.querySelector("input[type=text]").value;
     const farmArea = farmAreaRef.current.querySelector("input[type=text]").value;
@@ -66,7 +87,7 @@ function AddFarms() {
     const formdata = new FormData();
     formdata.append("userId", userId);
     formdata.append("farmName", farmName);
-    formdata.append("cityId", city);
+    formdata.append("cityId", cityId);
     formdata.append("farmArea", farmArea);
     formdata.append("cropId", crop);
     formdata.append("farmLicense", farmLicense);
@@ -78,9 +99,12 @@ function AddFarms() {
     formdata.append("farmFertilizer", farmFertilizer);
     formdata.append("farmTreesAge", farmTreesAge);
     formdata.append("farmDescription", farmDescription);
+    formdata.append("farmLatitude", farmLatitude);
+    formdata.append("farmLongitude", farmLongitude);
+
     formdata.append("farmPicture", farmPicture[0]);
 
-  
+
     fetch(`${process.env.REACT_APP_API_URL}farms`, {
       method: "POST",
       body: formdata,
@@ -105,7 +129,7 @@ function AddFarms() {
 
 
   useEffect(() => {
-    request(`${process.env.REACT_APP_API_URL}farms/farmKinds/all`, {},null, {
+    request(`${process.env.REACT_APP_API_URL}farms/farmKinds/all`, {}, null, {
       auth: true,
     }, 'get')
       .then((farmkinds) => {
@@ -116,27 +140,50 @@ function AddFarms() {
 
   }, []);
 
+  //get countries
+  const [countriesData, setCountriesData] = useState([])
   useEffect(() => {
-    request(`${process.env.REACT_APP_API_URL}addresses/city`, {}, null, {
+    request(`${process.env.REACT_APP_API_URL}addresses/country`, {}, null, {
       auth: true,
-    }, 'get')
-      .then((city) => {
-        console.log("cityData",city)
-        setCityData(city.data);
-        
-      });
+    }, 'get').then(countries => {
 
-  }, []);
+      setCountriesData(countries?.data)
+
+    })
+  }, [])
+  //to get governrates
+  const [governratesData, setGovernratesData] = useState([])
+  const handleCountryIdChange = (e) => {
+    const country = countriesData.filter((country) => country.id == e.target.value)
+    console.log("country", country)
+    setGovernratesData(country[0]?.Governrates)
+  }
+
+  //to get cities
+  const [citiesData, setCitiesData] = useState([])
+  const [cityId, setCityId] = useState(0)
+  const handleGovernratedChange = (e) => {
+    const governrate = governratesData.filter((governrate) => governrate.id == e.target.value)
+    console.log("governrate", governrate)
+    setCitiesData(governrate[0]?.Cities)
+  }
+  const handleCitiesChange = (e) => {
+    const city = citiesData.filter((city) => city.id == e.target.value)
+    setLatitude(city.latitude)
+    setLongitude(city.longitude)
+    setCityId(e.target.value);
+  }
+
 
   useEffect(() => {
     request(`${process.env.REACT_APP_API_URL}farms/crops/all`, {}, null, {
       auth: true,
     }, 'get')
       .then((crop) => {
-        console.log("cropsData",crop)
+        console.log("cropsData", crop)
         setCropData(crop?.data);
         setLastCropData(crop?.data);
-        
+
       });
 
   }, []);
@@ -152,9 +199,7 @@ function AddFarms() {
   const handleFarmKindChange = (event) => {
     setfarmKind(event.target.value);
   };
-  const handleCityChange = (event) => {
-    setCity(event.target.value);
-  };
+  
   const handleCropChange = (event) => {
     setCrop(event.target.value);
   };
@@ -270,32 +315,6 @@ function AddFarms() {
                     <Box sx={{ minWidth: 120 }}>
                       <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">
-                          City
-                        </InputLabel>
-                        <NativeSelect
-                          labelId="demo-simple-select-label"
-                          id="demo-simple-select"
-                          value={city}
-                          label="City"
-                          defaultValue="1"
-                          onChange={handleCityChange}
-                        >
-                          <option></option>
-                          {cityData?.map((city, i) => {
-                            return (
-                              <option value={city.id} key={i}>
-                                {city.cityName}
-                              </option>
-                            );
-                          })}
-                        </NativeSelect>
-                      </FormControl>
-                    </Box>
-                  </MDBox>
-                  <MDBox mb={2}>
-                    <Box sx={{ minWidth: 120 }}>
-                      <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">
                           Crops
                         </InputLabel>
                         <NativeSelect
@@ -307,7 +326,7 @@ function AddFarms() {
                           onChange={handleCropChange}
                         >
                           <option></option>
-                          {cropData?.map((crop, i) => {
+                          {lastCropData?.map((crop, i) => {
                             return (
                               <option value={crop.id} key={i}>
                                 {crop.cropName}
@@ -333,7 +352,7 @@ function AddFarms() {
                           onChange={handleLastCropChange}
                         >
                           <option></option>
-                          {lastCropData?.map((crop, i) => {
+                          {cropData?.map((crop, i) => {
                             return (
                               <option value={crop.id} key={i}>
                                 {crop.cropName}
@@ -377,6 +396,103 @@ function AddFarms() {
                       variant="standard"
                       fullWidth
                     />
+                  </MDBox>
+                  
+                  <MDBox component="form" role="form">
+
+                    <FormControl fullWidth>
+                      <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                        Country
+                      </InputLabel>
+                      <NativeSelect
+
+                        defaultValue={1}
+                        inputProps={{
+                          name: 'country',
+                          id: 'uncontrolled-native',
+                        }}
+                        onChange={handleCountryIdChange}
+                      >
+                        <option > </option>
+                        {countriesData?.map((country, i) => <option value={country.id} key={i}>{country.countryName}</option>)}
+
+                      </NativeSelect>
+                    </FormControl>
+                  </MDBox>
+
+
+                  <MDBox component="form" role="form">
+
+                    <FormControl fullWidth>
+                      <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                        Governrate
+                      </InputLabel>
+                      <NativeSelect
+
+
+                        inputProps={{
+                          name: 'governrate',
+                          id: 'uncontrolled-native',
+                        }}
+                        onChange={handleGovernratedChange}
+
+                      >
+
+                        <option > </option>
+                        {governratesData?.map((governrate, i) => <option value={governrate.id} key={governrate.id}>{governrate.governrateName}</option>)}
+
+                      </NativeSelect>
+                    </FormControl>
+                  </MDBox>
+
+
+                  <MDBox component="form" role="form">
+
+                    <FormControl fullWidth>
+                      <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                        Cities
+                      </InputLabel>
+                      <NativeSelect
+
+                        inputProps={{
+                          name: 'governrate',
+                          id: 'uncontrolled-native',
+                        }}
+                        onChange={handleCitiesChange}
+
+
+                      >
+
+                        <option > </option>
+                        {citiesData?.map((city, i) => <option value={city.id} key={city.id}>{city.cityName}</option>)}
+
+                      </NativeSelect>
+                    </FormControl>
+                  </MDBox>
+                  <MDBox mb={2}>
+                    <MDInput
+                      type="number"
+                      value={latitude}
+                      ref={farmLatitudeRef}
+                      label="farm Latitude"
+                      variant="standard"
+                      fullWidth
+                    />
+                  </MDBox>
+                  <MDBox mb={2}>
+                    <MDInput
+                      type="number"
+                      value={longitude}
+                      ref={farmLongitudeRef}
+                      label="farm Longitude"
+                      variant="standard"
+                      fullWidth
+                    />
+                  </MDBox>
+                  <MDBox mb={2}>
+                    <Wrapper apiKey={''} >
+                      <Map center={{ lat: latitude, lng: longitude }} setLat={setLatitude} setLng={setLongitude} zoom={8} />
+                    </Wrapper>
                   </MDBox>
                   <MDBox mt={4} mb={1}>
                     <MDButton
