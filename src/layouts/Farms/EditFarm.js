@@ -18,6 +18,31 @@ import { Box } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useRequest } from "lib/functions";
 import { NativeSelect } from "@mui/material";
+
+import { Wrapper } from "@googlemaps/react-wrapper";
+function Map({ center, zoom, prevState, updatePlace }) {
+  const mapRef = useRef(null)
+  const [map, setMap] = useState()
+  useEffect(() => {
+      setMap(new window.google.maps.Map(mapRef.current, {
+          center,
+          zoom,
+      }));
+  }, []);
+  useEffect(() => {
+      if (map) {
+          map.addListener("click", (mapsMouseEvent) => {
+              const coordinates = mapsMouseEvent.latLng.toJSON()
+              updateFarmData({
+                  ...prevState,
+                  farmLatitude: coordinates.lat,
+                  farmLongitude: coordinates.lng
+              })
+          });
+      }
+  }, [map])
+  return (<div ref={mapRef} style={{ height: '400px' }} />)
+}
 function EditFarms() {
   const request = useRequest()
   const ctx = useContext(AuthContext);
@@ -25,41 +50,38 @@ function EditFarms() {
   const [openSnakBar, setOpenSnakBar] = useState(false)
   const [serverResponce, setServerResponce] = useState('')
   const [snakBarColor, setSnakBarColor] = useState('success')
-  const [available, setAvailable] = useState(true);
-  const [visiable, setVisiable] = useState(true);
   const [farmKindData, setFarmKindData] = useState([])
-  const [farmKind, setfarmKind] = useState("")
-  const [cityData, setCityData] = useState([])
-  const [city, setCity] = useState("")
   const [cropData, setCropData] = useState([])
-  const [crop, setCrop] = useState("")
   const [lastCropData, setLastCropData] = useState([])
-  const [lastCrop, setLastCrop] = useState("")
-  const [farmData, setFarmData] = useState({ userId: 0, farmName: '', cityId: 0, farmArea: 0, cropId: 0, farmLicense: '', farmAvailable: 1, farmKindId: 0, farmVisiable: 1, farmWaterSalinity: 0, farmLastCropId: 0, farmFertilizer: '', farmTreesAge: 0, farmDescription: '' })
+  
+
+  const [farmData, setFarmData] = useState({ userId: 0, farmName: '', cityId: 0, farmArea: 0, cropId: 0, farmLicense: '', farmAvailable: 1, farmKindId: 0, farmVisibility: 1, farmWaterSalinity: 0, farmLastCropsId: 0, farmFertilizer: '', farmTreesAge: 0, farmDescription: '',farmLongitude:40.5,farmLatitude:28.5 })
   const closeSnakBar = () => setOpenSnakBar(false)
 
   const farmPictureRef = useRef();
 
   const editFarm = () => {
-
+console.log("farmData?.farmLongitude",farmData?.farmLongitude)
     const farmPicture = farmPictureRef.current.querySelector("input[type=file").files;
 
     const formdata = new FormData();
-    formdata.append("userId", farmData.userId);
-    formdata.append("farmName", farmData.farmName);
-    formdata.append("cityId", city);
-    formdata.append("farmArea", farmData.farmArea);
-    formdata.append("cropId", crop);
-    formdata.append("farmLicense", farmData.farmLicense);
-    formdata.append("farmAvailable", available);
-    formdata.append("farmKindId", farmKind);
-    formdata.append("farmVisibiltiy", visiable);
-    formdata.append("farmWaterSalinity", farmData.farmWaterSalinity);
-    formdata.append("farmLastCropsId", lastCrop);
-    formdata.append("farmFertilizer", farmData.farmFertilizer);
-    formdata.append("farmTreesAge", farmData.farmTreesAge);
-    formdata.append("farmDescription", farmData.farmDescription);
+    formdata.append("userId", farmData?.userId);
+    formdata.append("farmName", farmData?.farmName);
+    formdata.append("cityId", farmData?.cityId);
+    formdata.append("farmArea", farmData?.farmArea);
+    formdata.append("cropId", farmData?.cropId);
+    formdata.append("farmLicense", farmData?.farmLicense);
+    formdata.append("farmAvailable", farmData?.farmAvailable);
+    formdata.append("farmKindId", farmData?.farmKindId);
+    formdata.append("farmVisibiltiy", farmData?.farmVisibility);
+    formdata.append("farmWaterSalinity", farmData?.farmWaterSalinity);
+    formdata.append("farmLastCropsId", farmData?.farmLastCropsId);
+    formdata.append("farmFertilizer", farmData?.farmFertilizer);
+    formdata.append("farmTreesAge", farmData?.farmTreesAge);
+    formdata.append("farmDescription", farmData?.farmDescription);
     formdata.append("farmPicture", farmPicture[0]);
+    formdata.append("farmLatitude", farmData?.farmLatitude);
+    formdata.append("farmLongitude", farmData?.farmLongitude);
     fetch(`${process.env.REACT_APP_API_URL}farms/${id}`, {
       method: "put",
       body: formdata,
@@ -68,7 +90,7 @@ function EditFarms() {
       },
     }).then(responce => {
       responce.json().then(farmedited => {
-        // console.log(farmedited)
+        console.log(farmedited)
         setServerResponce(farmedited.messages.join(' '))
         if (farmedited.success) {
           setSnakBarColor('success')
@@ -83,6 +105,43 @@ function EditFarms() {
   };
 
 
+  
+  //get countries
+  const [countriesData, setCountriesData] = useState([])
+  useEffect(() => {
+    request(`${process.env.REACT_APP_API_URL}addresses/country`, {}, null, {
+      auth: true,
+    }, 'get').then(countries => {
+
+      setCountriesData(countries?.data)
+
+    })
+  }, [])
+  //to get governrates
+  const [governratesData, setGovernratesData] = useState([])
+  const handleCountryIdChange = (e) => {
+    const country = countriesData.filter((country) => country.id == e.target.value)
+    console.log("country", country)
+    setGovernratesData(country[0]?.Governrates)
+  }
+
+  //to get cities
+  const [citiesData, setCitiesData] = useState([])
+  const [cityId, setCityId] = useState(0)
+  const handleGovernratedChange = (e) => {
+    const governrate = governratesData.filter((governrate) => governrate.id == e.target.value)
+    console.log("governrate", governrate)
+    setCitiesData(governrate[0]?.Cities)
+  }
+  const handleCitiesChange = (e) => {
+    const city = citiesData.filter((city) => city.id == e.target.value)
+  //  setLongitude(city.longitude)
+  //  setLatitude(city.latitude)
+    updateFarmData({  farmLongitude: city.longitude}) 
+    updateFarmData({  farmLatitude: city.latitude }) 
+    updateFarmData({  cityId: e.target.value }) 
+  }
+
   useEffect(() => {
     request(`${process.env.REACT_APP_API_URL}farms/farmKinds/all`, {}, null, {
       auth: true,
@@ -95,17 +154,17 @@ function EditFarms() {
 
   }, []);
 
-  useEffect(() => {
-    request(`${process.env.REACT_APP_API_URL}addresses/city`, {}, null, {
-      auth: true,
-    }, 'get')
-      .then((city) => {
-        console.log("cityData",city )
-        setCityData(city?.data);
+  // useEffect(() => {
+  //   request(`${process.env.REACT_APP_API_URL}addresses/city`, {}, null, {
+  //     auth: true,
+  //   }, 'get')
+  //     .then((city) => {
+  //       console.log("cityData",city )
+  //       setCityData(city?.data);
 
-      });
+  //     });
 
-  }, []);
+  // }, []);
 
 
   useEffect(() => {
@@ -131,27 +190,13 @@ function EditFarms() {
       })
 
   }, [])
-
-  const handleAvaliableChange = (event) => {
-    setAvailable(event.target.value);
-    // console.log( available)
-  };
-  const handleVisiableChange = (event) => {
-    setVisiable(event.target.value);
-    //console.log( visiable)
-  };
-  const handleFarmKindChange = (event) => {
-    setfarmKind(event.target.value);
-  };
-  const handleCityChange = (event) => {
-    setCity(event.target.value);
-  };
-  const handleCropChange = (event) => {
-    setCrop(event.target.value);
-  };
-  const handleLastCropChange = (event) => {
-    setLastCrop(event.target.value);
-  };
+const updateFarmData=(obj)=>{
+  setFarmData({
+    ...farmData,
+    ...obj
+})
+}
+ 
 
   return (
     <DashboardLayout>
@@ -169,7 +214,7 @@ function EditFarms() {
                       label="farmer Id"
                       variant="standard"
                       value={farmData?.userId}
-                      onChange={(e) => { setFarmData({ ...farmData, userId: e.target.value }) }}
+                      onChange={(e) => { updateFarmData({  userId: e.target.value }) }}
                       fullWidth
                     />
                   </MDBox>
@@ -177,7 +222,7 @@ function EditFarms() {
                     <MDInput
                       type="text"
                       value={farmData?.farmName}
-                      onChange={(e) => { setFarmData({ ...farmData, farmName: e.target.value }) }}
+                      onChange={(e) => { updateFarmData({  farmName: e.target.value }) }}
                       label="farm Name"
                       variant="standard"
                       fullWidth
@@ -187,7 +232,7 @@ function EditFarms() {
                   <MDBox mb={2}>
                     <MDInput
                       value={farmData?.farmArea}
-                      onChange={(e) => { setFarmData({ ...farmData, farmArea: e.target.value }) }}
+                      onChange={(e) => { updateFarmData({  farmArea: e.target.value }) }}
                       type="text"
                       label="farm Area"
                       variant="standard"
@@ -198,7 +243,7 @@ function EditFarms() {
                   <MDBox mb={2}>
                     <MDInput
                       value={farmData?.farmLicense}
-                      onChange={(e) => { setFarmData({ ...farmData, farmLicense: e.target.value }) }}
+                      onChange={(e) => { updateFarmData({  farmLicense: e.target.value }) }}
                       type="text"
                       label="farm License"
                       variant="standard"
@@ -209,7 +254,7 @@ function EditFarms() {
                   <MDBox mb={2}>
                     <MDInput
                       value={farmData?.farmWaterSalinity}
-                      onChange={(e) => { setFarmData({ ...farmData, farmWaterSalinity: e.target.value }) }}
+                      onChange={(e) => { updateFarmData({  farmWaterSalinity: e.target.value }) }}
                       type="text"
                       label="farm WaterSalinity"
                       variant="standard"
@@ -220,7 +265,7 @@ function EditFarms() {
                   <MDBox mb={2}>
                     <MDInput
                       value={farmData?.farmFertilizer}
-                      onChange={(e) => { setFarmData({ ...farmData, farmFertilizer: e.target.value }) }}
+                      onChange={(e) => { updateFarmData({  farmFertilizer: e.target.value }) }}
                       type="text"
                       label="farm Fertilizer"
                       variant="standard"
@@ -231,7 +276,7 @@ function EditFarms() {
                     <MDInput
                       type="text"
                       value={farmData?.farmTreesAge}
-                      onChange={(e) => { setFarmData({ ...farmData, farmTreesAge: e.target.value }) }}
+                      onChange={(e) => { updateFarmData({  farmTreesAge: e.target.value }) }}
                       label="farm TreesAge"
                       variant="standard"
                       fullWidth
@@ -241,7 +286,7 @@ function EditFarms() {
                     <MDInput
                       type="text"
                       value={farmData?.farmDescription}
-                      onChange={(e) => { setFarmData({ ...farmData, farmDescription: e.target.value }) }}
+                      onChange={(e) => { updateFarmData({farmDescription: e.target.value }) }}
                       label="farm Description"
                       variant="standard"
                       fullWidth
@@ -250,7 +295,7 @@ function EditFarms() {
                   <MDBox mb={2}>
                     <FormControl>
                       <FormLabel id="demo-row-radio-buttons-group-label">farm Available</FormLabel>
-                      <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" onChange={handleAvaliableChange} >
+                      <RadioGroup value={farmData?.farmAvailable} row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" onChange={(e) => { updateFarmData({  farmAvailable: e.target.value }) }} >
                         <FormControlLabel value={true} control={<Radio />} label="Available" />
                         <FormControlLabel value={false} control={<Radio />} label="Not Available" />
                       </RadioGroup>
@@ -259,37 +304,13 @@ function EditFarms() {
                   <MDBox mb={2}>
                     <FormControl>
                       <FormLabel id="demo-row-radio-buttons-group-label">farm Visiable</FormLabel>
-                      <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" onChange={handleVisiableChange} >
+                      <RadioGroup value={farmData?.farmVisibility} row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" onChange={(e) => { updateFarmData({  farmVisibility: e.target.value }) }} >
                         <FormControlLabel value={true} control={<Radio />} label="Visiable" />
                         <FormControlLabel value={false} control={<Radio />} label="Not Visiable" />
                       </RadioGroup>
                     </FormControl>
                   </MDBox>
-                  <MDBox mb={2}>
-                    <Box sx={{ minWidth: 120 }}>
-                      <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">
-                          City
-                        </InputLabel>
-                        <NativeSelect
-                          labelId="demo-simple-select-label"
-                          id="demo-simple-select"
-                          value={farmKind}
-                          label="City"
-                          defaultValue="1"
-                          onChange={handleCityChange}
-                        >
-                          {cityData?.map((city, i) => {
-                            return (
-                              <option value={city.id} key={i}>
-                                {city.cityName}
-                              </option>
-                            );
-                          })}
-                        </NativeSelect>
-                      </FormControl>
-                    </Box>
-                  </MDBox>
+                  
                   <MDBox mb={2}>
                     <Box sx={{ minWidth: 120 }}>
                       <FormControl fullWidth>
@@ -299,12 +320,12 @@ function EditFarms() {
                         <NativeSelect
                           labelId="demo-simple-select-label"
                           id="demo-simple-select"
-                          value={farmKind}
+                          value={farmData?.cropId}
                           label="Crops"
                           defaultValue="1"
-                          onChange={handleCropChange}
+                          onChange={(e) => { updateFarmData({  cropId: e.target.value }) }}
                         >
-                          {lastCropData?.map((crop, i) => {
+                          {cropData?.map((crop, i) => {
                             return (
                               <option value={crop.id} key={i}>
                                 {crop.cropName}
@@ -324,12 +345,12 @@ function EditFarms() {
                         <NativeSelect
                           labelId="demo-simple-select-label"
                           id="demo-simple-select"
-                          value={farmKind}
+                          value={farmData?.farmLastCropsId}
                           label="Crops"
                           defaultValue="1"
-                          onChange={handleLastCropChange}
+                          onChange={(e) => { updateFarmData({  farmLastCropsId: e.target.value }) }}
                         >
-                          {cropData?.map((crop, i) => {
+                          {lastCropData?.map((crop, i) => {
                             return (
                               <option value={crop.id} key={i}>
                                 {crop.cropName}
@@ -349,10 +370,10 @@ function EditFarms() {
                         <NativeSelect
                           labelId="demo-simple-select-label"
                           id="demo-simple-select"
-                          value={farmKind}
+                          value={farmData?.farmKindId}
                           label="FarmKind"
                           defaultValue="1"
-                          onChange={handleFarmKindChange}
+                          onChange={(e) => { updateFarmData({  farmKindId: e.target.value }) }}
                         >
                           {farmKindData?.map((farmkind, i) => {
                             return (
@@ -373,6 +394,102 @@ function EditFarms() {
                       variant="standard"
                       fullWidth
                     />
+                  </MDBox>
+                  <MDBox component="form" role="form">
+
+                    <FormControl fullWidth>
+                      <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                        Country
+                      </InputLabel>
+                      <NativeSelect
+
+                        defaultValue={1}
+                        inputProps={{
+                          name: 'country',
+                          id: 'uncontrolled-native',
+                        }}
+                        onChange={handleCountryIdChange}
+                      >
+                        <option > </option>
+                        {countriesData?.map((country, i) => <option value={country.id} key={i}>{country.countryName}</option>)}
+
+                      </NativeSelect>
+                    </FormControl>
+                  </MDBox>
+
+
+                  <MDBox component="form" role="form">
+
+                    <FormControl fullWidth>
+                      <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                        Governrate
+                      </InputLabel>
+                      <NativeSelect
+
+
+                        inputProps={{
+                          name: 'governrate',
+                          id: 'uncontrolled-native',
+                        }}
+                        onChange={handleGovernratedChange}
+
+                      >
+
+                        <option > </option>
+                        {governratesData?.map((governrate, i) => <option value={governrate.id} key={governrate.id}>{governrate.governrateName}</option>)}
+
+                      </NativeSelect>
+                    </FormControl>
+                  </MDBox>
+
+
+                  <MDBox component="form" role="form">
+
+                    <FormControl fullWidth>
+                      <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                        Cities
+                      </InputLabel>
+                      <NativeSelect
+
+                        inputProps={{
+                          name: 'governrate',
+                          id: 'uncontrolled-native',
+                        }}
+                        onChange={handleCitiesChange}
+
+
+                      >
+
+                        <option > </option>
+                        {citiesData?.map((city, i) => <option value={city.id} key={city.id}>{city.cityName}</option>)}
+
+                      </NativeSelect>
+                    </FormControl>
+                  </MDBox>
+                  <MDBox mb={2}>
+                    <MDInput
+                      type="number"
+                      value={farmData?.farmLongitude}
+                      onChange={(e) => { updateFarmData({  farmLatitude: e.target.value }) }}
+                      label="farm Latitude"
+                      variant="standard"
+                      fullWidth
+                    />
+                  </MDBox>
+                  <MDBox mb={2}>
+                    <MDInput
+                      type="number"
+                      value={farmData?.farmLongitude}
+                      onChange={(e) => { updateFarmData({  farmLongitude: e.target.value }) }}
+                      label="farm Longitude"
+                      variant="standard"
+                      fullWidth
+                    />
+                  </MDBox>
+                  <MDBox mb={2}>
+                    <Wrapper apiKey={''} >
+                      <Map center={{ lat: farmData.farmLatitude, lng: farmData.farmLongitude }} updateFarmData={setFarmData} prevState={setFarmData} zoom={8} />
+                    </Wrapper>
                   </MDBox>
                   <MDBox mt={4} mb={1}>
                     <MDButton

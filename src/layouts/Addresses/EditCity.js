@@ -64,7 +64,7 @@ function EditCity() {
             console.log("governrate data", data.data)
         })
     }, [])
-    const [cityData, setCityData] = useState("")
+    const [cityData, setCityData] = useState([])
     const { id } = useParams()
     useEffect(() => {
         request(`${process.env.REACT_APP_API_URL}addresses/city/${id}`, {}, null, {
