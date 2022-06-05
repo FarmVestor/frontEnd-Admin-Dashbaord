@@ -280,6 +280,7 @@ function AddFarms() {
                           defaultValue="1"
                           onChange={handleCityChange}
                         >
+                          <option></option>
                           {cityData?.map((city, i) => {
                             return (
                               <option value={city.id} key={i}>
@@ -305,7 +306,8 @@ function AddFarms() {
                           defaultValue="1"
                           onChange={handleCropChange}
                         >
-                          {lastCropData?.map((crop, i) => {
+                          <option></option>
+                          {cropData?.map((crop, i) => {
                             return (
                               <option value={crop.id} key={i}>
                                 {crop.cropName}
@@ -330,7 +332,8 @@ function AddFarms() {
                           defaultValue="1"
                           onChange={handleLastCropChange}
                         >
-                          {cropData?.map((crop, i) => {
+                          <option></option>
+                          {lastCropData?.map((crop, i) => {
                             return (
                               <option value={crop.id} key={i}>
                                 {crop.cropName}
@@ -355,6 +358,7 @@ function AddFarms() {
                           defaultValue="1"
                           onChange={handleFarmKindChange}
                         >
+                          <option></option>
                           {farmKindData?.map((farmkind, i) => {
                             return (
                               <option value={farmkind.id} key={i}>

@@ -88,7 +88,7 @@ function Users() {
                 <MDBox pt={6} pb={3}>
                     <Grid container spacing={6}>
                         <Grid item xs={12}>
-                            <Card>
+                            <Card style={{backgroundColor:"#ECFFDC"}}>
                                 <MDBox
                                     mx={2}
                                     mt={-3}
@@ -105,7 +105,7 @@ function Users() {
                                         justifyContent="space-between"
                                         alignItems="center"
                                     >
-                                        <MDTypography variant="h6" color="white">
+                                        <MDTypography  variant="h6" color="white">
                                             users Table
                                         </MDTypography>
 
