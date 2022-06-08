@@ -124,30 +124,23 @@ function Adresses() {
                                     <MDTypography variant="h6" color="white">
                                         Countries Table
                                     </MDTypography>
-
-
                                     <Link to='/addresses/country/add'>
                                         <MDButton variant="text">
                                             <Icon>add_circle</Icon>&nbsp;Add
                                         </MDButton>
                                     </Link>
                                 </Grid>
-
                             </MDBox>
                             <MDBox pt={3} mb={10} >
-
                                 <DataTable
                                     table={{ columns, rows }}
-
                                     isSorted={false}
                                     canSearch={true}
                                     entriesPerPage={true}
                                     showTotalEntries={false}
                                     noEndBorder
                                 />
-
                             </MDBox>
-
                         </Card> */}
 
                         {/* show Governrate Tables */}
@@ -171,31 +164,24 @@ function Adresses() {
                                     <MDTypography variant="h6" color="white">
                                         Governrates Table
                                     </MDTypography>
-
-
                                     <Link to='/addresses/governrate/add'>
                                         <MDButton variant="text">
                                             <Icon>add_circle</Icon>&nbsp;Add
                                         </MDButton>
                                     </Link>
                                 </Grid>
-
                             </MDBox >
                             <MDBox pt={3} mb={10}>
-
                                 <DataTable
                                     table={{ columns: GonColumns, rows: GovRows }}
-
                                     isSorted={false}
                                     canSearch={true}
                                     entriesPerPage={true}
                                     showTotalEntries={false}
                                     noEndBorder
                                 />
-
                             </MDBox>
                         </Card>
-
  */}
 
                         {/* show cities Table */}
@@ -243,7 +229,6 @@ function Adresses() {
                             </MDBox>
                             {/* <DataTable
                                     table={{ columns: CityColumns, rows: CityRows }}
-
                                     isSorted={false}
                                     canSearch={true}
                                     entriesPerPage={true}
