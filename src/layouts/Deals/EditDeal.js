@@ -30,7 +30,7 @@ function EditDeal() {
     const request = useRequest()
 
     const { id } = useParams()
-    console.log(typeof id,id)
+    // console.log(typeof id,id)
     const [dealData, setDealData] = useState({
         farmId: id,
         agentId: null,
@@ -42,7 +42,7 @@ function EditDeal() {
         request(`${process.env.REACT_APP_API_URL}deals/${id}`, {}, null, {
             auth: true,
         }, 'get').then(data => {
-            console.log("current deal data", data)
+            // console.log("current deal data", data)
             setDealData(data.data)
         })
     }, [])
@@ -64,7 +64,7 @@ function EditDeal() {
             redirect:"/Deals/"
 
         }, 'put').then(data => {
-            console.log(data)
+            // console.log(data)
         })
 
 
@@ -98,11 +98,11 @@ function EditDeal() {
 
 
                                     <MDBox mb={2}>
-                                        <MDInput type="number" label="farmId" variant="standard" fullWidth value={dealData?.farmId} onChange={(e) => { setDealData({ ...dealData, farmId: e.target.value }) }} />
+                                        <MDInput type="number" label="farmId" variant="standard" fullWidth value={dealData?.farmId ? dealData.farmId: ''} onChange={(e) => { setDealData({ ...dealData, farmId: e.target.value }) }} />
                                     </MDBox>
 
                                     <MDBox mb={2}>
-                                        <MDInput type="text" label="dealPrice" variant="standard" fullWidth value={dealData?.dealPrice} onChange={(e) => { setDealData({ ...dealData, dealPrice: e.target.value }) }} />
+                                        <MDInput type="text" label="dealPrice" variant="standard" fullWidth value={dealData?.dealPrice ? dealData.dealPrice :''} onChange={(e) => { setDealData({ ...dealData, dealPrice: e.target.value }) }} />
                                     </MDBox>
 
 
@@ -121,10 +121,10 @@ function EditDeal() {
                                         Add Either an Agent or an Investor
                                     </MDTypography>
                                     <MDBox mb={2}>
-                                        <MDInput type="text" label="agentId" variant="standard" fullWidth value={dealData?.agentId} onChange={(e) => { setDealData({ ...dealData, agentId: e.target.value }) }} />
+                                        <MDInput type="text" label="agentId" variant="standard" fullWidth value={dealData?.agentId ? dealData?.agentId :''} onChange={(e) => { setDealData({ ...dealData, agentId: e.target.value }) }} />
                                     </MDBox>
                                     <MDBox mb={2}>
-                                        <MDInput type="text" label="investorId" variant="standard" fullWidth value={dealData?.investorId} onChange={(e) => { setDealData({ ...dealData, investorId: e.target.value }) }} />
+                                        <MDInput type="text" label="investorId" variant="standard" fullWidth value={dealData?.investorId ? dealData?.investorId:''} onChange={(e) => { setDealData({ ...dealData, investorId: e.target.value }) }} />
                                     </MDBox>
 
 

@@ -8,15 +8,9 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import Footer from "examples/Footer";
 import { useEffect, useState } from "react";
-import { useContext } from "react";
-import { AuthContext } from "context/AuthContext";
-import MDSnackbar from "components/MDSnackbar";
-import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
-import MenuItem from '@mui/material/MenuItem';
 import { useParams } from "react-router-dom";
-import Box from '@mui/material/Box';
 import { useRequest } from "lib/functions";
 import NativeSelect from '@mui/material/NativeSelect';
 
@@ -28,17 +22,11 @@ function EditRquest() {
 
 
     const [requestData, setRequestData] = useState({
-        FarmKind: {
-            id:null
-                  },
+        farmKindId:null,
         farmArea: "",
         budget: "",
-        Crop:{
-            id:null
-        },
-        User:{
-            id:null
-        },
+        cropId:null,
+        userId:null,
     })
     const { id } = useParams()
 
@@ -51,13 +39,7 @@ function EditRquest() {
                        
     }, [])
 
-    const ctx = useContext(AuthContext)
-
-    const [serverResponse, setServerResponse] = useState(" ")
-    const [snackBarType, setSnackBarType] = useState("success")
-    const [openSnackBar, setOpenSnackBar] = useState(false)
-
-    const closeSnackBar = () => setOpenSnackBar(false);
+   
 
     const [farmKindData, setFarmKindData] = useState([]) //all farm kind
     const [cropsData, setCropsData] = useState([]) // all crops
@@ -93,9 +75,9 @@ function EditRquest() {
         request(`${process.env.REACT_APP_API_URL}requests/${id}`, {}, {
             farmArea:requestData?.farmArea,
             budget:requestData?.budget,
-            farmKindId:requestData?.FarmKind?.id,
-            cropId:requestData?.Crop?.id,
-            userId:requestData?.User?.id
+            farmKindId:requestData?.farmKindId,
+            cropId:requestData?.cropId,
+            userId:requestData?.userId
         }, {
             auth: true,
             type: 'json',
@@ -151,16 +133,16 @@ function EditRquest() {
                                                 <NativeSelect
                                                     labelId="demo-simple-select-label"
                                                     id="demo-simple-select"
-                                                    value={requestData?.FarmKind?.id}
+                                                    value={requestData?.farmKindId}
                                                     label="Farm Kind"
                                                     // style={{padding: '20px 0'}}
-                                                    onChange={(e) => {updateRequestData({FarmKind: {id:e.target.value}})}}
+                                                    onChange={(e) => {updateRequestData({FarmKindId:e.target.value})}}
                                                 >
                                                     <option></option>
                                                     {farmKindData.map((farmkind, i) => {
                                                         return <option value={farmkind?.id} key={i}>{farmkind?.farmKind}</option>
                                                     })}
-                                                    {console.log("----requestData",requestData?.FarmKind?.id)}
+                                                    {/* {console.log("----requestData",requestData?.FarmKind?.id)} */}
                                                 </NativeSelect>
                                             </FormControl>
                                         {/* </Box> */}
@@ -173,10 +155,10 @@ function EditRquest() {
                                                 <NativeSelect
                                                     labelId="demo-simple-select-label"
                                                     id="demo-simple-select"
-                                                    value={requestData?.Crop?.id}
+                                                    value={requestData?.cropId}
                                                     label="Farm Kind"
                                                     // style={{padding: '20px 0'}}
-                                                    onChange={(e) => {updateRequestData({Crop: {id:e.target.value}})}}
+                                                    onChange={(e) => {updateRequestData({cropId:e.target.value})}}
                                                 >
                                                     <option></option>
                                                     {cropsData.map((crop, i) => {
@@ -195,10 +177,10 @@ function EditRquest() {
                                                 <NativeSelect
                                                     labelId="demo-simple-select-label"
                                                     id="demo-simple-select"
-                                                    value={requestData?.User?.id}
+                                                    value={requestData?.userId}
                                                     label="Farm Kind"
                                                     // style={{padding: '20px 0'}}
-                                                    onChange={(e) => {updateRequestData({User: {id:e.target.value}})}}
+                                                    onChange={(e) => {updateRequestData({userId: e.target.value})}}
                                                 >
                                                     <option></option>
                                                          {usersData.map((user, i) => {
@@ -211,7 +193,7 @@ function EditRquest() {
   
                                     <MDBox mt={4} mb={1}>
                                         <MDButton variant="gradient" color="info" fullWidth onClick={savePlace}>
-                                            Save Place
+                                            Save Request
                                         </MDButton>
                                     </MDBox>
                                 </MDBox>
@@ -220,17 +202,7 @@ function EditRquest() {
                     </Grid>
                 </Grid>
             </MDBox>
-            <MDSnackbar
-                color={snackBarType}
-                icon={snackBarType == 'success' ? 'check' : 'warning'}
-                title="Places App"
-                content={serverResponse}
-                open={openSnackBar}
-                // onClose={closeSnackBar}
-                close={closeSnackBar}
-                dateTime=""
-                bgWhite
-            />
+            
             <Footer />
         </DashboardLayout>
     )

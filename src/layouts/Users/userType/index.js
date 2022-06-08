@@ -21,24 +21,26 @@ import { useRequest } from "lib/functions";
 
 const columns = [
     { Header: "name", accessor: "name", width: "45%", align: "left" },
-    
+
     { Header: "actions", accessor: "actions", align: "center" },
 ]
 
 function UserTypes() {
-    const [order,setOrder]=useState('ASC')
+    const [order, setOrder] = useState('ASC')
     const request = useRequest()
     const [rows, setRows] = useState([])
 
     const deleteUserType = (userId) => {
-        console.log(userId)
+        // console.log(userId)
         if (window.confirm('Are you sure')) {
-            request(`${process.env.REACT_APP_API_URL}users/userType/${userId}`, {}, null, {
+            request(`${process.env.REACT_APP_API_URL}users/userType/${userId}?deleted=${1}`, {}, null, {
                 auth: true,
                 snackbar: true
 
-            }, 'delete').then(data=>{
-                console.log(data.messages)
+            }, 'delete').then(data => {
+                // console.log(data.messages)
+                // const updatedRows = rows.filter((row) => row.id != userId)
+                // setRows(updatedRows)
             })
         }
 
@@ -54,7 +56,7 @@ function UserTypes() {
                 const alluserTypes = userTypes.data.map((userType) => {
                     return {
                         name: <>{userType.userType}</>,
-                        
+
                         actions: <>
                             <MDButton variant="text" color="error" onClick={() => { deleteUserType(userType.id) }}>
                                 <Icon>delete</Icon>&nbsp;delete
@@ -110,7 +112,7 @@ function UserTypes() {
 
                                 </MDBox>
                                 <MDBox pt={3}>
-                                   
+
                                     <DataTable
                                         table={{ columns, rows }}
 

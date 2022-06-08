@@ -40,7 +40,7 @@ function AddUser() {
     }, [])
 
     const handleUserTypeChange = (event) => {
-        console.log("d")
+       
         setUserType(event.target.value)
     }
 
@@ -59,7 +59,7 @@ function AddUser() {
     const [governratesData, setGovernratesData] = useState([])
     const handleCountryIdChange = (e) => {
         const country = countriesData.filter((country) => country.id == e.target.value)
-        console.log("country", country)
+        // console.log("country", country)
         setGovernratesData(country[0]?.Governrates)
     }
 
@@ -68,7 +68,7 @@ function AddUser() {
     const [cityId, setCityId] = useState(0)
     const handleGovernratedChange = (e) => {
         const governrate = governratesData.filter((governrate) => governrate.id == e.target.value)
-        console.log("governrate", governrate)
+        // console.log("governrate", governrate)
         setCitiesData(governrate[0]?.Cities)
 
     }
@@ -76,10 +76,10 @@ function AddUser() {
 
 
 
-    console.log("governratesData", governratesData)
+    // console.log("governratesData", governratesData)
     const saveUser = () => {
         const userName = userNameRef.current.querySelector('input[type=text]').value
-        const userPhone = userPhoneRef.current.querySelector('input[type=number]').value
+        const userPhone = userPhoneRef.current.querySelector('input[type=text]').value
 
         const userEmail = userEmailRef.current.querySelector('input[type=email]').value
         const userPassword = userPassRef.current.querySelector('input[type=password]').value
@@ -131,7 +131,7 @@ function AddUser() {
                                 <MDBox component="form" role="form">
 
                                     <FormControl fullWidth>
-                                        <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                                        <InputLabel variant="standard" htmlFor="UserType">
                                             UserType
                                         </InputLabel>
                                         <NativeSelect
@@ -139,10 +139,11 @@ function AddUser() {
 
                                             inputProps={{
                                                 name: 'UserType',
-                                                id: 'uncontrolled-native',
+                                                id: 'UserType',
                                             }}
                                             onChange={handleUserTypeChange}
                                         >
+                                            <option value={null}></option>
 
                                             {userTypesData?.map((userType, i) => <option value={userType.id} key={i}>{userType.userType}</option>)}
 
@@ -154,7 +155,7 @@ function AddUser() {
                                 </MDBox>
 
                                 <MDBox mb={2}>
-                                    <MDInput type="number" label="userPhone" variant="standard" fullWidth ref={userPhoneRef} />
+                                    <MDInput type="text" label="userPhone" variant="standard" fullWidth ref={userPhoneRef} />
                                 </MDBox>
 
                                 <MDBox mb={2}>
@@ -171,7 +172,7 @@ function AddUser() {
                                 <MDBox component="form" role="form">
 
                                     <FormControl fullWidth>
-                                        <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                                        <InputLabel variant="standard" htmlFor="country">
                                             Country
                                         </InputLabel>
                                         <NativeSelect
@@ -179,7 +180,7 @@ function AddUser() {
                                             defaultValue={1}
                                             inputProps={{
                                                 name: 'country',
-                                                id: 'uncontrolled-native',
+                                                id: 'country',
                                             }}
                                             onChange={handleCountryIdChange}
                                         >
@@ -194,7 +195,7 @@ function AddUser() {
                                 <MDBox component="form" role="form">
 
                                     <FormControl fullWidth>
-                                        <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                                        <InputLabel variant="standard" htmlFor="governrates">
                                             Governrate
                                         </InputLabel>
                                         <NativeSelect
@@ -202,7 +203,7 @@ function AddUser() {
 
                                             inputProps={{
                                                 name: 'governrate',
-                                                id: 'uncontrolled-native',
+                                                id: 'governrates',
                                             }}
                                             onChange={handleGovernratedChange}
 
@@ -219,14 +220,14 @@ function AddUser() {
                                 <MDBox component="form" role="form">
 
                                     <FormControl fullWidth>
-                                        <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                                        <InputLabel variant="standard" htmlFor="city">
                                             Cities
                                         </InputLabel>
                                         <NativeSelect
 
                                             inputProps={{
                                                 name: 'governrate',
-                                                id: 'uncontrolled-native',
+                                                id: 'city',
                                             }}
                                             onChange={(e) => setCityId(e.target.value)}
 

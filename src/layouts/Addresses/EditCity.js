@@ -38,7 +38,7 @@ function Map({ center, zoom, setLat, setLng }) {
     useEffect(() => {
         if (map) {
             map.addListener("click", (mapsMouseEvent) => {
-                console.log(mapsMouseEvent)
+                // console.log(mapsMouseEvent)
                 const coordinates = mapsMouseEvent.latLng.toJSON()
                 setLat(coordinates.lat)
                 setLng(coordinates.lng)
@@ -61,7 +61,7 @@ function EditCity() {
             auth: true,
         }, 'get').then(data => {
             setGovernratesData(data.data)
-            console.log("governrate data", data.data)
+            // console.log("governrate data", data.data)
         })
     }, [])
     const [cityData, setCityData] = useState([])
@@ -70,7 +70,7 @@ function EditCity() {
         request(`${process.env.REACT_APP_API_URL}addresses/city/${id}`, {}, null, {
             auth: true,
         }, 'get').then(data => {
-            console.log("city data", data.data)
+            // console.log("city data", data.data)
             setCityData(data.data)
         })
     }, [])
@@ -89,7 +89,7 @@ function EditCity() {
             redirect:"/adresses/",
             snackbar: true
         }, 'put').then(data => {
-            console.log("updated city data", data)
+            // console.log("updated city data", data)
         })
 
 
@@ -101,7 +101,7 @@ function EditCity() {
         request(`${process.env.REACT_APP_API_URL}addresses/governrate/${e.target.value}`, {}, null, {
             auth: true,
         }, 'get').then(data => {
-            console.log("governrate data by id ", data.data)
+            // console.log("governrate data by id ", data.data)
             setLatitude(data.data.Cities[0].latitude)
             setLongitude(data.data.Cities[0].longitude)
         })
@@ -155,7 +155,7 @@ function EditCity() {
                                             <FormControl fullWidth>
                                                 <InputLabel id="demo-simple-select-label">Governrate</InputLabel>
                                                 <NativeSelect
-                                                    labelId="demo-simple-select-label"
+                                                    labelid="demo-simple-select-label"
                                                     id="demo-simple-select"
                                                     // value={governratesData?.id}
                                                     label="Category"

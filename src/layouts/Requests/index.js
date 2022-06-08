@@ -15,82 +15,79 @@ import { useMaterialUIController } from "context";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import Footer from "examples/Footer";
-import DataTable from "examples/Tables/DataTable";
 import { useEffect, useState } from "react";
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import NativeSelect from '@mui/material/NativeSelect';
 import { useRequest } from "lib/functions";
 
 import { Link } from 'react-router-dom'
-import { useContext } from "react";
-import { AuthContext } from "context/AuthContext";
-const columns = [
-  { Header: "Request Id", accessor: "id",  align: "left" },
-  { Header: "Farm Area", accessor: "farmArea", align: "left" },
-  { Header: "Budget", accessor: "budget", align: "left" },
-  { Header: "Crop Name", accessor: "cropName", align: "left" },
-  { Header: "Farm Kind", accessor: "farmKind", align: "left" },
-  { Header: "User Name", accessor: "userName", align: "left" },
-  { Header: "actions", accessor: "actions", align: "center" },
-]
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+
 function Requests() {
-  const [order, setOrder] = useState('ASC')
+  const columns = [
+    { headerName: "Request Id", field: "id", width: 60, align: "left" },
+    { headerName: "Farm Area", field: "farmArea", width: 130, align: "left" },
+    { headerName: "Budget", field: "budget", width: 130, align: "left" },
+    { headerName: "Crop Name", field: "cropName", width: 130, align: "left" },
+    { headerName: "Farm Kind", field: "farmKind", width: 130, align: "left" },
+    { headerName: "User Name", field: "userName", width: 130, align: "left" },
+    {
+      headerName: "actions", field: "actions", width: 230, align: "center", renderCell: (params) => {
+        return <>
+          <MDButton variant="text" color="error" onClick={() => { deleteReuest(params.id) }}>
+            <Icon>delete</Icon>&nbsp;delete
+          </MDButton>
+          <Link to={`/requests/edit/${params.id}`}>
+            <MDButton variant="text" color={darkMode ? "white" : "dark"} >
+              <Icon>edit</Icon>&nbsp;edit
+            </MDButton>
+          </Link>
+        </>
+      }
+    },
+  ]
 
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
   const [rows, setRows] = useState([])
-  const ctx = useContext(AuthContext)
   const request = useRequest()
 
-  const [serverResponse, setServerResponse] = useState(" ")
-    const [snackBarType, setSnackBarType] = useState("success")
-    const [openSnackBar, setOpenSnackBar] = useState(false)
 
   const deleteReuest = (requestId) => {
     if (window.confirm('Are you sure')) {
-      request(`${process.env.REACT_APP_API_URL}requests/${requestId}`, {}, null, {
-          auth: true,
-          snackbar: true
+      request(`${process.env.REACT_APP_API_URL}requests/${requestId}?deleted=${1}`, {}, null, {
+        auth: true,
+        snackbar: true
       }, 'delete').then(data => {
-          console.log(data.messages)
+        // console.log(data.messages)
+        const updatedRows = rows.filter((row) => row.id != requestId)
+        setRows(updatedRows)
       })
-  }
+    }
 
   }
   useEffect(() => {
 
-    request(`${process.env.REACT_APP_API_URL}requests?order=${order}`, {}, null, {
-        auth: true,
+    request(`${process.env.REACT_APP_API_URL}requests`, {}, null, {
+      auth: true,
     }, 'get')
-        .then(requests => {
-            // console.log("deal data", deals)
+      .then(requests => {
+        // console.log("deal data", deals)
 
-            const allRequests = requests?.data?.map((request, i) => {
-            console.log("request",request)
+        const allRequests = requests?.data?.map((request, i) => {
+          // console.log("request", request)
 
-            return {
-              id: <>{request.id}</>,
-              farmArea: <>{request.farmArea}</>,
-              budget: <>{request.budget}</>,
-              farmKind: <>{request.FarmKind?.farmKind}</>,
-              cropName: <>{request.Crop?.cropName }</>,
-              userName: <>{request.User?.userName }</>,
-              actions: <>
-                <MDButton variant="text" color="error" onClick={() => { deleteReuest(request.id) }}>
-                  <Icon>delete</Icon>&nbsp;delete
-                </MDButton>
-                <Link to={`/requests/edit/${request.id}`}>
-                  <MDButton variant="text" color={darkMode ? "white" : "dark"} >
-                    <Icon>edit</Icon>&nbsp;edit
-                  </MDButton>
-                </Link>
-              </>
-            }
-          })
-          setRows(allRequests)
+          return {
+            id: request.id,
+            farmArea: request.farmArea,
+            budget: request.budget,
+            farmKind: request.FarmKind?.farmKind,
+            cropName: request.Crop?.cropName,
+            userName: request.User?.userName,
+
+          }
         })
-      }, [order])
+        setRows(allRequests)
+      })
+  }, [])
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -126,36 +123,17 @@ function Requests() {
                   </Link>
                 </Grid>
               </MDBox>
-                          <MDBox mb={2} p={2}>
-                              <FormControl fullWidth >
-                                  <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                                      Order
-                                  </InputLabel>
-                                  <NativeSelect
 
-                                      defaultValue={"ASC"}
-                                      onChange={(e) => { setOrder(e.target.value) }}
-                                      inputProps={{
-                                          name: 'UserType',
-                                          id: 'uncontrolled-native',
-                                      }}
 
-                                  >
-                                      <option value="ASC" defaultValue >ASC</option>
-                                      <option value="DESC" >DESC</option>
 
-                                  </NativeSelect>
-                              </FormControl>
-                          </MDBox>
-
-        
-              <MDBox pt={3}>
-                <DataTable
-                  table={{ columns, rows }}
-                  isSorted={false}
-                  entriesPerPage={false}
-                  showTotalEntries={false}
-                  noEndBorder
+              <MDBox height="70vh" pt={3}>
+                <DataGrid
+                  rows={rows}
+                  columns={columns}
+                  components={{ Toolbar: GridToolbar }}
+                  pageSize={5}
+                  rowsPerPageOptions={[5]}
+                  checkboxSelection
                 />
               </MDBox>
             </Card>

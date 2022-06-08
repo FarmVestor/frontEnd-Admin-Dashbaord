@@ -37,11 +37,6 @@ Coded by www.creative-tim.com
 
 // Material Dashboard 2 React layouts
 import Dashboard from "layouts/dashboard";
-import Tables from "layouts/tables";
-import Billing from "layouts/billing";
-import RTL from "layouts/rtl";
-import Notifications from "layouts/notifications";
-import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignOut from "layouts/authentication/sign-out";
 import Users  from "layouts/Users"
@@ -55,7 +50,6 @@ import Farms  from "layouts/Farms"
 import AddFarms  from "layouts/Farms/AddFarm"
 import EditFarms  from "layouts/Farms/EditFarm"
 
-// @mui icons
 import Icon from "@mui/material/Icon";
 import UserTypes from "layouts/Users/userType"
 import AddUserType from "layouts/Users/userType/AddUserType"
@@ -63,11 +57,10 @@ import EditUserType from "layouts/Users/userType/EditUserType"
 import Deals from "layouts/Deals"
 import EditDeal from "layouts/Deals/EditDeal"
 import AddDeal from "layouts/Deals/AddDeal"
-// import UserTypes from "layouts/Users/userType"
 import Adresses from "layouts/Addresses"
 import AddCity from "layouts/Addresses/AddCity"
 import EditCity from "layouts/Addresses/EditCity"
-
+import MyTrash from "layouts/MyTrash"
 const routes = [
   {
     type: "collapse",
@@ -124,45 +117,7 @@ const routes = [
 
   },
   
-  // {
-  //   type: "collapse",
-  //   name: "Profile",
-  //   key: "profile",
-  //   icon: <Icon fontSize="small">person</Icon>,
-  //   route: "/profile",
-  //   inSideNav: true,
-  //   component: <Profile />,
-  //   requireAuth:true,
-  //   inSideNav:true
-  // },
-  {
-    type: "collapse",
-    name: "Sign In",
-    key: "sign-in",
-    icon: <Icon fontSize="small">login</Icon>,
-    route: "/sign-in",
-    inSideNav: true,
-    component: <SignIn />,
-    requireAuth:true,
-    inSideNav:true
-  },
-  // {
-  //   type: "collapse",
-  //   name: "Sign Up",
-  //   key: "sign-up",
-  //   icon: <Icon fontSize="small">assignment</Icon>,
-  //   route: "/authentication/sign-up",
-  //   component: <SignUp />,
-  // },
-  {
-    type: "collapse",
-    name: "Sign out",
-    key: "sign-out",
-    icon: <Icon fontSize="small">logout</Icon>,
-    route: "/sign-out",
-    inSideNav: true,
-    component: <SignOut />,
-  },
+  
   {
     type: "collapse",
     name: "Requests",
@@ -201,7 +156,7 @@ const routes = [
     name: "Users",
     key: "Users",
     icon: <Icon fontSize="small">people</Icon>,
-    route: "/users/:id",
+    route: "/users/:name/:id",
     inSideNav: false,
     component: <Users />,
   },
@@ -313,6 +268,37 @@ const routes = [
     route: "/addresses/city/edit/:id",
     inSideNav: false,
     component: <EditCity />,
+  },
+
+  {
+    type: "collapse",
+    name: "My Trash",
+    key: "My Trash",
+    icon: <Icon fontSize="small">restore_from_trash</Icon>,
+    route: "/my-trash",
+    inSideNav: true,
+    component: <MyTrash />,
+  },
+  {
+    type: "collapse",
+    name: "Sign In",
+    key: "sign-in",
+    icon: <Icon fontSize="small">login</Icon>,
+    route: "/sign-in",
+    inSideNav: true,
+    component: <SignIn />,
+    requireAuth:true,
+    inSideNav:true
+  },
+  
+  {
+    type: "collapse",
+    name: "Sign out",
+    key: "sign-out",
+    icon: <Icon fontSize="small">logout</Icon>,
+    route: "/sign-out",
+    inSideNav: true,
+    component: <SignOut />,
   },
 ];
 

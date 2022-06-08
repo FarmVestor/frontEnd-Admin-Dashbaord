@@ -20,26 +20,26 @@ import { useRequest } from "lib/functions";
 import { NativeSelect } from "@mui/material";
 
 import { Wrapper } from "@googlemaps/react-wrapper";
-function Map({ center, zoom, prevState, updatePlace }) {
+function Map({ center, zoom, prevState, updateFarm }) {
   const mapRef = useRef(null)
   const [map, setMap] = useState()
   useEffect(() => {
-      setMap(new window.google.maps.Map(mapRef.current, {
-          center,
-          zoom,
-      }));
+    setMap(new window.google.maps.Map(mapRef.current, {
+      center,
+      zoom,
+    }));
   }, []);
   useEffect(() => {
-      if (map) {
-          map.addListener("click", (mapsMouseEvent) => {
-              const coordinates = mapsMouseEvent.latLng.toJSON()
-              updateFarmData({
-                  ...prevState,
-                  farmLatitude: coordinates.lat,
-                  farmLongitude: coordinates.lng
-              })
-          });
-      }
+    if (map) {
+      map.addListener("click", (mapsMouseEvent) => {
+        const coordinates = mapsMouseEvent.latLng.toJSON()
+        updateFarm({
+          ...prevState,
+          farmLatitude: coordinates.lat,
+          farmLongitude: coordinates.lng
+        })
+      });
+    }
   }, [map])
   return (<div ref={mapRef} style={{ height: '400px' }} />)
 }
@@ -53,15 +53,15 @@ function EditFarms() {
   const [farmKindData, setFarmKindData] = useState([])
   const [cropData, setCropData] = useState([])
   const [lastCropData, setLastCropData] = useState([])
-  
 
-  const [farmData, setFarmData] = useState({ userId: 0, farmName: '', cityId: 0, farmArea: 0, cropId: 0, farmLicense: '', farmAvailable: 1, farmKindId: 0, farmVisibility: 1, farmWaterSalinity: 0, farmLastCropsId: 0, farmFertilizer: '', farmTreesAge: 0, farmDescription: '',farmLongitude:40.5,farmLatitude:28.5 })
+
+  const [farmData, setFarmData] = useState({ userId: null, farmName: '', cityId: null, farmArea: 0, cropId: null, farmLicense: '', farmAvailable: 1, farmKindId: null, farmVisibiltiy: 1, farmWaterSalinity: 0, farmLastCropsId: 0, farmFertilizer: '', farmTreesAge: 0, farmDescription: '', farmLongitude: 40.5, farmLatitude: 28.5 })
   const closeSnakBar = () => setOpenSnakBar(false)
 
   const farmPictureRef = useRef();
 
   const editFarm = () => {
-console.log("farmData?.farmLongitude",farmData?.farmLongitude)
+    // console.log("farmData?.farmLongitude",farmData?.farmLongitude)
     const farmPicture = farmPictureRef.current.querySelector("input[type=file").files;
 
     const formdata = new FormData();
@@ -73,7 +73,7 @@ console.log("farmData?.farmLongitude",farmData?.farmLongitude)
     formdata.append("farmLicense", farmData?.farmLicense);
     formdata.append("farmAvailable", farmData?.farmAvailable);
     formdata.append("farmKindId", farmData?.farmKindId);
-    formdata.append("farmVisibiltiy", farmData?.farmVisibility);
+    formdata.append("farmVisibiltiy", farmData?.farmVisibiltiy);
     formdata.append("farmWaterSalinity", farmData?.farmWaterSalinity);
     formdata.append("farmLastCropsId", farmData?.farmLastCropsId);
     formdata.append("farmFertilizer", farmData?.farmFertilizer);
@@ -82,6 +82,12 @@ console.log("farmData?.farmLongitude",farmData?.farmLongitude)
     formdata.append("farmPicture", farmPicture[0]);
     formdata.append("farmLatitude", farmData?.farmLatitude);
     formdata.append("farmLongitude", farmData?.farmLongitude);
+    // request(`${process.env.REACT_APP_API_URL}farms/${id}`,{},{
+    //   body:formdata
+    // },{
+    //   auth: true,
+    //   snackbar: true,
+    // },"put")
     fetch(`${process.env.REACT_APP_API_URL}farms/${id}`, {
       method: "put",
       body: formdata,
@@ -90,7 +96,7 @@ console.log("farmData?.farmLongitude",farmData?.farmLongitude)
       },
     }).then(responce => {
       responce.json().then(farmedited => {
-        console.log(farmedited)
+        // console.log(farmedited)
         setServerResponce(farmedited.messages.join(' '))
         if (farmedited.success) {
           setSnakBarColor('success')
@@ -105,7 +111,7 @@ console.log("farmData?.farmLongitude",farmData?.farmLongitude)
   };
 
 
-  
+
   //get countries
   const [countriesData, setCountriesData] = useState([])
   useEffect(() => {
@@ -121,7 +127,7 @@ console.log("farmData?.farmLongitude",farmData?.farmLongitude)
   const [governratesData, setGovernratesData] = useState([])
   const handleCountryIdChange = (e) => {
     const country = countriesData.filter((country) => country.id == e.target.value)
-    console.log("country", country)
+    // console.log("country", country)
     setGovernratesData(country[0]?.Governrates)
   }
 
@@ -130,16 +136,16 @@ console.log("farmData?.farmLongitude",farmData?.farmLongitude)
   const [cityId, setCityId] = useState(0)
   const handleGovernratedChange = (e) => {
     const governrate = governratesData.filter((governrate) => governrate.id == e.target.value)
-    console.log("governrate", governrate)
+    // console.log("governrate", governrate)
     setCitiesData(governrate[0]?.Cities)
   }
   const handleCitiesChange = (e) => {
     const city = citiesData.filter((city) => city.id == e.target.value)
-  //  setLongitude(city.longitude)
-  //  setLatitude(city.latitude)
-    updateFarmData({  farmLongitude: city.longitude}) 
-    updateFarmData({  farmLatitude: city.latitude }) 
-    updateFarmData({  cityId: e.target.value }) 
+    //  setLongitude(city.longitude)
+    //  setLatitude(city.latitude)
+    updateFarmData({ farmLongitude: city.longitude })
+    updateFarmData({ farmLatitude: city.latitude })
+    updateFarmData({ cityId: e.target.value })
   }
 
   useEffect(() => {
@@ -147,7 +153,7 @@ console.log("farmData?.farmLongitude",farmData?.farmLongitude)
       auth: true,
     }, 'get')
       .then((farmkinds) => {
-        console.log("farmkindsData",farmkinds)
+        // console.log("farmkindsData",farmkinds)
 
         setFarmKindData(farmkinds?.data);
       });
@@ -190,13 +196,13 @@ console.log("farmData?.farmLongitude",farmData?.farmLongitude)
       })
 
   }, [])
-const updateFarmData=(obj)=>{
-  setFarmData({
-    ...farmData,
-    ...obj
-})
-}
- 
+  const updateFarmData = (obj) => {
+    setFarmData({
+      ...farmData,
+      ...obj
+    })
+  }
+
 
   return (
     <DashboardLayout>
@@ -214,7 +220,7 @@ const updateFarmData=(obj)=>{
                       label="farmer Id"
                       variant="standard"
                       value={farmData?.userId}
-                      onChange={(e) => { updateFarmData({  userId: e.target.value }) }}
+                      onChange={(e) => { updateFarmData({ userId: e.target.value }) }}
                       fullWidth
                     />
                   </MDBox>
@@ -222,7 +228,7 @@ const updateFarmData=(obj)=>{
                     <MDInput
                       type="text"
                       value={farmData?.farmName}
-                      onChange={(e) => { updateFarmData({  farmName: e.target.value }) }}
+                      onChange={(e) => { updateFarmData({ farmName: e.target.value }) }}
                       label="farm Name"
                       variant="standard"
                       fullWidth
@@ -232,7 +238,7 @@ const updateFarmData=(obj)=>{
                   <MDBox mb={2}>
                     <MDInput
                       value={farmData?.farmArea}
-                      onChange={(e) => { updateFarmData({  farmArea: e.target.value }) }}
+                      onChange={(e) => { updateFarmData({ farmArea: e.target.value }) }}
                       type="text"
                       label="farm Area"
                       variant="standard"
@@ -243,7 +249,7 @@ const updateFarmData=(obj)=>{
                   <MDBox mb={2}>
                     <MDInput
                       value={farmData?.farmLicense}
-                      onChange={(e) => { updateFarmData({  farmLicense: e.target.value }) }}
+                      onChange={(e) => { updateFarmData({ farmLicense: e.target.value }) }}
                       type="text"
                       label="farm License"
                       variant="standard"
@@ -254,9 +260,9 @@ const updateFarmData=(obj)=>{
                   <MDBox mb={2}>
                     <MDInput
                       value={farmData?.farmWaterSalinity}
-                      onChange={(e) => { updateFarmData({  farmWaterSalinity: e.target.value }) }}
+                      onChange={(e) => { updateFarmData({ farmWaterSalinity: e.target.value }) }}
                       type="text"
-                      label="farm WaterSalinity"
+                      label="WaterSalinity"
                       variant="standard"
                       fullWidth
                     />
@@ -265,7 +271,7 @@ const updateFarmData=(obj)=>{
                   <MDBox mb={2}>
                     <MDInput
                       value={farmData?.farmFertilizer}
-                      onChange={(e) => { updateFarmData({  farmFertilizer: e.target.value }) }}
+                      onChange={(e) => { updateFarmData({ farmFertilizer: e.target.value }) }}
                       type="text"
                       label="farm Fertilizer"
                       variant="standard"
@@ -276,7 +282,7 @@ const updateFarmData=(obj)=>{
                     <MDInput
                       type="text"
                       value={farmData?.farmTreesAge}
-                      onChange={(e) => { updateFarmData({  farmTreesAge: e.target.value }) }}
+                      onChange={(e) => { updateFarmData({ farmTreesAge: e.target.value }) }}
                       label="farm TreesAge"
                       variant="standard"
                       fullWidth
@@ -286,7 +292,7 @@ const updateFarmData=(obj)=>{
                     <MDInput
                       type="text"
                       value={farmData?.farmDescription}
-                      onChange={(e) => { updateFarmData({farmDescription: e.target.value }) }}
+                      onChange={(e) => { updateFarmData({ farmDescription: e.target.value }) }}
                       label="farm Description"
                       variant="standard"
                       fullWidth
@@ -294,36 +300,35 @@ const updateFarmData=(obj)=>{
                   </MDBox>
                   <MDBox mb={2}>
                     <FormControl>
-                      <FormLabel id="demo-row-radio-buttons-group-label">farm Available</FormLabel>
-                      <RadioGroup value={farmData?.farmAvailable} row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" onChange={(e) => { updateFarmData({  farmAvailable: e.target.value }) }} >
-                        <FormControlLabel value={true} control={<Radio />} label="Available" />
-                        <FormControlLabel value={false} control={<Radio />} label="Not Available" />
+                      <FormLabel id="farm-available">farm Availablility</FormLabel>
+                      <RadioGroup value={farmData?.farmAvailable} row aria-labelledby="farm-available" name="row-radio-buttons-group" onChange={(e) => { updateFarmData({ farmAvailable: e.target.value }) }} >
+                        <FormControlLabel value={1} control={<Radio />} label="Available" />
+                        <FormControlLabel value={0} control={<Radio />} label="Not Available" />
                       </RadioGroup>
                     </FormControl>
                   </MDBox>
                   <MDBox mb={2}>
                     <FormControl>
-                      <FormLabel id="demo-row-radio-buttons-group-label">farm Visiable</FormLabel>
-                      <RadioGroup value={farmData?.farmVisibility} row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" onChange={(e) => { updateFarmData({  farmVisibility: e.target.value }) }} >
-                        <FormControlLabel value={true} control={<Radio />} label="Visiable" />
-                        <FormControlLabel value={false} control={<Radio />} label="Not Visiable" />
+                      <FormLabel id="farm-visibility">farm Visiable</FormLabel>
+                      <RadioGroup value={farmData?.farmVisibiltiy} row aria-labelledby="farm-visibility" name="row-radio-buttons-group" onChange={(e) => { updateFarmData({ farmVisibiltiy: e.target.value }) }} >
+                        <FormControlLabel value={1} control={<Radio />} label="Visiable" />
+                        <FormControlLabel value={0} control={<Radio />} label="Not Visiable" />
                       </RadioGroup>
                     </FormControl>
                   </MDBox>
-                  
+
                   <MDBox mb={2}>
                     <Box sx={{ minWidth: 120 }}>
                       <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">
+                        <InputLabel id="crops">
                           Crops
                         </InputLabel>
                         <NativeSelect
-                          labelId="demo-simple-select-label"
-                          id="demo-simple-select"
+                          labelid="crops"
+                          id="crop"
                           value={farmData?.cropId}
                           label="Crops"
-                          defaultValue="1"
-                          onChange={(e) => { updateFarmData({  cropId: e.target.value }) }}
+                          onChange={(e) => { updateFarmData({ cropId: e.target.value }) }}
                         >
                           {cropData?.map((crop, i) => {
                             return (
@@ -339,16 +344,15 @@ const updateFarmData=(obj)=>{
                   <MDBox mb={2}>
                     <Box sx={{ minWidth: 120 }}>
                       <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">
+                        <InputLabel id="lastCrop">
                           Farm Last Crops
                         </InputLabel>
                         <NativeSelect
-                          labelId="demo-simple-select-label"
-                          id="demo-simple-select"
+                          labelid="lastCrop"
+                          id="lastcrop"
                           value={farmData?.farmLastCropsId}
                           label="Crops"
-                          defaultValue="1"
-                          onChange={(e) => { updateFarmData({  farmLastCropsId: e.target.value }) }}
+                          onChange={(e) => { updateFarmData({ farmLastCropsId: e.target.value }) }}
                         >
                           {lastCropData?.map((crop, i) => {
                             return (
@@ -364,16 +368,15 @@ const updateFarmData=(obj)=>{
                   <MDBox mb={2}>
                     <Box sx={{ minWidth: 120 }}>
                       <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">
+                        <InputLabel id="farmkinds">
                           Farm Kind
                         </InputLabel>
                         <NativeSelect
-                          labelId="demo-simple-select-label"
-                          id="demo-simple-select"
+                          labelid="farmkinds"
+                          id="farmkind"
                           value={farmData?.farmKindId}
                           label="FarmKind"
-                          defaultValue="1"
-                          onChange={(e) => { updateFarmData({  farmKindId: e.target.value }) }}
+                          onChange={(e) => { updateFarmData({ farmKindId: e.target.value }) }}
                         >
                           {farmKindData?.map((farmkind, i) => {
                             return (
@@ -398,15 +401,15 @@ const updateFarmData=(obj)=>{
                   <MDBox component="form" role="form">
 
                     <FormControl fullWidth>
-                      <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                      <InputLabel variant="standard" htmlFor="country">
                         Country
                       </InputLabel>
                       <NativeSelect
-
-                        defaultValue={1}
+                        value=""
+                        
                         inputProps={{
                           name: 'country',
-                          id: 'uncontrolled-native',
+                          id: 'country',
                         }}
                         onChange={handleCountryIdChange}
                       >
@@ -421,15 +424,15 @@ const updateFarmData=(obj)=>{
                   <MDBox component="form" role="form">
 
                     <FormControl fullWidth>
-                      <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                      <InputLabel variant="standard" htmlFor="gov">
                         Governrate
                       </InputLabel>
                       <NativeSelect
 
-
+                        value=""
                         inputProps={{
                           name: 'governrate',
-                          id: 'uncontrolled-native',
+                          id: 'gov',
                         }}
                         onChange={handleGovernratedChange}
 
@@ -446,14 +449,14 @@ const updateFarmData=(obj)=>{
                   <MDBox component="form" role="form">
 
                     <FormControl fullWidth>
-                      <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                      <InputLabel variant="standard" htmlFor="city">
                         Cities
                       </InputLabel>
                       <NativeSelect
-
+                        value=""
                         inputProps={{
                           name: 'governrate',
-                          id: 'uncontrolled-native',
+                          id: 'city',
                         }}
                         onChange={handleCitiesChange}
 
@@ -470,7 +473,7 @@ const updateFarmData=(obj)=>{
                     <MDInput
                       type="number"
                       value={farmData?.farmLongitude}
-                      onChange={(e) => { updateFarmData({  farmLatitude: e.target.value }) }}
+                      onChange={(e) => { updateFarmData({ farmLatitude: e.target.value }) }}
                       label="farm Latitude"
                       variant="standard"
                       fullWidth
@@ -480,7 +483,7 @@ const updateFarmData=(obj)=>{
                     <MDInput
                       type="number"
                       value={farmData?.farmLongitude}
-                      onChange={(e) => { updateFarmData({  farmLongitude: e.target.value }) }}
+                      onChange={(e) => { updateFarmData({ farmLongitude: e.target.value }) }}
                       label="farm Longitude"
                       variant="standard"
                       fullWidth
@@ -488,7 +491,7 @@ const updateFarmData=(obj)=>{
                   </MDBox>
                   <MDBox mb={2}>
                     <Wrapper apiKey={''} >
-                      <Map center={{ lat: farmData.farmLatitude, lng: farmData.farmLongitude }} updateFarmData={setFarmData} prevState={setFarmData} zoom={8} />
+                      <Map center={{ lat: farmData.farmLatitude, lng: farmData.farmLongitude }} updateFarm={setFarmData} prevState={setFarmData} zoom={8} />
                     </Wrapper>
                   </MDBox>
                   <MDBox mt={4} mb={1}>

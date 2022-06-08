@@ -60,14 +60,16 @@ function Adresses() {
     const [GovRows, setGovRows] = useState([])
     const [CityRows, setCityRows] = useState([])
     const deleteRow = (userId, row) => {
-        console.log(userId)
+        // console.log(userId)
         if (window.confirm('Are you sure')) {
-            request(`${process.env.REACT_APP_API_URL}addresses/city/${userId}`, {}, null, {
+            request(`${process.env.REACT_APP_API_URL}addresses/city/${userId}?deleted=${1}`, {}, null, {
                 auth: true,
                 snackbar: true
 
             }, 'delete').then(data => {
-                console.log(data.messages)
+                // console.log(data.messages)
+                const updatedRows=CityRows.filter((row)=>row.id != userId)
+                setCityRows(updatedRows)
             })
         }
 
@@ -91,7 +93,7 @@ function Adresses() {
                 setCityRows(allcities)
 
             })
-    }, [order])
+    }, [])
     return (
         <DashboardLayout>
             <DashboardNavbar />

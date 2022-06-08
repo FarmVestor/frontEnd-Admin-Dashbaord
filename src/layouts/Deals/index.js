@@ -1,53 +1,63 @@
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
-
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import Footer from "examples/Footer";
-import DataTable from "examples/Tables/DataTable";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import Icon from "@mui/material/Icon";
 import MDButton from "components/MDButton";
-
 import { Link, useParams } from "react-router-dom";
-
-// Authentication layout components
 import { useRequest } from "lib/functions";
-
-
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import NativeSelect from '@mui/material/NativeSelect';
 import CheckIcon from '@mui/icons-material/Check';
 import NotInterestedIcon from '@mui/icons-material/NotInterested';
-
-const columns = [
-    { Header: "Farm Name", accessor: "farmName", align: "left" },
-    { Header: "Farmer Name", accessor: "farmerName", align: "left" },
-    { Header: "Partner Name", accessor: "partnerName", align: "left" },
-    { Header: "Partner Type", accessor: "partnerType", align: "left" },
-    { Header: "Deal Price", accessor: "dealPrice", align: "left" },
-    { Header: "Deal Status", accessor: "dealStatus", align: "left" },
-    { Header: "actions", accessor: "actions", align: "center" },
-]
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 
 function Deals() {
+
+    const columns = [
+        { headerName: "ID", field: "id", width: 60, align: "left" },
+
+        { headerName: "Farm Name", field: "farmName", width: 130, align: "left" },
+        { headerName: "Farmer Name", field: "farmerName", width: 130, align: "left" },
+        { headerName: "Partner Name", field: "partnerName", width: 130, align: "left" },
+        { headerName: "Partner Type", field: "partnerType", width: 130, align: "left" },
+        { headerName: "Deal Price", field: "dealPrice", width: 130, align: "left" },
+        {
+            headerName: "Deal Status", field: "dealStatus", width: 130, align: "left", renderCell: (params) => {
+                return <>{params.value ? <CheckIcon /> : <NotInterestedIcon />}</>
+            }
+        },
+        {
+            headerName: "actions", field: "actions", width: 230, align: "center", renderCell: (params) => {
+                return <>
+                    <MDButton variant="text" color="error" onClick={() => { deleteDeal(params.id) }}>
+                        <Icon>delete</Icon>&nbsp;delete
+                    </MDButton>
+                    <Link to={`/deals/edit/${params.id}`}>
+                        <MDButton variant="text" color="info">
+                            <Icon>edit</Icon>&nbsp;edit
+                        </MDButton>
+                    </Link>
+                </>
+            }
+        },
+    ]
+
     const [order, setOrder] = useState('ASC')
     const { id } = useParams()
     const request = useRequest()
     const [rows, setRows] = useState([])
-    const deleteDeal = (userId) => {
+    const deleteDeal = (dealId) => {
         if (window.confirm('Are you sure')) {
-            request(`${process.env.REACT_APP_API_URL}deals/${userId}`, {}, {}, {
+            request(`${process.env.REACT_APP_API_URL}deals/${dealId}?deleted=${1}`, {}, null, {
                 auth: true,
-
                 snackbar: true
-
             }, 'delete').then(data => {
-                console.log(data.messages)
+                // console.log(data.messages)
+                const updatedRows=rows.filter((row)=>row.id != dealId)
+                setRows(updatedRows)
             })
         }
 
@@ -55,40 +65,29 @@ function Deals() {
 
     useEffect(() => {
 
-        request(`${process.env.REACT_APP_API_URL}deals?order=${order}`, {}, null, {
+        request(`${process.env.REACT_APP_API_URL}deals`, {}, null, {
             auth: true,
-
-            // snackbar: true
-
         }, 'get')
             .then(deals => {
                 // console.log("deal data", deals)
 
-                const alldeals = deals.data.map((deal) => {
-                    console.log("deal data", deal)
+                const alldeals = deals?.data?.map((deal) => {
+                    // console.log("deal data", deal)
                     return {
-                        farmName: <>{deal.Farm?.farmName}</>,
-                        farmerName: <>{deal.Farm?.User?.userName}</>,
-                        partnerName: <>{deal.agentId ? deal.agent?.userName : deal.investor?.userName}</>,
-                        partnerType: <>{deal.agentId ? "Agent" : "Investor"}</>,
-                        dealPrice: <>{deal.dealPrice}</>,
-                        dealStatus: <>{deal.dealStatus ? <CheckIcon /> : <NotInterestedIcon />}</>,
-                        actions: <>
-                            <MDButton variant="text" color="error" onClick={() => { deleteDeal(deal.id) }}>
-                                <Icon>delete</Icon>&nbsp;delete
-                            </MDButton>
-                            <Link to={`/deals/edit/${deal.id}`}>
-                                <MDButton variant="text" color="info">
-                                    <Icon>edit</Icon>&nbsp;edit
-                                </MDButton>
-                            </Link>
-                        </>,
+                        id:deal.id,
+                        farmName: deal.Farm?.farmName,
+                        farmerName: deal.Farm?.User?.userName,
+                        partnerName: deal.agentId ? deal.agent?.userName : deal.investor?.userName,
+                        partnerType: deal.agentId ? "Agent" : "Investor",
+                        dealPrice: deal.dealPrice,
+                        dealStatus: deal.dealStatus,
+
                     }
                 })
                 setRows(alldeals)
 
             })
-    }, [order])
+    }, [])
     return (
         <DashboardLayout>
             <DashboardNavbar />
@@ -128,36 +127,17 @@ function Deals() {
 
                             </MDBox>
                             <MDBox pt={3}>
-                                <MDBox mb={2} p={2}>
-                                    <FormControl fullWidth >
-                                        <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                                            Order
-                                        </InputLabel>
-                                        <NativeSelect
-
-                                            defaultValue={"ASC"}
-                                            onChange={(e) => { setOrder(e.target.value) }}
-                                            inputProps={{
-                                                name: 'UserType',
-                                                id: 'uncontrolled-native',
-                                            }}
-
-                                        >
-                                            <option value="ASC" defaultValue >ASC</option>
-                                            <option value="DESC" >DESC</option>
-
-                                        </NativeSelect>
-                                    </FormControl>
+                                
+                                <MDBox height="70vh" pt={3}>
+                                    <DataGrid
+                                        rows={rows}
+                                        columns={columns}
+                                        components={{ Toolbar: GridToolbar }}
+                                        pageSize={5}
+                                        rowsPerPageOptions={[5]}
+                                        checkboxSelection
+                                    />
                                 </MDBox>
-                                <DataTable
-                                    table={{ columns, rows }}
-
-                                    isSorted={false}
-                                    canSearch={true}
-                                    entriesPerPage={true}
-                                    showTotalEntries={false}
-                                    noEndBorder
-                                />
 
                             </MDBox>
                         </Card>

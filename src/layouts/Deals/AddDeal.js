@@ -51,7 +51,7 @@ function AddDeal() {
             redirect:"/Deals/"
 
         }, 'post').then(data => {
-            console.log(data)
+            // console.log(data)
         })
 
 

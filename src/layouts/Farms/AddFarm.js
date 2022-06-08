@@ -46,8 +46,8 @@ function AddFarms() {
   const [openSnakBar, setOpenSnakBar] = useState(false)
   const [serverResponce, setServerResponce] = useState('')
   const [snakBarColor, setSnakBarColor] = useState('success')
-  const [available, setAvailable] = useState(true);
-  const [visiable, setVisiable] = useState(true);
+  const [available, setAvailable] = useState(1);
+  const [visiable, setVisiable] = useState(1);
   const [farmKindData, setFarmKindData] = useState([])
   const [farmKind, setfarmKind] = useState("")
   const [cropData, setCropData] = useState([])
@@ -76,11 +76,11 @@ function AddFarms() {
     const farmLongitude = farmLongitudeRef.current.querySelector("input[type=number]").value;
     const userId = userIdRef.current.querySelector("input[type=text]").value;
     const farmName = farmNameRef.current.querySelector("input[type=text]").value;
-    const farmArea = farmAreaRef.current.querySelector("input[type=text]").value;
+    const farmArea = farmAreaRef.current.querySelector("input[type=number]").value;
     const farmLicense = farmLicenseRef.current.querySelector("input[type=text]").value;
-    const farmWaterSalinity = farmWaterSalinityRef.current.querySelector("input[type=text]").value;
+    const farmWaterSalinity = farmWaterSalinityRef.current.querySelector("input[type=number]").value;
     const farmFertilizer = farmFertilizerRef.current.querySelector("input[type=text]").value;
-    const farmTreesAge = farmTreesAgeRef.current.querySelector("input[type=text]").value;
+    const farmTreesAge = farmTreesAgeRef.current.querySelector("input[type=number]").value;
     const farmDescription = farmDescriptionRef.current.querySelector("input[type=text]").value;
     const farmPicture = farmPictureRef.current.querySelector("input[type=file").files;
 
@@ -199,7 +199,7 @@ function AddFarms() {
   const handleFarmKindChange = (event) => {
     setfarmKind(event.target.value);
   };
-  
+
   const handleCropChange = (event) => {
     setCrop(event.target.value);
   };
@@ -238,7 +238,7 @@ function AddFarms() {
 
                   <MDBox mb={2}>
                     <MDInput
-                      type="text"
+                      type="number"
                       ref={farmAreaRef}
                       label="farm Area"
                       variant="standard"
@@ -258,7 +258,7 @@ function AddFarms() {
 
                   <MDBox mb={2}>
                     <MDInput
-                      type="text"
+                      type="number"
                       ref={farmWaterSalinityRef}
                       label="farm WaterSalinity"
                       variant="standard"
@@ -277,7 +277,7 @@ function AddFarms() {
                   </MDBox>
                   <MDBox mb={2}>
                     <MDInput
-                      type="text"
+                      type="number"
                       ref={farmTreesAgeRef}
                       label="farm TreesAge"
                       variant="standard"
@@ -295,19 +295,19 @@ function AddFarms() {
                   </MDBox>
                   <MDBox mb={2}>
                     <FormControl>
-                      <FormLabel id="demo-row-radio-buttons-group-label">farm Available</FormLabel>
-                      <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" onChange={handleAvaliableChange} >
-                        <FormControlLabel value={true} control={<Radio />} label="Available" />
-                        <FormControlLabel value={false} control={<Radio />} label="Not Available" />
+                      <FormLabel id="farm-availability">farm Availablility</FormLabel>
+                      <RadioGroup row aria-labelledby="farm-availability" name="row-radio-buttons-group" onChange={handleAvaliableChange} >
+                        <FormControlLabel value={1} control={<Radio />} label="Available" />
+                        <FormControlLabel value={0} control={<Radio />} label="Not Available" />
                       </RadioGroup>
                     </FormControl>
                   </MDBox>
                   <MDBox mb={2}>
                     <FormControl>
-                      <FormLabel id="demo-row-radio-buttons-group-label">farm Visiable</FormLabel>
-                      <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" onChange={handleVisiableChange} >
-                        <FormControlLabel value={true} control={<Radio />} label="Visiable" />
-                        <FormControlLabel value={false} control={<Radio />} label="Not Visiable" />
+                      <FormLabel id="farm-visibility">farm Visiablility</FormLabel>
+                      <RadioGroup row aria-labelledby="farm-visibility" name="row-radio-buttons-group" onChange={handleVisiableChange} >
+                        <FormControlLabel value={1} control={<Radio />} label="Visiable" />
+                        <FormControlLabel value={0} control={<Radio />} label="Not Visiable" />
                       </RadioGroup>
                     </FormControl>
                   </MDBox>
@@ -318,11 +318,11 @@ function AddFarms() {
                           Crops
                         </InputLabel>
                         <NativeSelect
-                          labelId="demo-simple-select-label"
+                          labelid="demo-simple-select-label"
                           id="demo-simple-select"
                           value={crop}
                           label="Crops"
-                          defaultValue="1"
+                          
                           onChange={handleCropChange}
                         >
                           <option></option>
@@ -344,11 +344,11 @@ function AddFarms() {
                           Farm Last Crops
                         </InputLabel>
                         <NativeSelect
-                          labelId="demo-simple-select-label"
+                          labelid="demo-simple-select-label"
                           id="demo-simple-select"
                           value={lastCrop}
                           label="Crops"
-                          defaultValue="1"
+                          
                           onChange={handleLastCropChange}
                         >
                           <option></option>
@@ -370,11 +370,11 @@ function AddFarms() {
                           Farm Kind
                         </InputLabel>
                         <NativeSelect
-                          labelId="demo-simple-select-label"
+                          labelid="demo-simple-select-label"
                           id="demo-simple-select"
                           value={farmKind}
                           label="FarmKind"
-                          defaultValue="1"
+                          
                           onChange={handleFarmKindChange}
                         >
                           <option></option>
@@ -397,7 +397,7 @@ function AddFarms() {
                       fullWidth
                     />
                   </MDBox>
-                  
+
                   <MDBox component="form" role="form">
 
                     <FormControl fullWidth>

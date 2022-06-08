@@ -7,7 +7,6 @@ import Card from "@mui/material/Card";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import Footer from "examples/Footer";
-import DataTable from "examples/Tables/DataTable";
 import { useEffect, useState, useContext } from "react";
 import Icon from "@mui/material/Icon";
 import MDButton from "components/MDButton";
@@ -17,67 +16,66 @@ import { Link, useParams } from "react-router-dom";
 // Authentication layout components
 import BasicLayout from "./BasicLayout";
 import { useRequest } from "lib/functions";
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 
-
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import NativeSelect from '@mui/material/NativeSelect';
-
-const columns = [
-    { Header: "ID", accessor: "id",  align: "left" },
-    { Header: "name", accessor: "name",  align: "left" },
-    { Header: "city", accessor: "city",  align: "left" },
-    { Header: "email", accessor: "email", align: "left" },
-    { Header: "actions", accessor: "actions",width: "30%", align: "center" },
-]
 
 function Users() {
-    const [order, setOrder] = useState('ASC')
-    const { id } = useParams()
+    
+const columns = [
+    { headerName: "ID", field: "id",width: 60,  align: "left" },
+    { headerName: "name", field: "name", width: 130, align: "left" },
+    { headerName: "city", field: "city",  width: 130,align: "left" },
+    { headerName: "email", field: "email",width: 230, align: "left" },
+    { headerName: "actions", field: "actions",width: 230, align: "center", renderCell: (params) => {
+        return <>
+        <MDButton variant="text" color="error" onClick={() => { deleteUser(params.id) }}>
+            <Icon>delete</Icon>&nbsp;delete
+        </MDButton>
+        <Link to={`/users/edit/${params.id}`}>
+            <MDButton variant="text" color="info">
+                <Icon>edit</Icon>&nbsp;edit
+            </MDButton>
+        </Link>
+    </>
+    } },
+] 
+
+    const { id,name } = useParams()
+    id ? id :null 
     const request = useRequest()
     const [rows, setRows] = useState([])
     const deleteUser = (userId) => {
         if (window.confirm('Are you sure')) {
-            request(`${process.env.REACT_APP_API_URL}users/${userId}`, {}, null, {
+            request(`${process.env.REACT_APP_API_URL}users/${userId}?deleted=${1}`, {}, null, {
                 auth: true,
-
                 snackbar: true,
-                
-
-            }, 'delete')
+            }, 'delete').then(()=>{ 
+                const updatedRows = rows.filter((row) => row.id != userId)
+                setRows(updatedRows)
+            })
         }
 
     }
-
     useEffect(() => {
 
-        request(`${process.env.REACT_APP_API_URL}users?id=${id}&order=${order}`, {}, null, {
+        request(`${process.env.REACT_APP_API_URL}users?type=${id}`, {}, null, {
             auth: true,
         }, 'get')
             .then(users => {
                 const allusers = users?.data?.map((user) => {
-                    console.log(user)
+                    // console.log(user)
                     return {
-                        id: <>{user.id}</>,
-                        name: <>{user.userName}</>,
-                        city: <>{user.cityId}</>,
-                        email: <>{user.userEmail}</>,
-                        actions: <>
-                            <MDButton variant="text" color="error" onClick={() => { deleteUser(user.id) }}>
-                                <Icon>delete</Icon>&nbsp;delete
-                            </MDButton>
-                            <Link to={`/users/edit/${user.id}`}>
-                                <MDButton variant="text" color="info">
-                                    <Icon>edit</Icon>&nbsp;edit
-                                </MDButton>
-                            </Link>
-                        </>,
+                        id: user.id,
+                        name: user.userName,
+                        city: user.City?.cityName,
+                        email: user.userEmail,
+                       
                     }
                 })
                 setRows(allusers)
 
             })
-    }, [id, order])
+    }, [id])
     return (
         <DashboardLayout>
             <DashboardNavbar />
@@ -104,7 +102,7 @@ function Users() {
                                         alignItems="center"
                                     >
                                         <MDTypography variant="h6" color="white">
-                                            users Table
+                                            {name} Table
                                         </MDTypography>
 
 
@@ -116,39 +114,15 @@ function Users() {
                                     </Grid>
 
                                 </MDBox>
-                                <MDBox pt={3}>
-                                <MDBox mb={2} p={2}>
-                                        <FormControl fullWidth >
-                                            <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                                                Order
-                                            </InputLabel>
-                                            <NativeSelect
-
-                                                defaultValue={"ASC"}
-                                                onChange={(e) => { setOrder(e.target.value) }}
-                                                inputProps={{
-                                                    name: 'UserType',
-                                                    id: 'uncontrolled-native',
-                                                }}
-
-                                            >
-                                                <option value="ASC" defaultValue >ASC</option>
-                                                <option value="DESC" >DESC</option>
-
-                                            </NativeSelect>
-                                        </FormControl>
-                                        
-                                    </MDBox>
-                                    <DataTable
-                                        table={{ columns, rows }}
-                                        
-                                        isSorted={false}
-                                        canSearch={true}
-                                        entriesPerPage={true}
-                                        showTotalEntries={false}
-                                        noEndBorder
+                                <MDBox height="70vh" pt={3}>
+                                    <DataGrid
+                                        rows={rows}
+                                        columns={columns}
+                                        components={{ Toolbar: GridToolbar }}
+                                        pageSize={5}
+                                        rowsPerPageOptions={[5]}
+                                        checkboxSelection
                                     />
-
                                 </MDBox>
                             </Card>
                         </Grid>

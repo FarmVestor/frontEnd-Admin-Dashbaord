@@ -10,102 +10,128 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import Footer from "examples/Footer";
-import DataTable from "examples/Tables/DataTable";
-import { useEffect, useState, useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import Icon from "@mui/material/Icon";
 import MDButton from "components/MDButton";
 import { useRequest } from "lib/functions";
-import { AuthContext } from "context/AuthContext";
 import { Link } from "react-router-dom";
-import FormControl from '@mui/material/FormControl';
-import { InputLabel } from "@mui/material";
-import { NativeSelect } from "@mui/material";
-const columns = [
-    { Header: "Farmer name", accessor: "userId", width: "45%", align: "left" },
-    { Header: "Farm Id", accessor: "id", width: "45%", align: "left" },
-    { Header: "farm Name", accessor: "farmName", align: "left" },
-    { Header: "farm Picture", accessor: "farmPicture", align: "left" },
-    { Header: "city", accessor: "city", align: "left" },
-    { Header: "farm Area", accessor: "farmArea", align: "left" },
-    { Header: "crop Name", accessor: "cropId", align: "left" },
-    { Header: "farm License", accessor: "farmLicense", align: "left" },
-    { Header: "farm Available", accessor: "farmAvailable", align: "left" },
-    { Header: "farm KindId", accessor: "farmKindId", align: "left" },
-    { Header: "farm Visibiltiy", accessor: "farmVisibiltiy", align: "left" },
-    { Header: "farm WaterSalinity", accessor: "farmWaterSalinity", align: "left" },
-    { Header: "farm LastCropsId", accessor: "farmLastCropsId", align: "left" },
-    { Header: "farm Fertilizer", accessor: "farmFertilizer", align: "left" },
-    { Header: "farm TreesAge", accessor: "farmTreesAge", align: "left" },
-    { Header: "farm Description", accessor: "farmDescription", align: "left" },
-    { Header: "actions", accessor: "actions", align: "center" },
-]
+
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import { AppContext } from "context/AppContext";
+import App from "App";
+
 // const rows = []
 
 function Farms() {
-    const [rows, setRows] = useState([])
-    const ctx = useContext(AuthContext)
-    const request = useRequest()
-    const [order, setOrder] = useState('ASC')
+    const AppCtx = useContext(AppContext)
+    const columns = [
+        { headerName: "Id", field: "id", width: 60, align: "left" },
+        { headerName: "Farmer Name", field: "farmerName", width: 130, align: "left" },
+        { headerName: "farm Name", field: "farmName", width: 130, align: "left" },
+        {
+            headerName: "farm Picture", field: "farmPicture", width: 130, align: "left", renderCell: (params) => {
+                return <> <img src={params.value} width="80" /> </>
+            }
+        },
+        { headerName: "city", field: "city", width: 130, align: "left" },
+        { headerName: "farm Area", field: "farmArea", width: 130, align: "left" },
+        { headerName: "crop Name", field: "cropId", width: 130, align: "left" },
+        { headerName: "farm License", field: "farmLicense", width: 130, align: "left" },
+        {
+            headerName: "farm Available", field: "farmAvailable", width: 130, align: "left", renderCell: (params) => {
+                return <>{params.value ? <CheckIcon /> : <NotInterestedIcon />}</>
+            }
+        },
+        { headerName: "farm KindId", field: "farmKindId", width: 130, align: "left" },
+        {
+            headerName: "farm Visibiltiy", field: "farmVisibiltiy", width: 130, align: "left", renderCell: (params) => {
+                return <>{params.value ? <VisibilityIcon /> : <VisibilityOffIcon />}</>
+            }
+        },
+        { headerName: "farm WaterSalinity", field: "farmWaterSalinity", width: 130, align: "left" },
+        { headerName: "farm LastCropsId", field: "farmLastCropsId", width: 130, align: "left" },
+        { headerName: "farm Fertilizer", field: "farmFertilizer", width: 130, align: "left" },
+        { headerName: "farm TreesAge", field: "farmTreesAge", width: 130, align: "left" },
+        { headerName: "farm Description", field: "farmDescription", width: 130, align: "left" },
+        {
+            headerName: "actions", field: "actions", width: 230, align: "center", renderCell: (params) => {
+                return <>
+                    <MDButton variant="text" color="error" onClick={() => { deleteFarm(params.id) }}>
+                        <Icon>delete</Icon>&nbsp;delete
+                    </MDButton>
+                    <Link to={`/farms/edit/${params.id}`}>
+                        <MDButton variant="text" color="info">
+                            <Icon>edit</Icon>&nbsp;edit
+                        </MDButton>
+                    </Link>
+                    <Link to={`/deals/add/${params.id}`}>
+                        <MDButton variant="text" color="info">
+                            <Icon>person</Icon>&nbsp;Deal
+                        </MDButton>
+                    </Link>
+                </>
+            }
+        },
+    ]
 
+    const [rows, setRows] = useState([])
+    const request = useRequest()
+    
 
     const deleteFarm = (farmId) => {
         if (window.confirm('Are you sure')) {
-            request(`${process.env.REACT_APP_API_URL}farms/${farmId}`, {}, {}, {
+            request(`${process.env.REACT_APP_API_URL}farms/${farmId}?deleted=${1}`, {}, null, {
                 auth: true,
                 snackbar: true,
 
             }, 'delete')
-            .then(deleted=>{
-                console.log(deleted)
-            })
+                .then(deleted => {
+                    // console.log(deleted)
+                    const updatedRows = rows.filter((row) => row.id != farmId)
+                    setRows(updatedRows)
+                })
         }
     }
 
     useEffect(() => {
-        request(`${process.env.REACT_APP_API_URL}farms?order=${order}`, {}, null, {
+        request(`${process.env.REACT_APP_API_URL}farms`, {}, null, {
             // auth: true,
         }, 'get')
             .then(farms => {
-                    const allfarms = farms?.data?.map((farm) => {
-                        return {
-                            userId: <>{farm.User.userName}</>,
-                            id: <>{farm.id}</>,
-                            farmName: <>{farm.farmName}</>,
-                            farmPicture: <><img src={farm.farmPicture} width="80" /></>,
-                            city: <>{farm.City?.cityName}</>,
-                            farmArea: <>{farm.farmArea}</>,
-                            cropId: <>{farm.Crop.cropName}</>,
-                            farmLicense: <>{farm.farmLicense}</>,
-                            farmAvailable: <>{farm.farmAvailable ? <CheckIcon /> : <NotInterestedIcon />}</>,
-                            farmKindId: <>{farm.FarmKind?.farmKind ? farm.FarmKind?.farmKind:"-" }</>,
-                            farmVisibiltiy: <>{farm.farmVisibiltiy ? <VisibilityIcon/> : <VisibilityOffIcon/>}</>,
-                            farmWaterSalinity: <>{farm.farmWaterSalinity}</>,
-                            farmLastCropsId: <>{farm.LastCrop.cropName}</>,
-                            farmFertilizer: <>{farm.farmFertilizer}</>,
-                            farmTreesAge: <>{farm.farmTreesAge}</>,
-                            farmDescription: <>{farm.farmDescription}</>,
+                // console.log("farm", farms.data.length)
+                AppCtx.setNumberOfFarms(farms?.data?.length)
+                console.log("AppCtx.numberOfFarms",AppCtx.numberOfFarms)
 
-                            actions: <>
-                                <MDButton variant="text" color="error" onClick={() => { deleteFarm(farm.id) }}>
-                                    <Icon>delete</Icon>&nbsp;delete
-                                </MDButton>
-                                <Link to={`/farms/edit/${farm.id}`}>
-                                    <MDButton variant="text" color="info">
-                                        <Icon>edit</Icon>&nbsp;edit
-                                    </MDButton>
-                                </Link>
-                                <Link to={`/deals/add/${farm.id}`}>
-                                    <MDButton variant="text" color="info">
-                                        <Icon>person</Icon>&nbsp;Deal
-                                    </MDButton>
-                                </Link>
-                            </>,
-                        }
-                    })
-                    setRows(allfarms)
+                const allfarms = farms?.data?.map((farm) => {
+                    // console.log("farm", farm)
+
+                    return {
+                        id: farm.id,
+                        farmerName: farm.User.userName,
+                        farmName: farm.farmName,
+                        farmPicture: farm.farmPicture,
+                        city: farm.City?.cityName,
+                        farmArea: farm.farmArea,
+                        cropId: farm.Crop.cropName,
+                        farmLicense: farm.farmLicense,
+                        farmAvailable: farm.farmAvailable,
+                        farmKindId: farm.FarmKind?.farmKind ? farm.FarmKind?.farmKind : "-",
+                        farmVisibiltiy: farm.farmVisibiltiy,
+                        farmWaterSalinity: farm.farmWaterSalinity,
+                        farmLastCropsId: farm.LastCrop.cropName,
+                        farmFertilizer: farm.farmFertilizer,
+                        farmTreesAge: farm.farmTreesAge,
+                        farmDescription: farm.farmDescription,
+
+                    }
                 })
-            
-    }, [order])
+                setRows(allfarms)
+
+            })
+
+    }, [])
+
+    
     return (
         <DashboardLayout>
             <DashboardNavbar />
@@ -141,35 +167,24 @@ function Farms() {
 
                             </MDBox>
                             <MDBox pt={3}>
-                            <MDBox mb={2} p={2}>
-                                        <FormControl fullWidth >
-                                            <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                                                Order
-                                            </InputLabel>
-                                            <NativeSelect
 
-                                                defaultValue={"ASC"}
-                                                onChange={(e) => { setOrder(e.target.value) }}
-                                                inputProps={{
-                                                    name: 'UserType',
-                                                    id: 'uncontrolled-native',
-                                                }}
-
-                                            >
-                                                <option value="ASC" defaultValue >ASC</option>
-                                                <option value="DESC" >DESC</option>
-
-                                            </NativeSelect>
-                                        </FormControl>
-                                        
-                                    </MDBox>
-                                <DataTable
+                                <MDBox height="70vh" pt={3}>
+                                    <DataGrid
+                                        rows={rows}
+                                        columns={columns}
+                                        components={{ Toolbar: GridToolbar }}
+                                        pageSize={5}
+                                        rowsPerPageOptions={[5]}
+                                        checkboxSelection
+                                    />
+                                </MDBox>
+                                {/* <DataTable
                                     table={{ columns, rows }}
                                     isSorted={false}
                                     entriesPerPage={false}
                                     showTotalEntries={false}
                                     noEndBorder
-                                />
+                                /> */}
                             </MDBox>
                         </Card>
                     </Grid>

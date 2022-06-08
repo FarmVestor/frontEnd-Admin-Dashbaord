@@ -6,6 +6,7 @@ function SignOut() {
     const navigate = useNavigate()
     const ctx = useContext(AuthContext)
     useEffect(() => {
+        window.localStorage.removeItem('token')
         ctx.logout()
         navigate('/sign-in')
     }, [])

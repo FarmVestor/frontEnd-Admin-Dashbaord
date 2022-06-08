@@ -72,7 +72,7 @@ function AddRequest() {
     }, [])
     const saveRequest = () => {
         const farmArea = farmAreaeRef.current.querySelector('input[type=number]').value
-        const budget = budgetRef.current.querySelector('input[type=text]').value
+        const budget = budgetRef.current.querySelector('input[type=number]').value
 
         request(`${process.env.REACT_APP_API_URL}requests`, {}, {
             farmArea: farmArea,
@@ -88,7 +88,7 @@ function AddRequest() {
             snackbar: true,
             redirect:"/requests"
         }, 'post').then(result => {
-            console.log(result)
+            // console.log(result)
         })
     }
     const handlefarmKindsRefChange = (event) => {
@@ -128,7 +128,7 @@ function AddRequest() {
                                         <MDInput type="number" label="farm Areae" variant="standard" fullWidth ref={farmAreaeRef} />
                                     </MDBox>
                                     <MDBox mb={2}>
-                                        <MDInput type="text" label="budget" variant="standard" fullWidth ref={budgetRef} />
+                                        <MDInput type="number" label="budget" variant="standard" fullWidth ref={budgetRef} />
                                     </MDBox>
 
                                     <FormControl fullWidth>
@@ -168,7 +168,7 @@ function AddRequest() {
 
                                     <FormControl fullWidth>
                                         <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                                            Users
+                                            User
                                         </InputLabel>
                                         <NativeSelect
                                             // defaultValue={1}

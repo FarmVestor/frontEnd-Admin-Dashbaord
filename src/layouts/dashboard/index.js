@@ -34,9 +34,13 @@ import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
 // Dashboard components
 import Projects from "layouts/dashboard/components/Projects";
 import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
+import { useContext } from "react";
+import { AppContext } from "context/AppContext";
 
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
+  const AppCtx=useContext(AppContext)
+  console.log("AppCtx.numberOfFarms",AppCtx.numberOfFarms)
 
   return (
     <DashboardLayout>
@@ -47,9 +51,9 @@ function Dashboard() {
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 color="dark"
-                icon="weekend"
-                title="Bookings"
-                count={281}
+                icon="people"
+                title="Users"
+                count={''}
                 percentage={{
                   color: "success",
                   amount: "+55%",
@@ -63,7 +67,7 @@ function Dashboard() {
               <ComplexStatisticsCard
                 icon="leaderboard"
                 title="Today's Users"
-                count="2,300"
+                count={''}
                 percentage={{
                   color: "success",
                   amount: "+3%",
@@ -76,9 +80,9 @@ function Dashboard() {
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 color="success"
-                icon="store"
-                title="Revenue"
-                count="34k"
+                icon="grass"
+                title="Farms"
+                count={AppCtx.numberOfFarms}
                 percentage={{
                   color: "success",
                   amount: "+1%",
@@ -90,10 +94,10 @@ function Dashboard() {
           <Grid item xs={12} md={6} lg={3}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
-                color="primary"
-                icon="person_add"
-                title="Followers"
-                count="+91"
+                color="success"
+                icon="grass"
+                title="Today's Farms"
+                count={''}
                 percentage={{
                   color: "success",
                   amount: "",

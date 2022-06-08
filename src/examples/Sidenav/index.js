@@ -165,7 +165,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           </MDTypography>
         </MDBox>
         <MDBox component={NavLink} to="/" display="flex" alignItems="center">
-          {brand && <MDBox component="img" src={brand} alt="Brand" width="2rem" />}
+          {/* {brand && <MDBox component="img" src={brand} alt="Brand" width="2rem" />} */}
           <MDBox
             width={!brandName && "100%"}
             sx={(theme) => sidenavLogoLabel(theme, { miniSidenav })}
@@ -183,7 +183,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
         }
       />
       <List>{renderRoutes}</List>
-      <MDBox p={2} mt="auto">
+      {/* <MDBox p={2} mt="auto">
         <MDButton
           component="a"
           href="https://www.creative-tim.com/product/material-dashboard-pro-react"
@@ -195,7 +195,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
         >
           upgrade to pro
         </MDButton>
-      </MDBox>
+      </MDBox> */}
     </SidenavRoot>
   );
 }

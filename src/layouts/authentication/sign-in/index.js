@@ -27,8 +27,10 @@ import BasicLayout from "layouts/authentication/components/BasicLayout";
 // Images
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
 
-function Basic() {
+import { useRequest } from "lib/functions";
 
+function Basic() {
+	const request = useRequest()
 	const ctx = useContext(AuthContext)
 	const navigate = useNavigate()
 
@@ -42,25 +44,41 @@ function Basic() {
 	const login = () => {
 		const email = emailRef.current.querySelector('input[type=email]').value
 		const password = passwordRef.current.querySelector('input[type=password]').value
-		fetch(`${process.env.REACT_APP_API_URL}users/login`, {
-			method: 'POST',
-			body: JSON.stringify({
-				userEmail:email,
-				userPassword:password
-			}),
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		}).then(response => {
-			response.json().then(loggedIn => {
+		request(`${process.env.REACT_APP_API_URL}users/login`, {}, {
+			userEmail: email,
+			userPassword: password
+		},
+			{
+				type: 'json',
+				snackbar: true,
+				redirect: "/dashboard"
+
+			}, 'post').then((loggedIn) => {
 				if (loggedIn.success) {
 					ctx.login(loggedIn.token)
-          // console.log(loggedIn.token)
+					// console.log(loggedIn.token)
 					navigate('/dashboard')
 				}
 			})
-		})
-		.catch(e => e)
+		// fetch(`${process.env.REACT_APP_API_URL}users/login`, {
+		// 	method: 'POST',
+		// 	body: JSON.stringify({
+		// 		userEmail: email,
+		// 		userPassword: password
+		// 	}),
+		// 	headers: {
+		// 		'Content-Type': 'application/json'
+		// 	}
+		// }).then(response => {
+		// 	response.json().then(loggedIn => {
+		// 		if (loggedIn.success) {
+		// 			ctx.login(loggedIn.token)
+		// 			// console.log(loggedIn.token)
+		// 			navigate('/dashboard')
+		// 		}
+		// 	})
+		// })
+		// 	.catch(e => e)
 	}
 
 	return (

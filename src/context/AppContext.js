@@ -4,16 +4,24 @@ export const AppContext = createContext({
     snackbar: {
         type: 'success',
         message: '',
-        open: () => {},
-        close: () => {},
+        open: () => { },
+        close: () => { },
     },
+    numberOfUSers: 0,
+    numberOfFarms: 0,
+    setNumberOfUSers: () => { },
+    setNumberOfFarms: () => { }
+
 })
 
-export const AppProvider = ({children}) => {
+export const AppProvider = ({ children }) => {
     const [type, setType] = useState('success')
     const [message, setMessage] = useState('')
     const [open, setOpen] = useState(false)
-    
+
+    const [numberOfUSers, setNumberOfUSers] = useState(0)
+    const [numberOfFarms, setNumberOfFarms] = useState(0)
+
     const closeSnackBar = () => {
         setOpen(false)
     }
@@ -27,7 +35,11 @@ export const AppProvider = ({children}) => {
             open,
             setOpen,
             closeSnackBar
-        }
+        },
+        numberOfUSers,
+        numberOfFarms,
+        setNumberOfUSers,
+        setNumberOfFarms
     }}>
         {children}
     </AppContext.Provider>
