@@ -15,7 +15,9 @@ Coded by www.creative-tim.com
 
 // @mui material components
 import Grid from "@mui/material/Grid";
-
+import Divider from "@mui/material/Divider";
+import Icon from "@mui/material/Icon";
+import MDTypography from "components/MDTypography";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 
@@ -25,7 +27,7 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import ReportsBarChart from "examples/Charts/BarCharts/ReportsBarChart";
 import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
-import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
+import ComplexStatisticsCard from "./components/ComplexStatisticsCard";
 
 // Data
 import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
@@ -34,40 +36,289 @@ import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
 // Dashboard components
 import Projects from "layouts/dashboard/components/Projects";
 import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AppContext } from "context/AppContext";
+import { useRequest } from "lib/functions";
+import { Card } from "@mui/material";
 
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
-  const AppCtx=useContext(AppContext)
-  console.log("AppCtx.numberOfFarms",AppCtx.numberOfFarms)
+  const AppCtx = useContext(AppContext)
+  const request = useRequest()
 
+
+  useEffect(() => {
+    request(`${process.env.REACT_APP_API_URL}reports/admin`, {}, null, {
+      auth: true,
+    }, 'get').then((data) => {
+      console.log("reports", data)
+      AppCtx.setReports(data)
+
+    })
+  }, [])
+
+  console.log("AppCtx", AppCtx.reports?.users?.numUsers)
   return (
     <DashboardLayout>
       <DashboardNavbar />
       <MDBox py={3}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} lg={3}>
+        <Grid container spacing={5}>
+          <Grid item xs={12} md={6} lg={3} >
             <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="dark"
-                icon="people"
-                title="Users"
-                count={''}
-                percentage={{
-                  color: "success",
-                  amount: "+55%",
-                  label: "than lask week",
-                }}
-              />
+              <Card>
+                <MDBox display="flex" justifyContent="space-between" pt={1} px={2}>
+                  <MDBox
+                    variant="gradient"
+                    bgColor={'dark'}
+                    color={"white"}
+                    coloredShadow={'white'}
+                    borderRadius="xl"
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    width="4rem"
+                    height="4rem"
+                    mt={-3}
+                  >
+                    <Icon fontSize="medium" color="inherit">
+                      people
+                    </Icon>
+                  </MDBox>
+                  <MDBox textAlign="right" lineHeight={1.25}>
+                    <MDTypography variant="button" fontWeight="light" color="text">
+                      users
+                    </MDTypography>
+                    <MDTypography variant="h4">{AppCtx.reports?.users?.numUsers}</MDTypography>
+                  </MDBox>
+                </MDBox>
+                <Divider />
+
+                <MDBox pb={2} px={2}>
+                  <MDTypography component="p" variant="button" color="text" display="flex">
+
+                    Number Of Investors
+                    &nbsp;{AppCtx.reports?.investors.numInvestors}
+                  </MDTypography>
+                  <MDTypography component="p" variant="button" color="text" display="flex">
+
+                    Number Of Farmers
+                    &nbsp;{AppCtx.reports?.farmers.numFarmers}
+                  </MDTypography>
+                </MDBox>
+              </Card>
             </MDBox>
           </Grid>
+
           <Grid item xs={12} md={6} lg={3}>
+            <MDBox mb={1.5}>
+              <Card>
+                <MDBox display="flex" justifyContent="space-between" pt={1} px={2}>
+                  <MDBox
+                    variant="gradient"
+                    bgColor={'dark'}
+                    color={"white"}
+                    coloredShadow={'white'}
+                    borderRadius="xl"
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    width="4rem"
+                    height="4rem"
+                    mt={-3}
+                  >
+                    <Icon fontSize="medium" color="inherit">
+                      people
+                    </Icon>
+                  </MDBox>
+                  <MDBox textAlign="right" lineHeight={1.25}>
+                    <MDTypography variant="button" fontWeight="light" color="text">
+                      Investors
+                    </MDTypography>
+                    <MDTypography variant="h4">{AppCtx.reports?.investors.numInvestors}</MDTypography>
+                  </MDBox>
+                </MDBox>
+                <Divider />
+
+                <MDBox pb={2} px={2}>
+                  <MDTypography component="p" variant="button" color="text" display="flex">
+
+                    Today's Investors
+                    &nbsp;{AppCtx.reports?.investors.TodayInvestors}
+                  </MDTypography>
+                  <MDTypography component="p" variant="button" color="text" display="flex">
+
+                    Number Of Requests
+                    &nbsp;{AppCtx.reports?.requests.numRequests}
+                  </MDTypography>
+                  <MDTypography component="p" variant="button" color="text" display="flex">
+
+                    Most Wanted Crop
+                    {/* &nbsp;{AppCtx.reports?.requests.mostWantedCrop.map((crop) => {
+                      crop.Crop.cropName
+                    })} */}
+                  </MDTypography>
+                </MDBox>
+              </Card>
+            </MDBox>
+          </Grid>
+
+          <Grid item xs={12} md={6} lg={3}>
+            <MDBox mb={1.5}>
+              <Card>
+                <MDBox display="flex" justifyContent="space-between" pt={1} px={2}>
+                  <MDBox
+                    variant="gradient"
+                    bgColor={'dark'}
+                    color={"white"}
+                    coloredShadow={'white'}
+                    borderRadius="xl"
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    width="4rem"
+                    height="4rem"
+                    mt={-3}
+                  >
+                    <Icon fontSize="medium" color="inherit">
+                      people
+                    </Icon>
+                  </MDBox>
+                  <MDBox textAlign="right" lineHeight={1.25}>
+                    <MDTypography variant="button" fontWeight="light" color="text">
+                      Farmers
+                    </MDTypography>
+                    <MDTypography variant="h4">{AppCtx.reports?.farmers.numFarmers}</MDTypography>
+                  </MDBox>
+                </MDBox>
+                <Divider />
+
+                <MDBox pb={2} px={2}>
+                  <MDTypography component="p" variant="button" color="text" display="flex">
+
+                    Today's Farmers
+                    &nbsp;{AppCtx.reports?.farmers.TodayFarmers}
+                  </MDTypography>
+
+                </MDBox>
+              </Card>
+            </MDBox>
+          </Grid>
+
+
+          <Grid item xs={12} md={6} lg={3}>
+            <MDBox mb={1.5}>
+              <Card>
+                <MDBox display="flex" justifyContent="space-between" pt={1} px={2}>
+                  <MDBox
+                    variant="gradient"
+                    bgColor={'info'}
+                    color={"white"}
+                    coloredShadow={'white'}
+                    borderRadius="xl"
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    width="4rem"
+                    height="4rem"
+                    mt={-3}
+                  >
+                    <Icon fontSize="medium" color="inherit">
+                      groups
+                    </Icon>
+                  </MDBox>
+                  <MDBox textAlign="right" lineHeight={1.25}>
+                    <MDTypography variant="button" fontWeight="light" color="text">
+                      Deals
+                    </MDTypography>
+                    <MDTypography variant="h4">{AppCtx.reports?.deals.numDeals}</MDTypography>
+                  </MDBox>
+                </MDBox>
+                <Divider />
+
+                <MDBox pb={2} px={2}>
+                  <MDTypography component="p" variant="button" color="text" display="flex">
+
+                    Agreed Deals
+                    &nbsp;{AppCtx.reports?.deals.numAgreedDeels}
+                  </MDTypography>
+                  <MDTypography component="p" variant="button" color="text" display="flex">
+
+                     Not Agreed Deals
+                    &nbsp;{AppCtx.reports?.deals.numNotAgreedDeels}
+                  </MDTypography>
+                  <MDTypography component="p" variant="button" color="text" display="flex">
+
+                    Dealed By Investor
+                    &nbsp;{AppCtx.reports?.deals.numDealedByInvestors}
+                  </MDTypography>
+                  <MDTypography component="p" variant="button" color="text" display="flex">
+
+                    Dealed By Agents
+                    &nbsp;{AppCtx.reports?.deals.numDealedByAgents}
+                  </MDTypography>
+
+                </MDBox>
+              </Card>
+            </MDBox>
+          </Grid>
+
+
+
+
+          <Grid item xs={12} md={6} lg={3}>
+            <MDBox mb={1.5}>
+              <Card>
+                <MDBox display="flex" justifyContent="space-between" pt={1} px={2}>
+                  <MDBox
+                    variant="gradient"
+                    bgColor={'success'}
+                    color={"white"}
+                    coloredShadow={'white'}
+                    borderRadius="xl"
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    width="4rem"
+                    height="4rem"
+                    mt={-3}
+                  >
+                    <Icon fontSize="medium" color="inherit">
+                      grass
+                    </Icon>
+                  </MDBox>
+                  <MDBox textAlign="right" lineHeight={1.25}>
+                    <MDTypography variant="button" fontWeight="light" color="text">
+                      Farms
+                    </MDTypography>
+                    <MDTypography variant="h4">{AppCtx.reports?.farms.numFarms}</MDTypography>
+                  </MDBox>
+                </MDBox>
+                <Divider />
+
+                <MDBox pb={2} px={2}>
+                  <MDTypography component="p" variant="button" color="text" display="flex">
+
+                    Today's Farms
+                    &nbsp;{AppCtx.reports?.farms.TodayFarms}
+                  </MDTypography>
+                  
+                  <MDTypography component="p" variant="button" color="text" display="flex">
+
+                    Farms Available
+                    &nbsp;{AppCtx.reports?.farms.numAvFarms}
+                  </MDTypography>
+                </MDBox>
+              </Card>
+            </MDBox>
+          </Grid>
+
+
+          {/* <Grid item xs={12} md={6} lg={3}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 icon="leaderboard"
                 title="Today's Users"
-                count={''}
+                count={'2'}
                 percentage={{
                   color: "success",
                   amount: "+3%",
@@ -105,9 +356,9 @@ function Dashboard() {
                 }}
               />
             </MDBox>
-          </Grid>
+          </Grid> */}
         </Grid>
-        <MDBox mt={4.5}>
+        {/* <MDBox mt={4.5}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6} lg={4}>
               <MDBox mb={3}>
@@ -157,7 +408,7 @@ function Dashboard() {
               <OrdersOverview />
             </Grid>
           </Grid>
-        </MDBox>
+        </MDBox> */}
       </MDBox>
       <Footer />
     </DashboardLayout>

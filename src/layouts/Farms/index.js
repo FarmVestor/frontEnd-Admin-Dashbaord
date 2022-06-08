@@ -99,7 +99,6 @@ function Farms() {
         }, 'get')
             .then(farms => {
                 // console.log("farm", farms.data.length)
-                AppCtx.setNumberOfFarms(farms?.data?.length)
                 console.log("AppCtx.numberOfFarms",AppCtx.numberOfFarms)
 
                 const allfarms = farms?.data?.map((farm) => {
