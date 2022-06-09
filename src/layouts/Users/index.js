@@ -101,13 +101,8 @@ const columns = [
                                         justifyContent="space-between"
                                         alignItems="center"
                                     >
-<<<<<<< HEAD
                                         <MDTypography variant="h6" color="white">
                                             {name} Table
-=======
-                                        <MDTypography  variant="h6" color="white">
-                                            users Table
->>>>>>> b385d4cf8140e9c05dba63c541782117f61c9b64
                                         </MDTypography>
 
 
