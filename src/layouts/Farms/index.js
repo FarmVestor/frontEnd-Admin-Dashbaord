@@ -60,7 +60,7 @@ function Farms() {
                         <Icon>delete</Icon>&nbsp;delete
                     </MDButton>
                     <Link to={`/farms/edit/${params.id}`}>
-                        <MDButton variant="text" color="info">
+                        <MDButton variant="text" color="success">
                             <Icon>edit</Icon>&nbsp;edit
                         </MDButton>
                     </Link>
@@ -95,12 +95,10 @@ function Farms() {
 
     useEffect(() => {
         request(`${process.env.REACT_APP_API_URL}farms`, {}, null, {
-            // auth: true,
+            auth: true,
         }, 'get')
             .then(farms => {
                 // console.log("farm", farms.data.length)
-                AppCtx.setNumberOfFarms(farms?.data?.length)
-                console.log("AppCtx.numberOfFarms",AppCtx.numberOfFarms)
 
                 const allfarms = farms?.data?.map((farm) => {
                     // console.log("farm", farm)
@@ -145,7 +143,7 @@ function Farms() {
                                 py={3}
                                 px={2}
                                 variant="gradient"
-                                bgColor="info"
+                                bgColor="success"
                                 borderRadius="lg"
                                 coloredShadow="info"
                             >
@@ -176,6 +174,15 @@ function Farms() {
                                         pageSize={5}
                                         rowsPerPageOptions={[5]}
                                         checkboxSelection
+                                        sx={{
+                                            boxShadow: 2,
+                                            border: 2,
+                                            borderColor: 'success.light',
+                                            '& .MuiDataGrid-cell:hover': {
+                                              color: 'success.main',
+                                            },
+                                            color:'white.main'
+                                          }}
                                     />
                                 </MDBox>
                                 {/* <DataTable

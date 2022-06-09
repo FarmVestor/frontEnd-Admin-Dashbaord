@@ -20,28 +20,30 @@ import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 
 
 function Users() {
-    
-const columns = [
-    { headerName: "ID", field: "id",width: 60,  align: "left" },
-    { headerName: "name", field: "name", width: 130, align: "left" },
-    { headerName: "city", field: "city",  width: 130,align: "left" },
-    { headerName: "email", field: "email",width: 230, align: "left" },
-    { headerName: "actions", field: "actions",width: 230, align: "center", renderCell: (params) => {
-        return <>
-        <MDButton variant="text" color="error" onClick={() => { deleteUser(params.id) }}>
-            <Icon>delete</Icon>&nbsp;delete
-        </MDButton>
-        <Link to={`/users/edit/${params.id}`}>
-            <MDButton variant="text" color="info">
-                <Icon>edit</Icon>&nbsp;edit
-            </MDButton>
-        </Link>
-    </>
-    } },
-] 
 
-    const { id,name } = useParams()
-    id ? id :null 
+    const columns = [
+        { headerName: "ID", field: "id", width: 60, align: "left" },
+        { headerName: "name", field: "name", width: 130, align: "left" },
+        { headerName: "city", field: "city", width: 130, align: "left" },
+        { headerName: "email", field: "email", width: 230, align: "left" },
+        {
+            headerName: "actions", field: "actions", width: 230, align: "center", renderCell: (params) => {
+                return <>
+                    <MDButton variant="text" color="error" onClick={() => { deleteUser(params.id) }}>
+                        <Icon>delete</Icon>&nbsp;delete
+                    </MDButton>
+                    <Link to={`/users/edit/${params.id}`}>
+                        <MDButton variant="text" color="success">
+                            <Icon>edit</Icon>&nbsp;edit
+                        </MDButton>
+                    </Link>
+                </>
+            }
+        },
+    ]
+
+    const { id, name } = useParams()
+    id ? id : null
     const request = useRequest()
     const [rows, setRows] = useState([])
     const deleteUser = (userId) => {
@@ -49,7 +51,7 @@ const columns = [
             request(`${process.env.REACT_APP_API_URL}users/${userId}?deleted=${1}`, {}, null, {
                 auth: true,
                 snackbar: true,
-            }, 'delete').then(()=>{ 
+            }, 'delete').then(() => {
                 const updatedRows = rows.filter((row) => row.id != userId)
                 setRows(updatedRows)
             })
@@ -69,7 +71,7 @@ const columns = [
                         name: user.userName,
                         city: user.City?.cityName,
                         email: user.userEmail,
-                       
+
                     }
                 })
                 setRows(allusers)
@@ -84,14 +86,14 @@ const columns = [
                 <MDBox pt={6} pb={3}>
                     <Grid container spacing={6}>
                         <Grid item xs={12}>
-                            <Card style={{backgroundColor:"#ECFFDC"}}>
+                            <Card >
                                 <MDBox
                                     mx={2}
                                     mt={-3}
                                     py={3}
                                     px={2}
                                     variant="gradient"
-                                    bgColor="info"
+                                    bgColor="success"
                                     borderRadius="lg"
                                     coloredShadow="info"
                                 >
@@ -101,7 +103,7 @@ const columns = [
                                         justifyContent="space-between"
                                         alignItems="center"
                                     >
-                                        <MDTypography variant="h6" color="white">
+                                         <MDTypography variant="h6" color="white">
                                             {name} Table
                                         </MDTypography>
 
@@ -114,7 +116,7 @@ const columns = [
                                     </Grid>
 
                                 </MDBox>
-                                <MDBox height="70vh" pt={3}>
+                                <MDBox height="70vh" pt={3}  color="white">
                                     <DataGrid
                                         rows={rows}
                                         columns={columns}
@@ -122,13 +124,23 @@ const columns = [
                                         pageSize={5}
                                         rowsPerPageOptions={[5]}
                                         checkboxSelection
+                                        sx={{
+                                            boxShadow: 2,
+                                            border: 2,
+                                            borderColor: 'success.light',
+                                            '& .MuiDataGrid-cell:hover': {
+                                              color: 'success.main',
+                                            },
+                                            color:'white.main'
+                                          }}
+                                        
                                     />
                                 </MDBox>
                             </Card>
                         </Grid>
                     </Grid>
                 </MDBox>
-                <Footer />
+                {/* <Footer /> */}
             </BasicLayout>
         </DashboardLayout>
     );

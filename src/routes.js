@@ -71,7 +71,7 @@ const routes = [
     inSideNav: true,
     component: <Dashboard />,
     requireAuth:true,
-    inSideNav:true
+    
   },
   {
     type: "collapse",
@@ -82,7 +82,7 @@ const routes = [
     inSideNav: true,
     component: <Users />,
     requireAuth:true,
-    inSideNav:true
+    
   },
   {
     type: "collapse",
@@ -288,7 +288,7 @@ const routes = [
     inSideNav: true,
     component: <SignIn />,
     requireAuth:true,
-    inSideNav:true
+    inSideNav:false
   },
   
   {

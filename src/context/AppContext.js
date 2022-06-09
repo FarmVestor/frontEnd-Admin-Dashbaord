@@ -7,10 +7,8 @@ export const AppContext = createContext({
         open: () => { },
         close: () => { },
     },
-    numberOfUSers: 0,
-    numberOfFarms: 0,
-    setNumberOfUSers: () => { },
-    setNumberOfFarms: () => { }
+    reports: {},
+    setReports: () => { }
 
 })
 
@@ -19,8 +17,7 @@ export const AppProvider = ({ children }) => {
     const [message, setMessage] = useState('')
     const [open, setOpen] = useState(false)
 
-    const [numberOfUSers, setNumberOfUSers] = useState(0)
-    const [numberOfFarms, setNumberOfFarms] = useState(0)
+    const [reports, setReports] = useState(null)
 
     const closeSnackBar = () => {
         setOpen(false)
@@ -36,10 +33,8 @@ export const AppProvider = ({ children }) => {
             setOpen,
             closeSnackBar
         },
-        numberOfUSers,
-        numberOfFarms,
-        setNumberOfUSers,
-        setNumberOfFarms
+        reports,
+        setReports
     }}>
         {children}
     </AppContext.Provider>

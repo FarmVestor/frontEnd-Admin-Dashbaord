@@ -36,7 +36,7 @@ function Deals() {
                         <Icon>delete</Icon>&nbsp;delete
                     </MDButton>
                     <Link to={`/deals/edit/${params.id}`}>
-                        <MDButton variant="text" color="info">
+                        <MDButton variant="text" color="success">
                             <Icon>edit</Icon>&nbsp;edit
                         </MDButton>
                     </Link>
@@ -103,7 +103,7 @@ function Deals() {
                                 py={3}
                                 px={2}
                                 variant="gradient"
-                                bgColor="info"
+                                bgColor="success"
                                 borderRadius="lg"
                                 coloredShadow="info"
                             >
@@ -136,6 +136,15 @@ function Deals() {
                                         pageSize={5}
                                         rowsPerPageOptions={[5]}
                                         checkboxSelection
+                                        sx={{
+                                            boxShadow: 2,
+                                            border: 2,
+                                            borderColor: 'success.light',
+                                            '& .MuiDataGrid-cell:hover': {
+                                              color: 'success.main',
+                                            },
+                                            color:'white.main'
+                                          }}
                                     />
                                 </MDBox>
 
