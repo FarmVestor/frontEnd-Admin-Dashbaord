@@ -33,7 +33,7 @@ function Users() {
                         <Icon>delete</Icon>&nbsp;delete
                     </MDButton>
                     <Link to={`/users/edit/${params.id}`}>
-                        <MDButton variant="text" color="info">
+                        <MDButton variant="text" color="success">
                             <Icon>edit</Icon>&nbsp;edit
                         </MDButton>
                     </Link>
@@ -86,14 +86,14 @@ function Users() {
                 <MDBox pt={6} pb={3}>
                     <Grid container spacing={6}>
                         <Grid item xs={12}>
-                            <Card style={{ backgroundColor: "#ECFFDC" }}>
+                            <Card >
                                 <MDBox
                                     mx={2}
                                     mt={-3}
                                     py={3}
                                     px={2}
                                     variant="gradient"
-                                    bgColor="info"
+                                    bgColor="success"
                                     borderRadius="lg"
                                     coloredShadow="info"
                                 >
@@ -116,7 +116,7 @@ function Users() {
                                     </Grid>
 
                                 </MDBox>
-                                <MDBox height="70vh" pt={3}>
+                                <MDBox height="70vh" pt={3}  color="white">
                                     <DataGrid
                                         rows={rows}
                                         columns={columns}
@@ -124,13 +124,23 @@ function Users() {
                                         pageSize={5}
                                         rowsPerPageOptions={[5]}
                                         checkboxSelection
+                                        sx={{
+                                            boxShadow: 2,
+                                            border: 2,
+                                            borderColor: 'success.light',
+                                            '& .MuiDataGrid-cell:hover': {
+                                              color: 'success.main',
+                                            },
+                                            color:'white.main'
+                                          }}
+                                        
                                     />
                                 </MDBox>
                             </Card>
                         </Grid>
                     </Grid>
                 </MDBox>
-                <Footer />
+                {/* <Footer /> */}
             </BasicLayout>
         </DashboardLayout>
     );

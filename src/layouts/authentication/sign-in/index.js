@@ -25,7 +25,7 @@ import MDButton from "components/MDButton";
 import BasicLayout from "layouts/authentication/components/BasicLayout";
 
 // Images
-import bgImage from "assets/images/bg-sign-in-basic.jpeg";
+import bgImage from "assets/images/background.jpg";
 
 import { useRequest } from "lib/functions";
 
@@ -50,14 +50,16 @@ function Basic() {
 		},
 			{
 				type: 'json',
-				snackbar: true,
-				redirect: "/dashboard"
+				
+				// redirect: "/dashboard"
 
 			}, 'post').then((loggedIn) => {
 				if (loggedIn.success) {
 					ctx.login(loggedIn.token)
 					// console.log(loggedIn.token)
 					navigate('/dashboard')
+				}else{
+					alert(loggedIn.messages)
 				}
 			})
 		// fetch(`${process.env.REACT_APP_API_URL}users/login`, {
@@ -86,7 +88,7 @@ function Basic() {
 			<Card>
 				<MDBox
 					variant="gradient"
-					bgColor="info"
+					bgColor="success"
 					borderRadius="lg"
 					coloredShadow="info"
 					mx={2}
@@ -98,7 +100,7 @@ function Basic() {
 					<MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
 						Sign in
 					</MDTypography>
-					<Grid container spacing={3} justifyContent="center" sx={{ mt: 1, mb: 2 }}>
+					{/* <Grid container spacing={3} justifyContent="center" sx={{ mt: 1, mb: 2 }}>
 						<Grid item xs={2}>
 							<MDTypography component={MuiLink} href="#" variant="body1" color="white">
 								<FacebookIcon color="inherit" />
@@ -114,15 +116,15 @@ function Basic() {
 								<GoogleIcon color="inherit" />
 							</MDTypography>
 						</Grid>
-					</Grid>
+					</Grid> */}
 				</MDBox>
 				<MDBox pt={4} pb={3} px={3}>
 					<MDBox component="form" role="form">
-						<MDBox mb={2}>
-							<MDInput type="email" label="Email" fullWidth ref={emailRef} />
+						<MDBox mb={2} sx={{color:"success.main"}}>
+							<MDInput success  type="email" label="Email" fullWidth ref={emailRef} />
 						</MDBox>
 						<MDBox mb={2}>
-							<MDInput type="password" label="Password" fullWidth ref={passwordRef} />
+							<MDInput success  type="password" label="Password" fullWidth ref={passwordRef} />
 						</MDBox>
 						<MDBox display="flex" alignItems="center" ml={-1}>
 							<Switch checked={rememberMe} onChange={handleSetRememberMe} />
@@ -137,11 +139,11 @@ function Basic() {
 							</MDTypography>
 						</MDBox>
 						<MDBox mt={4} mb={1}>
-							<MDButton variant="gradient" color="info" fullWidth onClick={login}>
+							<MDButton variant="gradient" color="success" fullWidth onClick={login}>
 								sign in
 							</MDButton>
 						</MDBox>
-						<MDBox mt={3} mb={1} textAlign="center">
+						{/* <MDBox mt={3} mb={1} textAlign="center">
 							<MDTypography variant="button" color="text">
 								Don&apos;t have an account?{" "}
 								<MDTypography
@@ -155,7 +157,7 @@ function Basic() {
 									Sign up
 								</MDTypography>
 							</MDTypography>
-						</MDBox>
+						</MDBox> */}
 					</MDBox>
 				</MDBox>
 			</Card>

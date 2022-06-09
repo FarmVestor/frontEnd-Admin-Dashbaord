@@ -25,12 +25,12 @@ import MDBox from "components/MDBox";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
-import ReportsBarChart from "examples/Charts/BarCharts/ReportsBarChart";
-import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
-import ComplexStatisticsCard from "./components/ComplexStatisticsCard";
+// import ReportsBarChart from "examples/Charts/BarCharts/ReportsBarChart";
+// import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
+// import ComplexStatisticsCard from "./components/ComplexStatisticsCard";
 
-// Data
-import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
+// // Data
+// import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
 import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
 
 // Dashboard components

@@ -32,7 +32,7 @@ function MyTrash() {
         {
             headerName: "actions", field: "actions", width: 230, align: "center", renderCell: (params) => {
                 return <>
-                    <MDButton variant="text" color="error" onClick={() => { undoDeleting(params.id, "requests") }}>
+                    <MDButton variant="text" color="success" onClick={() => { undoDeleting(params.id, "requests") }}>
                         <Icon>undo</Icon>&nbsp;undo
                     </MDButton>
                 </>
@@ -53,7 +53,7 @@ function MyTrash() {
         {
             headerName: "actions", field: "actions", width: 230, align: "center", renderCell: (params) => {
                 return <>
-                    <MDButton variant="text" color="error" onClick={() => { undoDeleting(params.id, "farms") }}>
+                    <MDButton variant="text" color="success" onClick={() => { undoDeleting(params.id, "farms") }}>
                         <Icon>undo</Icon>&nbsp;undo
                     </MDButton>
 
@@ -73,7 +73,7 @@ function MyTrash() {
         {
             headerName: "actions", field: "actions", width: 230, align: "center", renderCell: (params) => {
                 return <>
-                    <MDButton variant="text" color="error" onClick={() => { undoDeleting(params.id, "users") }}>
+                    <MDButton variant="text" color="success" onClick={() => { undoDeleting(params.id, "users") }}>
                         <Icon>undo</Icon>&nbsp;undo
                     </MDButton>
 
@@ -91,7 +91,7 @@ function MyTrash() {
         {
             field: "actions", headerName: "actions", width: 260, align: "center", renderCell: (params) => {
                 return <>
-                    <MDButton variant="text" color="error" onClick={() => { undoDeleting(params.id, "addresses/city") }}>
+                    <MDButton variant="text" color="success" onClick={() => { undoDeleting(params.id, "addresses/city") }}>
                         <Icon>undo</Icon>&nbsp;undo
                     </MDButton>
 
@@ -147,7 +147,7 @@ function MyTrash() {
     }, [])
     useEffect(() => {
         request(`${process.env.REACT_APP_API_URL}farms?deleted=${1}`, {}, null, {
-            // auth: true,
+            auth: true,
         }, 'get')
             .then(farms => {
                 const allfarms = farms?.data?.map((farm) => {

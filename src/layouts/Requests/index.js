@@ -23,7 +23,7 @@ import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 
 function Requests() {
   const columns = [
-    { headerName: "Request Id", field: "id", width: 60, align: "left" },
+    { headerName: "Id", field: "id", width: 60, align: "left" },
     { headerName: "Farm Area", field: "farmArea", width: 130, align: "left" },
     { headerName: "Budget", field: "budget", width: 130, align: "left" },
     { headerName: "Crop Name", field: "cropName", width: 130, align: "left" },
@@ -36,7 +36,7 @@ function Requests() {
             <Icon>delete</Icon>&nbsp;delete
           </MDButton>
           <Link to={`/requests/edit/${params.id}`}>
-            <MDButton variant="text" color={darkMode ? "white" : "dark"} >
+            <MDButton variant="text" color={darkMode ? "success" : "dark"} >
               <Icon>edit</Icon>&nbsp;edit
             </MDButton>
           </Link>
@@ -103,7 +103,7 @@ function Requests() {
                 py={3}
                 px={2}
                 variant="gradient"
-                bgColor="info"
+                bgColor="success"
                 borderRadius="lg"
                 coloredShadow="info"
               >
@@ -134,6 +134,15 @@ function Requests() {
                   pageSize={5}
                   rowsPerPageOptions={[5]}
                   checkboxSelection
+                  sx={{
+                    boxShadow: 2,
+                    border: 2,
+                    borderColor: 'success.light',
+                    '& .MuiDataGrid-cell:hover': {
+                      color: 'success.main',
+                    },
+                    color:'white.main'
+                  }}
                 />
               </MDBox>
             </Card>
