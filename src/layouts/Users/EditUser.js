@@ -236,7 +236,7 @@ function EditUser() {
 
 
                                     <MDBox mt={4} mb={1}>
-                                        <MDButton variant="gradient" color="info" fullWidth onClick={editUser}>
+                                        <MDButton variant="gradient" color="success" fullWidth onClick={editUser}>
                                             save changes
                                         </MDButton>
                                     </MDBox>

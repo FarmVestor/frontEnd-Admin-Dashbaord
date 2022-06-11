@@ -114,7 +114,7 @@ function AddRequest() {
                                 py={3}
                                 px={2}
                                 variant="gradient"
-                                bgColor="info"
+                                bgColor="success"
                                 borderRadius="lg"
                                 coloredShadow="info"
                             >
@@ -186,7 +186,7 @@ function AddRequest() {
 
 
                                     <MDBox mt={4} mb={1}>
-                                        <MDButton variant="gradient" color="info" fullWidth onClick={saveRequest}>
+                                        <MDButton variant="gradient" color="success" fullWidth onClick={saveRequest}>
                                             Save Request
                                         </MDButton>
                                     </MDBox>

@@ -240,7 +240,7 @@ function AddFarms() {
                     <MDInput
                       type="number"
                       ref={farmAreaRef}
-                      label="farm Area"
+                      label="farm Area in Meters"
                       variant="standard"
                       fullWidth
                     />
@@ -279,7 +279,7 @@ function AddFarms() {
                     <MDInput
                       type="number"
                       ref={farmTreesAgeRef}
-                      label="farm TreesAge"
+                      label="farm TreesAge (Years)"
                       variant="standard"
                       fullWidth
                     />
@@ -497,7 +497,7 @@ function AddFarms() {
                   <MDBox mt={4} mb={1}>
                     <MDButton
                       variant="gradient"
-                      color="info"
+                      color="success"
                       fullWidth
                       onClick={addFarm}
                     >

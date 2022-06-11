@@ -127,7 +127,7 @@ function EditCity() {
                                 py={3}
                                 px={2}
                                 variant="gradient"
-                                bgColor="info"
+                                bgColor="success"
                                 borderRadius="lg"
                                 coloredShadow="info"
                             >
@@ -179,7 +179,7 @@ function EditCity() {
 
 
                                     <MDBox mt={4} mb={1}>
-                                        <MDButton variant="gradient" color="info" fullWidth onClick={saveCity}>
+                                        <MDButton variant="gradient" color="success" fullWidth onClick={saveCity}>
                                             Save User
                                         </MDButton>
                                     </MDBox>

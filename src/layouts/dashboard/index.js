@@ -88,7 +88,7 @@ function Dashboard() {
                     <MDTypography variant="button" fontWeight="light" color="text">
                       users
                     </MDTypography>
-                    <MDTypography variant="h4">{AppCtx.reports?.users?.numUsers}</MDTypography>
+                    <MDTypography variant="h4" color='success'>{AppCtx.reports?.users?.numUsers}</MDTypography>
                   </MDBox>
                 </MDBox>
                 <Divider />
@@ -134,7 +134,7 @@ function Dashboard() {
                     <MDTypography variant="button" fontWeight="light" color="text">
                       Investors
                     </MDTypography>
-                    <MDTypography variant="h4">{AppCtx.reports?.investors.numInvestors}</MDTypography>
+                    <MDTypography variant="h4" color='success'>{AppCtx.reports?.investors.numInvestors}</MDTypography>
                   </MDBox>
                 </MDBox>
                 <Divider />
@@ -151,12 +151,11 @@ function Dashboard() {
                     &nbsp;{AppCtx.reports?.requests.numRequests}
                   </MDTypography>
                   <MDTypography component="p" variant="button" color="text" display="flex">
-
-                    Most Wanted Crop
-                    {/* &nbsp;{AppCtx.reports?.requests.mostWantedCrop.map((crop) => {
-                      crop.Crop.cropName
-                    })} */}
+                    Order of Crop Perference :
                   </MDTypography>
+                  {AppCtx.reports?.requests?.mostWantedCrop?.map((crop,i) => {
+                    return <MDTypography key={i} component="p" variant="button" color="success" display="flex">{crop.Crop.cropName}</MDTypography>
+                  })}
                 </MDBox>
               </Card>
             </MDBox>
@@ -187,7 +186,7 @@ function Dashboard() {
                     <MDTypography variant="button" fontWeight="light" color="text">
                       Farmers
                     </MDTypography>
-                    <MDTypography variant="h4">{AppCtx.reports?.farmers.numFarmers}</MDTypography>
+                    <MDTypography variant="h4" color='success'>{AppCtx.reports?.farmers.numFarmers}</MDTypography>
                   </MDBox>
                 </MDBox>
                 <Divider />
@@ -230,7 +229,7 @@ function Dashboard() {
                     <MDTypography variant="button" fontWeight="light" color="text">
                       Deals
                     </MDTypography>
-                    <MDTypography variant="h4">{AppCtx.reports?.deals.numDeals}</MDTypography>
+                    <MDTypography variant="h4" color='success'>{AppCtx.reports?.deals.numDeals}</MDTypography>
                   </MDBox>
                 </MDBox>
                 <Divider />
@@ -243,7 +242,7 @@ function Dashboard() {
                   </MDTypography>
                   <MDTypography component="p" variant="button" color="text" display="flex">
 
-                     Not Agreed Deals
+                    Not Agreed Deals
                     &nbsp;{AppCtx.reports?.deals.numNotAgreedDeels}
                   </MDTypography>
                   <MDTypography component="p" variant="button" color="text" display="flex">
@@ -290,7 +289,7 @@ function Dashboard() {
                     <MDTypography variant="button" fontWeight="light" color="text">
                       Farms
                     </MDTypography>
-                    <MDTypography variant="h4">{AppCtx.reports?.farms.numFarms}</MDTypography>
+                    <MDTypography variant="h4" color='success'>{AppCtx.reports?.farms.numFarms}</MDTypography>
                   </MDBox>
                 </MDBox>
                 <Divider />
@@ -301,7 +300,7 @@ function Dashboard() {
                     Today's Farms
                     &nbsp;{AppCtx.reports?.farms.TodayFarms}
                   </MDTypography>
-                  
+
                   <MDTypography component="p" variant="button" color="text" display="flex">
 
                     Farms Available

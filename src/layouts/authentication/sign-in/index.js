@@ -44,22 +44,24 @@ function Basic() {
 	const login = () => {
 		const email = emailRef.current.querySelector('input[type=email]').value
 		const password = passwordRef.current.querySelector('input[type=password]').value
-		request(`${process.env.REACT_APP_API_URL}users/login`, {}, {
+		request(`${process.env.REACT_APP_API_URL}users/admin/login`, {}, {
 			userEmail: email,
 			userPassword: password
 		},
 			{
 				type: 'json',
-				
+				snackbar:true
 				// redirect: "/dashboard"
 
 			}, 'post').then((loggedIn) => {
+				console.log(loggedIn)
+
 				if (loggedIn.success) {
 					ctx.login(loggedIn.token)
-					// console.log(loggedIn.token)
+					
 					navigate('/dashboard')
 				}else{
-					alert(loggedIn.messages)
+					// alert(loggedIn.messages)
 				}
 			})
 		// fetch(`${process.env.REACT_APP_API_URL}users/login`, {

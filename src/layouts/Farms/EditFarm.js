@@ -240,7 +240,7 @@ function EditFarms() {
                       value={farmData?.farmArea}
                       onChange={(e) => { updateFarmData({ farmArea: e.target.value }) }}
                       type="text"
-                      label="farm Area"
+                      label="farm Area in Meters"
                       variant="standard"
                       fullWidth
                     />
@@ -283,7 +283,7 @@ function EditFarms() {
                       type="text"
                       value={farmData?.farmTreesAge}
                       onChange={(e) => { updateFarmData({ farmTreesAge: e.target.value }) }}
-                      label="farm TreesAge"
+                      label="farm TreesAge (Years)"
                       variant="standard"
                       fullWidth
                     />
@@ -472,7 +472,7 @@ function EditFarms() {
                   <MDBox mb={2}>
                     <MDInput
                       type="number"
-                      value={farmData?.farmLongitude}
+                      value={farmData?.farmLatitude}
                       onChange={(e) => { updateFarmData({ farmLatitude: e.target.value }) }}
                       label="farm Latitude"
                       variant="standard"
@@ -497,7 +497,7 @@ function EditFarms() {
                   <MDBox mt={4} mb={1}>
                     <MDButton
                       variant="gradient"
-                      color="info"
+                      color="success"
                       fullWidth
                       onClick={editFarm}
                     >

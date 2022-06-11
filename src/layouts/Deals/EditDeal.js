@@ -84,7 +84,7 @@ function EditDeal() {
                                 py={3}
                                 px={2}
                                 variant="gradient"
-                                bgColor="info"
+                                bgColor="success"
                                 borderRadius="lg"
                                 coloredShadow="info"
                             >
@@ -131,7 +131,7 @@ function EditDeal() {
 
 
                                     <MDBox mt={4} mb={1}>
-                                        <MDButton variant="gradient" color="info" fullWidth onClick={editDeal}>
+                                        <MDButton variant="gradient" color="success" fullWidth onClick={editDeal}>
                                             Save Deal
                                         </MDButton>
                                     </MDBox>

@@ -40,7 +40,7 @@ function AddUser() {
     }, [])
 
     const handleUserTypeChange = (event) => {
-       
+
         setUserType(event.target.value)
     }
 
@@ -119,7 +119,7 @@ function AddUser() {
                                 py={3}
                                 px={2}
                                 variant="gradient"
-                                bgColor="info"
+                                bgColor="success"
                                 borderRadius="lg"
                                 coloredShadow="info"
                             >
@@ -176,7 +176,7 @@ function AddUser() {
                                             Country
                                         </InputLabel>
                                         <NativeSelect
-
+                                            sx={{ color: 'text-warning' }}
                                             defaultValue={1}
                                             inputProps={{
                                                 name: 'country',
@@ -185,7 +185,7 @@ function AddUser() {
                                             onChange={handleCountryIdChange}
                                         >
                                             <option > </option>
-                                            {countriesData?.map((country, i) => <option value={country.id} key={i}>{country.countryName}</option>)}
+                                            {countriesData?.map((country, i) => <option sx={{ color: 'text-white' }} value={country.id} key={i}>{country.countryName}</option>)}
 
                                         </NativeSelect>
                                     </FormControl>
@@ -219,11 +219,12 @@ function AddUser() {
 
                                 <MDBox component="form" role="form">
 
-                                    <FormControl fullWidth>
+                                    <FormControl fullWidth color='white'>
                                         <InputLabel variant="standard" htmlFor="city">
                                             Cities
                                         </InputLabel>
                                         <NativeSelect
+
 
                                             inputProps={{
                                                 name: 'governrate',
@@ -242,7 +243,7 @@ function AddUser() {
                                 </MDBox>
 
                                 <MDBox mt={4} mb={1}>
-                                    <MDButton variant="gradient" color="info" fullWidth onClick={saveUser}>
+                                    <MDButton variant="gradient" color="success" fullWidth onClick={saveUser}>
                                         Save User
                                     </MDButton>
                                 </MDBox>

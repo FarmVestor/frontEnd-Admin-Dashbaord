@@ -51,6 +51,7 @@ import { AuthContext } from "context/AuthContext";
 import brandWhite from "assets/images/logo-ct.png";
 import brandDark from "assets/images/logo-ct-dark.png";
 import { AppContext } from "context/AppContext";
+import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 export default function App() {
 	const ctx = useContext(AuthContext)
@@ -154,7 +155,10 @@ export default function App() {
 	);
 
 	return direction === "rtl" ? (
+		
+
 		<CacheProvider value={rtlCache}>
+			{/* <DashboardNavbar /> */}
 			<ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
 				<CssBaseline />
 				{layout === "dashboard" && (
