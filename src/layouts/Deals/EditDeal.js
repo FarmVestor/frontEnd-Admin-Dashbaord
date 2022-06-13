@@ -102,7 +102,7 @@ function EditDeal() {
                                     </MDBox>
 
                                     <MDBox mb={2}>
-                                        <MDInput type="text" label="dealPrice" variant="standard" fullWidth value={dealData?.dealPrice ? dealData.dealPrice :''} onChange={(e) => { setDealData({ ...dealData, dealPrice: e.target.value }) }} />
+                                        <MDInput type="text" label="dealPrice $" variant="standard" fullWidth value={dealData?.dealPrice ? dealData.dealPrice :''} onChange={(e) => { setDealData({ ...dealData, dealPrice: e.target.value }) }} />
                                     </MDBox>
 
 

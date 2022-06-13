@@ -36,7 +36,7 @@ function EditUser() {
     const [userTypesData, setuserTypesData] = useState([])
     const [userTypeId, setUserType] = useState(1)
     useEffect(() => {
-        request(`${process.env.REACT_APP_API_URL}users/userType/all`, {}, null, {
+        request(`${process.env.REACT_APP_API_URL}users/admin/userType/all`, {}, null, {
             auth: true,
         }, 'get').then(userTypes => {
             setuserTypesData(userTypes.data)
@@ -48,7 +48,7 @@ function EditUser() {
 
 
     useEffect(() => {
-        request(`${process.env.REACT_APP_API_URL}users/admin/${id}`, {}, null, {
+        request(`${process.env.REACT_APP_API_URL}users/show/${id}`, {}, null, {
             auth: true,
         }, 'get').then(currentUser => {
             setUserData(currentUser.data)

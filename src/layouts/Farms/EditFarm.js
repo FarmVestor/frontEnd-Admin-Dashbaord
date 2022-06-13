@@ -61,8 +61,10 @@ function EditFarms() {
   const farmPictureRef = useRef();
 
   const editFarm = () => {
-    // console.log("farmData?.farmLongitude",farmData?.farmLongitude)
     const farmPicture = farmPictureRef.current.querySelector("input[type=file").files;
+    // const farmPicture = farmPictureRef.current.files;
+    console.log("farmPicture",farmPicture)
+
 
     const formdata = new FormData();
     formdata.append("userId", farmData?.userId);
@@ -391,6 +393,7 @@ function EditFarms() {
                   </MDBox>
                   {farmData?.farmPicture && <img src={farmData?.farmPicture} width={80} />}
                   <MDBox mb={2}>
+                  {/* <input type="file" multiple ref={farmPictureRef}/> */}
                     <MDInput
                       ref={farmPictureRef}
                       type="file"

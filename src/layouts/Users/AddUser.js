@@ -30,7 +30,7 @@ function AddUser() {
     const [userTypesData, setuserTypesData] = useState([])
     const [userTypeId, setUserType] = useState(1)
     useEffect(() => {
-        request(`${process.env.REACT_APP_API_URL}users/userType/all`, {}, null, {
+        request(`${process.env.REACT_APP_API_URL}users/admin/userType/all`, {}, null, {
             auth: true,
         }, 'get').then(userTypes => {
 
@@ -124,7 +124,7 @@ function AddUser() {
                                 coloredShadow="info"
                             >
                                 <MDTypography variant="h6" color="white">
-                                    Add Admin
+                                    Add User
                                 </MDTypography>
                             </MDBox>
                             <MDBox pt={4} pb={3} px={3}>

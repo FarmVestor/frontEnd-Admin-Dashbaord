@@ -92,7 +92,7 @@ function AddDeal() {
                                     
 
                                     <MDBox mb={2}>
-                                        <MDInput type="text" label="dealPrice" variant="standard" fullWidth ref={dealPriceIdRef} />
+                                        <MDInput type="text" label="dealPrice $" variant="standard" fullWidth ref={dealPriceIdRef} />
                                     </MDBox>
 
 

@@ -390,6 +390,7 @@ function AddFarms() {
                     </Box>
                   </MDBox>
                   <MDBox mb={2}>
+                  {/* <input type="file" multiple/> */}
                     <MDInput
                       ref={farmPictureRef}
                       type="file"
