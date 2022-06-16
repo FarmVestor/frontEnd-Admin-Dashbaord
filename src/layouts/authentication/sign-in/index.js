@@ -123,10 +123,10 @@ function Basic() {
 				<MDBox pt={4} pb={3} px={3}>
 					<MDBox component="form" role="form">
 						<MDBox mb={2} sx={{color:"success.main"}}>
-							<MDInput success  type="email" label="Email" fullWidth ref={emailRef} />
+							<MDInput   type="email" label="Email" fullWidth ref={emailRef} />
 						</MDBox>
 						<MDBox mb={2}>
-							<MDInput success  type="password" label="Password" fullWidth ref={passwordRef} />
+							<MDInput  type="password" label="Password" fullWidth ref={passwordRef} />
 						</MDBox>
 						<MDBox display="flex" alignItems="center" ml={-1}>
 							<Switch checked={rememberMe} onChange={handleSetRememberMe} />
