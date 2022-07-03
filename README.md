@@ -28,22 +28,22 @@
 8. Can show/edit all users’ profile data
 9. Can delete/undoDelete 
 10. Can get reports : 
-    . Number of total users
-    . Number of today’s created users 
+    * Number of total users
+    * Number of today’s created users 
 
 
-    . Number of farms available
-    . Number of farms not available
-    . Number of today’s created farms
-    . Number of farmers
+    * Number of farms available
+    * Number of farms not available
+    * Number of today’s created farms
+    * Number of farmers
 
 
-    . Number of investors
-    . Number of today’s created investors
-    . Number of investors’ requests
-    . The order of the crop preference 
+    * Number of investors
+    * Number of today’s created investors
+    * Number of investors’ requests
+    * The order of the crop preference 
 
 
-    . Number of (agreed/notAgreed) deals
-    . Number of deals that were done with investors
-    . Number of deals that were done with agents
+    * Number of (agreed/notAgreed) deals
+    * Number of deals that were done with investors
+    * Number of deals that were done with agents
